@@ -7,7 +7,10 @@ namespace Pollora\Attributes;
 use Attribute;
 
 /**
+ * Class Action
+ *
  * Attribute for WordPress actions.
+ * This class is used to define an action hook in WordPress.
  */
 
 #[Attribute]
