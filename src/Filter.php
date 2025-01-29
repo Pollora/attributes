@@ -11,7 +11,7 @@ use Attribute;
  * Attribute for WordPress filters.
  * This class is used to define a filter hook in WordPress.
  */
-#[Attribute]
+#[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class Filter extends Hook
 {
 }
