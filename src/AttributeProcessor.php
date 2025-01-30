@@ -21,19 +21,38 @@ class AttributeProcessor
      */
     public static function process(Attributable $instance): void
     {
-        $reflection = new ReflectionClass($instance);
+        $class = new ReflectionClass($instance);
 
-        foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
+        // Process attributes at the CLASS level
+        foreach ($class->getAttributes() as $attribute) {
+            self::processAttribute($instance, $attribute, $class);
+        }
+
+        // Process attributes at the METHOD level
+        foreach ($class->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
             foreach ($method->getAttributes() as $attribute) {
-                $attributeInstance = $attribute->newInstance();
-
-                // Optimized retrieval of the handler
-                $handlerClass = self::resolveHandlerClass($attributeInstance);
-
-                if ($handlerClass !== null) {
-                    $handlerClass::handle($instance, $method, $attributeInstance);
-                }
+                self::processAttribute($instance, $attribute, $method);
             }
+        }
+    }
+
+    /**
+     * Process an attribute and call the appropriate handler.
+     *
+     * @param object $instance The class instance where the attribute is found
+     * @param \ReflectionAttribute $attribute The attribute to process
+     * @param ReflectionMethod|ReflectionClass|null $classOrMethod (Optional) The method if the attribute is on a method
+     * @return void
+     */
+    private static function processAttribute(object $instance, \ReflectionAttribute $attribute, ReflectionMethod|ReflectionClass|null $classOrMethod = null): void
+    {
+        $attributeInstance = $attribute->newInstance();
+
+        // Optimized retrieval of the handler
+        $handlerClass = self::resolveHandlerClass($attributeInstance);
+
+        if ($handlerClass !== null) {
+            $handlerClass::handle($instance, $classOrMethod, $attributeInstance);
         }
     }
 
@@ -45,7 +64,7 @@ class AttributeProcessor
      */
     private static function resolveHandlerClass(object $attributeInstance): ?string
     {
-        $attributeClass = (new ReflectionClass($attributeInstance))->getShortName();
+        $attributeClass = str_replace('Pollora\\Attributes\\', '', (new \ReflectionClass($attributeInstance))->getName());
 
         // Check if the class is already in the cache
         if (!isset(self::$handlerCache[$attributeClass])) {
