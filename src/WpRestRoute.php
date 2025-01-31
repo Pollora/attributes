@@ -2,6 +2,9 @@
 namespace Pollora\Attributes;
 
 use Attribute;
+use ReflectionClass;
+use ReflectionMethod;
+use WP_REST_Request;
 
 /**
  * Attribute to declare a route in the WordPress REST API.
@@ -18,4 +21,11 @@ class WpRestRoute
         public string $route,
         public ?string $permissionCallback = null
     ) {}
+
+    public static function handle(object $instance, ReflectionClass $reflection, WpRestRoute $routeAttribute): void
+    {
+        $instance->namespace = $routeAttribute->namespace;
+        $instance->route = $routeAttribute->route;
+        $instance->classPermission = $routeAttribute->permissionCallback;
+    }
 }

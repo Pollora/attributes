@@ -1,79 +1,172 @@
 <?php
+declare(strict_types=1);
+
 namespace Pollora\Attributes;
 
 use ReflectionClass;
 use ReflectionMethod;
-use Pollora\Attributes\Attributable;
+use WeakMap;
+use RuntimeException;
 
+/**
+ * Class AttributeProcessor
+ *
+ * Processes PHP 8 attributes on classes and methods, providing caching and optimization
+ * for better performance in attribute handling.
+ */
 class AttributeProcessor
 {
     /**
-     * Cache of mappings between attributes and their handlers.
-     * @var array<string, string|null>
+     * Cache of processed classes to avoid redundant processing
+     * Using WeakMap to prevent memory leaks with circular references
      */
-    private static array $handlerCache = [];
+    private static ?WeakMap $processedClasses = null;
 
     /**
-     * Analyzes the attributes of a class and delegates their processing to the appropriate handlers.
+     * Cache of attribute handlers to avoid repeated method_exists calls
+     * @var array<string, callable|null>
+     */
+    private static array $handlersCache = [];
+
+    /**
+     * Process all attributes on a class instance and its methods
      *
-     * @param Attributable $instance The instance of the class using attributes
-     * @return void
+     * @param Attributable $instance The instance to process attributes for
+     * @throws AttributeProcessingException If an error occurs during processing
      */
     public static function process(Attributable $instance): void
     {
-        $class = new ReflectionClass($instance);
+        try {
+            // Initialize WeakMap if not already done
+            if (self::$processedClasses === null) {
+                self::$processedClasses = new WeakMap();
+            }
 
-        // Process attributes at the CLASS level
-        foreach ($class->getAttributes() as $attribute) {
-            self::processAttribute($instance, $attribute, $class);
+            $class = new ReflectionClass($instance);
+
+            // Skip if already processed
+            if (isset(self::$processedClasses[$instance])) {
+                return;
+            }
+
+            self::processClassAttributes($instance, $class);
+            self::processMethodAttributes($instance, $class);
+
+            // Mark as processed
+            self::$processedClasses[$instance] = true;
+
+        } catch (\Throwable $e) {
+            throw new AttributeProcessingException(
+                "Failed to process attributes for class " . get_class($instance),
+                0,
+                $e
+            );
+        }
+    }
+
+    /**
+     * Process class-level attributes
+     *
+     * @param object $instance
+     * @param ReflectionClass $class
+     * @throws AttributeProcessingException
+     */
+    private static function processClassAttributes(object $instance, ReflectionClass $class): void
+    {
+        $attributes = $class->getAttributes();
+        if (empty($attributes)) {
+            return;
         }
 
-        // Process attributes at the METHOD level
-        foreach ($class->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
-            foreach ($method->getAttributes() as $attribute) {
+        foreach ($attributes as $attribute) {
+            self::processAttribute($instance, $attribute, $class);
+        }
+    }
+
+    /**
+     * Process method-level attributes with optimized attribute loading
+     *
+     * @param object $instance
+     * @param ReflectionClass $class
+     * @throws AttributeProcessingException
+     */
+    private static function processMethodAttributes(object $instance, ReflectionClass $class): void
+    {
+        $methods = $class->getMethods(ReflectionMethod::IS_PUBLIC);
+
+        // Pre-load all method attributes to optimize processing
+        $methodAttributes = [];
+        foreach ($methods as $method) {
+            $attributes = $method->getAttributes();
+            if (!empty($attributes)) {
+                $methodAttributes[$method->getName()] = [$method, $attributes];
+            }
+        }
+
+        // Process the collected attributes
+        foreach ($methodAttributes as [$method, $attributes]) {
+            foreach ($attributes as $attribute) {
                 self::processAttribute($instance, $attribute, $method);
             }
         }
     }
 
     /**
-     * Process an attribute and call the appropriate handler.
+     * Process an individual attribute
      *
-     * @param object $instance The class instance where the attribute is found
-     * @param \ReflectionAttribute $attribute The attribute to process
-     * @param ReflectionMethod|ReflectionClass|null $classOrMethod (Optional) The method if the attribute is on a method
-     * @return void
+     * @param object $instance
+     * @param \ReflectionAttribute $attribute
+     * @param ReflectionMethod|ReflectionClass|null $classOrMethod
+     * @throws AttributeProcessingException
      */
-    private static function processAttribute(object $instance, \ReflectionAttribute $attribute, ReflectionMethod|ReflectionClass|null $classOrMethod = null): void
-    {
-        $attributeInstance = $attribute->newInstance();
+    private static function processAttribute(
+        object $instance,
+        \ReflectionAttribute $attribute,
+        ReflectionMethod|ReflectionClass|null $classOrMethod = null
+    ): void {
+        try {
+            $attributeInstance = $attribute->newInstance();
+            $handleMethod = self::resolveHandleMethod($attributeInstance);
 
-        // Optimized retrieval of the handler
-        $handlerClass = self::resolveHandlerClass($attributeInstance);
-
-        if ($handlerClass !== null) {
-            $handlerClass::handle($instance, $classOrMethod, $attributeInstance);
+            if ($handleMethod !== null) {
+                $handleMethod($instance, $classOrMethod, $attributeInstance);
+            }
+        } catch (\Throwable $e) {
+            dd($e->getMessage());
+            throw new AttributeProcessingException(
+                sprintf(
+                    "Error processing attribute %s on %s",
+                    $attribute->getName(),
+                    $classOrMethod instanceof ReflectionMethod ? "method {$classOrMethod->getName()}" : "class"
+                ),
+                0,
+                $e
+            );
         }
     }
 
     /**
-     * Dynamically generates the expected handler class name for an attribute with caching.
+     * Resolve and cache the handler method for an attribute
      *
-     * @param object $attributeInstance Instance of the analyzed attribute
-     * @return string|null Expected handler class name or null if it does not exist
+     * @param object $attributeInstance
+     * @return callable|null
      */
-    private static function resolveHandlerClass(object $attributeInstance): ?string
+    private static function resolveHandleMethod(object $attributeInstance): ?callable
     {
-        $attributeClass = str_replace('Pollora\\Attributes\\', '', (new \ReflectionClass($attributeInstance))->getName());
+        $attributeClass = get_class($attributeInstance);
 
-        // Check if the class is already in the cache
-        if (!isset(self::$handlerCache[$attributeClass])) {
-            $resolvedClass = "Pollora\\Attributes\\Registrars\\{$attributeClass}Registrar";
-
-            // Store if the class exists, otherwise null
-            self::$handlerCache[$attributeClass] = class_exists($resolvedClass) ? $resolvedClass : null;
+        // Check cache first
+        if (isset(self::$handlersCache[$attributeClass])) {
+            return self::$handlersCache[$attributeClass];
         }
 
-        return self::$handlerCache[$attributeClass];
+        // Resolve and cache handler
+        $handler = method_exists($attributeClass, 'handle')
+            ? [$attributeInstance, 'handle']
+            : null;
+
+        self::$handlersCache[$attributeClass] = $handler;
+
+        return $handler;
     }
 }
