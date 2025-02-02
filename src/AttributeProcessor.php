@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Pollora\Attributes;
@@ -6,7 +7,6 @@ namespace Pollora\Attributes;
 use ReflectionClass;
 use ReflectionMethod;
 use WeakMap;
-use RuntimeException;
 
 /**
  * Class AttributeProcessor
@@ -24,6 +24,7 @@ class AttributeProcessor
 
     /**
      * Cache of attribute handlers to avoid repeated method_exists calls
+     *
      * @var array<string, callable|null>
      */
     private static array $handlersCache = [];
@@ -31,7 +32,8 @@ class AttributeProcessor
     /**
      * Process all attributes on a class instance and its methods
      *
-     * @param Attributable $instance The instance to process attributes for
+     * @param  Attributable  $instance  The instance to process attributes for
+     *
      * @throws AttributeProcessingException If an error occurs during processing
      */
     public static function process(Attributable $instance): void
@@ -39,7 +41,7 @@ class AttributeProcessor
         try {
             // Initialize WeakMap if not already done
             if (self::$processedClasses === null) {
-                self::$processedClasses = new WeakMap();
+                self::$processedClasses = new WeakMap;
             }
 
             $class = new ReflectionClass($instance);
@@ -57,7 +59,7 @@ class AttributeProcessor
 
         } catch (\Throwable $e) {
             throw new AttributeProcessingException(
-                "Failed to process attributes for class " . get_class($instance),
+                'Failed to process attributes for class '.get_class($instance),
                 0,
                 $e
             );
@@ -67,8 +69,6 @@ class AttributeProcessor
     /**
      * Process class-level attributes
      *
-     * @param object $instance
-     * @param ReflectionClass $class
      * @throws AttributeProcessingException
      */
     private static function processClassAttributes(object $instance, ReflectionClass $class): void
@@ -86,8 +86,6 @@ class AttributeProcessor
     /**
      * Process method-level attributes with optimized attribute loading
      *
-     * @param object $instance
-     * @param ReflectionClass $class
      * @throws AttributeProcessingException
      */
     private static function processMethodAttributes(object $instance, ReflectionClass $class): void
@@ -98,7 +96,7 @@ class AttributeProcessor
         $methodAttributes = [];
         foreach ($methods as $method) {
             $attributes = $method->getAttributes();
-            if (!empty($attributes)) {
+            if (! empty($attributes)) {
                 $methodAttributes[$method->getName()] = [$method, $attributes];
             }
         }
@@ -114,9 +112,6 @@ class AttributeProcessor
     /**
      * Process an individual attribute
      *
-     * @param object $instance
-     * @param \ReflectionAttribute $attribute
-     * @param ReflectionMethod|ReflectionClass|null $classOrMethod
      * @throws AttributeProcessingException
      */
     private static function processAttribute(
@@ -135,9 +130,9 @@ class AttributeProcessor
             dd($e->getMessage());
             throw new AttributeProcessingException(
                 sprintf(
-                    "Error processing attribute %s on %s",
+                    'Error processing attribute %s on %s',
                     $attribute->getName(),
-                    $classOrMethod instanceof ReflectionMethod ? "method {$classOrMethod->getName()}" : "class"
+                    $classOrMethod instanceof ReflectionMethod ? "method {$classOrMethod->getName()}" : 'class'
                 ),
                 0,
                 $e
@@ -147,9 +142,6 @@ class AttributeProcessor
 
     /**
      * Resolve and cache the handler method for an attribute
-     *
-     * @param object $attributeInstance
-     * @return callable|null
      */
     private static function resolveHandleMethod(object $attributeInstance): ?callable
     {

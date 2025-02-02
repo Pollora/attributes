@@ -7,8 +7,8 @@ namespace Pollora\Attributes;
 use Attribute;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use ReflectionMethod;
 use Pollora\Support\Facades\Action;
+use ReflectionMethod;
 
 #[Attribute(Attribute::TARGET_METHOD)]
 class Schedule
@@ -20,13 +20,14 @@ class Schedule
         'hourly',
         'twicedaily',
         'daily',
-        'weekly'
+        'weekly',
     ];
 
     /**
-     * @param string|array $recurrence Either a predefined schedule name or a custom schedule array
-     * @param string|null $hook Optional custom hook name, if null will use class and method name
-     * @param array $args Arguments to pass to the scheduled function
+     * @param  string|array  $recurrence  Either a predefined schedule name or a custom schedule array
+     * @param  string|null  $hook  Optional custom hook name, if null will use class and method name
+     * @param  array  $args  Arguments to pass to the scheduled function
+     *
      * @throws InvalidArgumentException
      */
     public function __construct(
@@ -54,11 +55,11 @@ class Schedule
             $this->registerCustomSchedule($hookName, $this->recurrence);
         }
 
-        Action::add('init', function() use ($instance, $hookName, $method) {
+        Action::add('init', function () use ($instance, $hookName, $method) {
             // Add action hook for the scheduled event
             Action::add($hookName, [$instance, $method->getName()]);
             // Schedule the event if it's not already scheduled
-            if (!$this->isEventScheduled($hookName)) {
+            if (! $this->isEventScheduled($hookName)) {
                 $this->scheduleEvent($hookName);
             }
         });
@@ -87,11 +88,12 @@ class Schedule
 
     /**
      * Validate predefined recurrence schedule
+     *
      * @throws InvalidArgumentException
      */
     private function validateRecurrence(string $recurrence): void
     {
-        if (!in_array($recurrence, self::DEFAULT_SCHEDULES)) {
+        if (! in_array($recurrence, self::DEFAULT_SCHEDULES)) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Invalid recurrence schedule "%s". Valid schedules are: %s',
@@ -104,17 +106,18 @@ class Schedule
 
     /**
      * Validate custom recurrence array
+     *
      * @throws InvalidArgumentException
      */
     private function validateCustomRecurrence(array $recurrence): void
     {
-        if (!isset($recurrence['interval']) || !is_numeric($recurrence['interval'])) {
+        if (! isset($recurrence['interval']) || ! is_numeric($recurrence['interval'])) {
             throw new InvalidArgumentException(
                 'Custom recurrence must include a numeric interval in seconds'
             );
         }
 
-        if (!isset($recurrence['display']) || !is_string($recurrence['display'])) {
+        if (! isset($recurrence['display']) || ! is_string($recurrence['display'])) {
             throw new InvalidArgumentException(
                 'Custom recurrence must include a display name'
             );
@@ -129,8 +132,9 @@ class Schedule
         add_filter('cron_schedules', function ($schedules) use ($name, $schedule) {
             $schedules[$name] = [
                 'interval' => $schedule['interval'],
-                'display' => $schedule['display']
+                'display' => $schedule['display'],
             ];
+
             return $schedules;
         });
     }

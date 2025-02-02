@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Pollora\Attributes;
 
-use Pollora\Support\Facades\Filter as FilterFacade;
 use Attribute;
+use Pollora\Support\Facades\Filter as FilterFacade;
 use ReflectionMethod;
 
 /**

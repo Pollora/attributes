@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Pollora\Attributes;
 
 use Illuminate\Support\ServiceProvider;
-use Pollora\Attributes\Attributable;
 
 /**
  * Service provider for WordPress hook functionality.
@@ -20,8 +19,6 @@ class AttributesServiceProvider extends ServiceProvider
      *
      * Binds hook configurations and hook implementations as singletons
      * in the application container.
-     *
-     * @return void
      */
     public function register(): void
     {

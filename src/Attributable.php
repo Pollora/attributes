@@ -10,6 +10,4 @@ namespace Pollora\Attributes;
  * Classes implementing this interface can be processed by the AttributeProcessor
  * to analyze and handle their attributes dynamically.
  */
-interface Attributable
-{
-}
+interface Attributable {}

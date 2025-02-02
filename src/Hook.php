@@ -15,8 +15,8 @@ abstract class Hook
     /**
      * Constructor for the Hook class.
      *
-     * @param string $hook The name of the WordPress hook.
-     * @param int $priority The priority of the hook.
+     * @param  string  $hook  The name of the WordPress hook.
+     * @param  int  $priority  The priority of the hook.
      */
     public function __construct(
         public string $hook,

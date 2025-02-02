@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Pollora\Attributes;
 
-use Pollora\Support\Facades\Action as ActionFacade;
 use Attribute;
+use Pollora\Support\Facades\Action as ActionFacade;
 use ReflectionMethod;
 
 /**
@@ -14,7 +14,6 @@ use ReflectionMethod;
  * Attribute for WordPress actions.
  * This class is used to define an action hook in WordPress.
  */
-
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class Action extends Hook
 {

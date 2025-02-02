@@ -1,22 +1,24 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Pollora\Attributes\Registrars\WpRestRoute;
 
 use Pollora\Attributes\Attributable;
 use Pollora\Attributes\WpRestRoute\Method;
 use Pollora\Support\Facades\Action;
 use ReflectionMethod;
-use WP_REST_Request;
 use WP_Error;
+use WP_REST_Request;
 
 class MethodRegistrar
 {
     /**
      * Handles the registration of the REST route for the method.
      *
-     * @param Attributable $instance The class instance
-     * @param ReflectionMethod $method The method reflection
-     * @param Method $methodAttribute The method attribute instance
-     * @return void
+     * @param  Attributable  $instance  The class instance
+     * @param  ReflectionMethod  $method  The method reflection
+     * @param  Method  $methodAttribute  The method attribute instance
      */
     public static function handle(Attributable $instance, ReflectionMethod $method, Method $methodAttribute): void
     {
@@ -28,9 +30,9 @@ class MethodRegistrar
                 $instance->namespace,
                 $instance->route,
                 [
-                    'methods'  => $methodAttribute->getMethods(),
-                    'callback' => fn(WP_REST_Request $request) => self::handleRequest($instance, $method, $request),
-                    'args'     => self::extractArgsFromRoute($instance->route),
+                    'methods' => $methodAttribute->getMethods(),
+                    'callback' => fn (WP_REST_Request $request) => self::handleRequest($instance, $method, $request),
+                    'args' => self::extractArgsFromRoute($instance->route),
                     'permission_callback' => self::resolvePermissionCallback($permissionCallback),
                 ]
             );
@@ -40,9 +42,9 @@ class MethodRegistrar
     /**
      * Executes the class method associated with the REST request.
      *
-     * @param Attributable $instance The class instance
-     * @param ReflectionMethod $method The method to invoke
-     * @param WP_REST_Request $request The REST request instance
+     * @param  Attributable  $instance  The class instance
+     * @param  ReflectionMethod  $method  The method to invoke
+     * @param  WP_REST_Request  $request  The REST request instance
      * @return mixed The result of the method invocation
      */
     private static function handleRequest(Attributable $instance, ReflectionMethod $method, WP_REST_Request $request)
@@ -60,21 +62,22 @@ class MethodRegistrar
     /**
      * Extracts dynamic arguments from a WordPress route.
      *
-     * @param string $route The route pattern
+     * @param  string  $route  The route pattern
      * @return array The extracted arguments
      */
     private static function extractArgsFromRoute(string $route): array
     {
         preg_match_all('/\\(\\?P<([a-zA-Z0-9_]+)>/', $route, $matches);
+
         return array_fill_keys($matches[1], [
-            'validate_callback' => fn($param) => is_string($param) || is_numeric($param),
+            'validate_callback' => fn ($param) => is_string($param) || is_numeric($param),
         ]);
     }
 
     /**
      * Resolves and executes the permission callback.
      *
-     * @param string|null $permissionCallback The permission class to use
+     * @param  string|null  $permissionCallback  The permission class to use
      * @return callable The permission function
      */
     private static function resolvePermissionCallback(?string $permissionCallback): callable
@@ -83,12 +86,13 @@ class MethodRegistrar
             return '__return_true';
         }
 
-        if (!class_exists($permissionCallback) || !is_subclass_of($permissionCallback, Permission::class)) {
-            return fn() => new WP_Error('rest_forbidden', __('Invalid permission handler.'), ['status' => 403]);
+        if (! class_exists($permissionCallback) || ! is_subclass_of($permissionCallback, Permission::class)) {
+            return fn () => new WP_Error('rest_forbidden', __('Invalid permission handler.'), ['status' => 403]);
         }
 
         return function (WP_REST_Request $request) use ($permissionCallback) {
-            $permissionInstance = new $permissionCallback();
+            $permissionInstance = new $permissionCallback;
+
             return $permissionInstance->allow($request);
         };
     }
