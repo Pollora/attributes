@@ -127,7 +127,6 @@ class AttributeProcessor
                 $handleMethod($instance, $classOrMethod, $attributeInstance);
             }
         } catch (\Throwable $e) {
-            dd($e->getMessage());
             throw new AttributeProcessingException(
                 sprintf(
                     'Error processing attribute %s on %s',
