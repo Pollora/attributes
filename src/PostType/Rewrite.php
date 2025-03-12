@@ -23,22 +23,19 @@ class Rewrite extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param bool|array $value The rewrite configuration for the post type
+     * @param  bool|array  $value  The rewrite configuration for the post type
      */
     public function __construct(
         private bool|array $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the rewrite parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {
         $postType->attributeArgs['rewrite'] = $this->value;
     }
-} 
+}

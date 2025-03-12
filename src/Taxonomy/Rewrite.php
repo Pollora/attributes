@@ -18,22 +18,19 @@ class Rewrite extends TaxonomyAttribute
     /**
      * Constructor.
      *
-     * @param bool|array $value The rewrite rules for the taxonomy
+     * @param  bool|array  $value  The rewrite rules for the taxonomy
      */
     public function __construct(
         private bool|array $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the taxonomy with the rewrite parameter.
      *
-     * @param Taxonomy $taxonomy The taxonomy to configure
-     *
-     * @return void
+     * @param  Taxonomy  $taxonomy  The taxonomy to configure
      */
     protected function configure(Taxonomy $taxonomy): void
     {
         $taxonomy->attributeArgs['rewrite'] = $this->value;
     }
-} 
+}

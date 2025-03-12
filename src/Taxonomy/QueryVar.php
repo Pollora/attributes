@@ -18,22 +18,19 @@ class QueryVar extends TaxonomyAttribute
     /**
      * Constructor.
      *
-     * @param bool|string $value The query_var key for this taxonomy
+     * @param  bool|string  $value  The query_var key for this taxonomy
      */
     public function __construct(
         private bool|string $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the taxonomy with the query_var parameter.
      *
-     * @param Taxonomy $taxonomy The taxonomy to configure
-     *
-     * @return void
+     * @param  Taxonomy  $taxonomy  The taxonomy to configure
      */
     protected function configure(Taxonomy $taxonomy): void
     {
         $taxonomy->attributeArgs['query_var'] = $this->value;
     }
-} 
+}

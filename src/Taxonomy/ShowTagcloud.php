@@ -18,22 +18,19 @@ class ShowTagcloud extends TaxonomyAttribute
     /**
      * Constructor.
      *
-     * @param bool $value Whether to show the taxonomy in the tag cloud widget
+     * @param  bool  $value  Whether to show the taxonomy in the tag cloud widget
      */
     public function __construct(
         private bool $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the taxonomy with the show_tagcloud parameter.
      *
-     * @param Taxonomy $taxonomy The taxonomy to configure
-     *
-     * @return void
+     * @param  Taxonomy  $taxonomy  The taxonomy to configure
      */
     protected function configure(Taxonomy $taxonomy): void
     {
         $taxonomy->attributeArgs['show_tagcloud'] = $this->value;
     }
-} 
+}

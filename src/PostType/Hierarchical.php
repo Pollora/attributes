@@ -21,22 +21,19 @@ class Hierarchical extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param bool $value Whether the post type should be hierarchical
+     * @param  bool  $value  Whether the post type should be hierarchical
      */
     public function __construct(
         private bool $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the hierarchical parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {
         $postType->attributeArgs['hierarchical'] = $this->value;
     }
-} 
+}

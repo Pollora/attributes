@@ -18,22 +18,19 @@ class ShowInQuickEdit extends TaxonomyAttribute
     /**
      * Constructor.
      *
-     * @param bool $value Whether to show the taxonomy in the quick/bulk edit panel
+     * @param  bool  $value  Whether to show the taxonomy in the quick/bulk edit panel
      */
     public function __construct(
         private bool $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the taxonomy with the show_in_quick_edit parameter.
      *
-     * @param Taxonomy $taxonomy The taxonomy to configure
-     *
-     * @return void
+     * @param  Taxonomy  $taxonomy  The taxonomy to configure
      */
     protected function configure(Taxonomy $taxonomy): void
     {
         $taxonomy->attributeArgs['show_in_quick_edit'] = $this->value;
     }
-} 
+}

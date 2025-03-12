@@ -22,22 +22,19 @@ class ShowInRest extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param bool $value Whether the post type should be available in the REST API
+     * @param  bool  $value  Whether the post type should be available in the REST API
      */
     public function __construct(
         private bool $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the show_in_rest parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {
         $postType->attributeArgs['show_in_rest'] = $this->value;
     }
-} 
+}

@@ -18,22 +18,19 @@ class RestControllerClass extends TaxonomyAttribute
     /**
      * Constructor.
      *
-     * @param string $value The controller class for REST API requests
+     * @param  string  $value  The controller class for REST API requests
      */
     public function __construct(
         private string $value
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the taxonomy with the rest_controller_class parameter.
      *
-     * @param Taxonomy $taxonomy The taxonomy to configure
-     *
-     * @return void
+     * @param  Taxonomy  $taxonomy  The taxonomy to configure
      */
     protected function configure(Taxonomy $taxonomy): void
     {
         $taxonomy->attributeArgs['rest_controller_class'] = $this->value;
     }
-} 
+}

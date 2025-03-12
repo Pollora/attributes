@@ -32,22 +32,19 @@ class MenuPosition extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param int $value The position in the menu order the post type should appear
+     * @param  int  $value  The position in the menu order the post type should appear
      */
     public function __construct(
         private int $value
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the menu_position parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {
         $postType->attributeArgs['menu_position'] = $this->value;
     }
-} 
+}

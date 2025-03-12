@@ -21,22 +21,19 @@ class HasArchive extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param bool|string $value Whether the post type should have an archive or the archive slug
+     * @param  bool|string  $value  Whether the post type should have an archive or the archive slug
      */
     public function __construct(
         private bool|string $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the has_archive parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {
         $postType->attributeArgs['has_archive'] = $this->value;
     }
-} 
+}

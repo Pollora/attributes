@@ -21,22 +21,19 @@ class TitlePlaceholder extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param string $value The placeholder text for the title field
+     * @param  string  $value  The placeholder text for the title field
      */
     public function __construct(
         private string $value
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the title_placeholder parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {
         $postType->attributeArgs['title_placeholder'] = $this->value;
     }
-} 
+}

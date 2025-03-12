@@ -21,22 +21,19 @@ class AllowHierarchy extends TaxonomyAttribute
     /**
      * Constructor.
      *
-     * @param bool $value Whether to allow hierarchy in the taxonomy's rewrite rules
+     * @param  bool  $value  Whether to allow hierarchy in the taxonomy's rewrite rules
      */
     public function __construct(
         private bool $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the taxonomy with the allow_hierarchy parameter.
      *
-     * @param Taxonomy $taxonomy The taxonomy to configure
-     *
-     * @return void
+     * @param  Taxonomy  $taxonomy  The taxonomy to configure
      */
     protected function configure(Taxonomy $taxonomy): void
     {
         $taxonomy->attributeArgs['allow_hierarchy'] = $this->value;
     }
-} 
+}

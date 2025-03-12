@@ -18,22 +18,19 @@ class ShowUI extends TaxonomyAttribute
     /**
      * Constructor.
      *
-     * @param bool $value Whether to generate a default UI for managing this taxonomy in the admin
+     * @param  bool  $value  Whether to generate a default UI for managing this taxonomy in the admin
      */
     public function __construct(
         private bool $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the taxonomy with the show_ui parameter.
      *
-     * @param Taxonomy $taxonomy The taxonomy to configure
-     *
-     * @return void
+     * @param  Taxonomy  $taxonomy  The taxonomy to configure
      */
     protected function configure(Taxonomy $taxonomy): void
     {
         $taxonomy->attributeArgs['show_ui'] = $this->value;
     }
-} 
+}

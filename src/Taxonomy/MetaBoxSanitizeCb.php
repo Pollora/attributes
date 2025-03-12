@@ -37,4 +37,4 @@ class MetaBoxSanitizeCb implements HandlesAttributes
         // Set the meta_box_sanitize_cb parameter to the method
         $instance->attributeArgs['meta_box_sanitize_cb'] = [$instance, $context->getName()];
     }
-} 
+}

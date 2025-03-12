@@ -39,4 +39,4 @@ class RegisterMetaBoxCb implements HandlesAttributes
         // Set the register_meta_box_cb parameter to the method
         $instance->attributeArgs['register_meta_box_cb'] = [$instance, $context->getName()];
     }
-} 
+}

@@ -21,22 +21,19 @@ class FeaturedImage extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param string $value The custom featured image label
+     * @param  string  $value  The custom featured image label
      */
     public function __construct(
         private string $value
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the featured_image parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {
         $postType->attributeArgs['featured_image'] = $this->value;
     }
-} 
+}

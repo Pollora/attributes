@@ -18,22 +18,19 @@ class ShowAdminColumn extends TaxonomyAttribute
     /**
      * Constructor.
      *
-     * @param bool $value Whether to display a column for the taxonomy
+     * @param  bool  $value  Whether to display a column for the taxonomy
      */
     public function __construct(
         private bool $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the taxonomy with the show_admin_column parameter.
      *
-     * @param Taxonomy $taxonomy The taxonomy to configure
-     *
-     * @return void
+     * @param  Taxonomy  $taxonomy  The taxonomy to configure
      */
     protected function configure(Taxonomy $taxonomy): void
     {
         $taxonomy->attributeArgs['show_admin_column'] = $this->value;
     }
-} 
+}

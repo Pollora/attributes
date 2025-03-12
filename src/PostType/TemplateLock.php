@@ -23,22 +23,19 @@ class TemplateLock extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param bool|string $value The template lock setting
+     * @param  bool|string  $value  The template lock setting
      */
     public function __construct(
         private bool|string $value
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the template_lock parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {
         $postType->attributeArgs['template_lock'] = $this->value;
     }
-} 
+}

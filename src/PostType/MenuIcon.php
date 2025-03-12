@@ -21,22 +21,19 @@ class MenuIcon extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param string $value The dashicon name or URL to use as the menu icon
+     * @param  string  $value  The dashicon name or URL to use as the menu icon
      */
     public function __construct(
         private string $value
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the menu_icon parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {
         $postType->attributeArgs['menu_icon'] = $this->value;
     }
-} 
+}

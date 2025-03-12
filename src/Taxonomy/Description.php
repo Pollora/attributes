@@ -18,22 +18,19 @@ class Description extends TaxonomyAttribute
     /**
      * Constructor.
      *
-     * @param string $value The description for the taxonomy
+     * @param  string  $value  The description for the taxonomy
      */
     public function __construct(
         private string $value
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the taxonomy with the description parameter.
      *
-     * @param Taxonomy $taxonomy The taxonomy to configure
-     *
-     * @return void
+     * @param  Taxonomy  $taxonomy  The taxonomy to configure
      */
     protected function configure(Taxonomy $taxonomy): void
     {
         $taxonomy->attributeArgs['description'] = $this->value;
     }
-} 
+}

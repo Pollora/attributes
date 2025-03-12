@@ -18,22 +18,19 @@ class RestBase extends TaxonomyAttribute
     /**
      * Constructor.
      *
-     * @param string $value The base URL segment for REST API endpoints
+     * @param  string  $value  The base URL segment for REST API endpoints
      */
     public function __construct(
         private string $value
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the taxonomy with the rest_base parameter.
      *
-     * @param Taxonomy $taxonomy The taxonomy to configure
-     *
-     * @return void
+     * @param  Taxonomy  $taxonomy  The taxonomy to configure
      */
     protected function configure(Taxonomy $taxonomy): void
     {
         $taxonomy->attributeArgs['rest_base'] = $this->value;
     }
-} 
+}

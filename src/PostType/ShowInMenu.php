@@ -23,22 +23,19 @@ class ShowInMenu extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param bool|string $value Where to show the post type in the admin menu
+     * @param  bool|string  $value  Where to show the post type in the admin menu
      */
     public function __construct(
         private bool|string $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the show_in_menu parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {
         $postType->attributeArgs['show_in_menu'] = $this->value;
     }
-} 
+}

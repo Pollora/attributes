@@ -18,22 +18,19 @@ class DefaultTerm extends TaxonomyAttribute
     /**
      * Constructor.
      *
-     * @param string|array $value The default term name or an array with 'name', 'slug', and 'description'
+     * @param  string|array  $value  The default term name or an array with 'name', 'slug', and 'description'
      */
     public function __construct(
         private string|array $value
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the taxonomy with the default_term parameter.
      *
-     * @param Taxonomy $taxonomy The taxonomy to configure
-     *
-     * @return void
+     * @param  Taxonomy  $taxonomy  The taxonomy to configure
      */
     protected function configure(Taxonomy $taxonomy): void
     {
         $taxonomy->attributeArgs['default_term'] = $this->value;
     }
-} 
+}

@@ -21,19 +21,16 @@ class PublicPostType extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param bool $value Whether the post type should be public
+     * @param  bool  $value  Whether the post type should be public
      */
     public function __construct(
         private bool $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the public parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {

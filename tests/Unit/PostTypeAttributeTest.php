@@ -5,15 +5,18 @@ declare(strict_types=1);
 use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Facade;
 use Mockery as m;
-use Pollora\Attributes\Attributable;
 use Pollora\Attributes\AttributeProcessor;
+use Pollora\Attributes\PostType\AdminCol;
+use Pollora\Attributes\PostType\AdminCols;
 use Pollora\Attributes\PostType\AdminFilters;
 use Pollora\Attributes\PostType\Archive;
 use Pollora\Attributes\PostType\BlockEditor;
 use Pollora\Attributes\PostType\CanExport;
 use Pollora\Attributes\PostType\Capabilities;
 use Pollora\Attributes\PostType\CapabilityType;
+use Pollora\Attributes\PostType\Chronological;
 use Pollora\Attributes\PostType\DashboardActivity;
+use Pollora\Attributes\PostType\DashboardGlance;
 use Pollora\Attributes\PostType\DeleteWithUser;
 use Pollora\Attributes\PostType\Description;
 use Pollora\Attributes\PostType\ExcludeFromSearch;
@@ -24,8 +27,8 @@ use Pollora\Attributes\PostType\Label;
 use Pollora\Attributes\PostType\MapMetaCap;
 use Pollora\Attributes\PostType\MenuIcon;
 use Pollora\Attributes\PostType\MenuPosition;
-use Pollora\Attributes\PostType\PublicPostType;
 use Pollora\Attributes\PostType\PubliclyQueryable;
+use Pollora\Attributes\PostType\PublicPostType;
 use Pollora\Attributes\PostType\QueryVar;
 use Pollora\Attributes\PostType\QuickEdit;
 use Pollora\Attributes\PostType\RegisterMetaBoxCb;
@@ -47,10 +50,6 @@ use Pollora\Attributes\PostType\Template;
 use Pollora\Attributes\PostType\TemplateLock;
 use Pollora\Attributes\PostType\TitlePlaceholder;
 use Pollora\PostType\Contracts\PostType;
-use Pollora\Attributes\PostType\AdminCols;
-use Pollora\Attributes\PostType\Chronological;
-use Pollora\Attributes\PostType\DashboardGlance;
-use Pollora\Attributes\PostType\AdminCol;
 
 // Classe de test qui implémente l'interface PostType
 #[PubliclyQueryable]
@@ -97,6 +96,7 @@ use Pollora\Attributes\PostType\AdminCol;
 class TestPostType implements PostType
 {
     public array $attributeArgs = [];
+
     protected string $slug = 'test-post-type';
 
     public function getSlug(): string
@@ -429,14 +429,14 @@ test('Taxonomies attribute sets taxonomies parameter', function () {
 
 test('RegisterMetaBoxCb attribute sets register_meta_box_cb parameter', function () {
     $postType = new TestPostType;
-    
+
     // Réinitialiser attributeArgs pour éviter les interférences
     $postType->attributeArgs = [];
-    
+
     // Récupérer les méthodes avec l'attribut RegisterMetaBoxCb
     $reflectionClass = new ReflectionClass($postType);
     $methods = $reflectionClass->getMethods(ReflectionMethod::IS_PUBLIC);
-    
+
     foreach ($methods as $method) {
         $attributes = $method->getAttributes(RegisterMetaBoxCb::class);
         foreach ($attributes as $attribute) {
@@ -444,7 +444,7 @@ test('RegisterMetaBoxCb attribute sets register_meta_box_cb parameter', function
             $attributeInstance->handle($postType, $method, $attributeInstance);
         }
     }
-    
+
     expect($postType->attributeArgs['register_meta_box_cb'])->toBeArray()
         ->toHaveCount(2)
         ->toHaveKey(0)
@@ -533,14 +533,14 @@ test('DashboardGlance attribute sets dashboard_glance parameter', function () {
 
 test('AdminCol attribute adds columns to admin_cols parameter', function () {
     $postType = new TestPostType;
-    
+
     // Réinitialiser admin_cols pour éviter les interférences
     $postType->attributeArgs = [];
-    
+
     // Récupérer les méthodes avec l'attribut AdminCol
     $reflectionClass = new ReflectionClass($postType);
     $methods = $reflectionClass->getMethods(ReflectionMethod::IS_PUBLIC);
-    
+
     foreach ($methods as $method) {
         $attributes = $method->getAttributes(AdminCol::class);
         foreach ($attributes as $attribute) {
@@ -548,44 +548,46 @@ test('AdminCol attribute adds columns to admin_cols parameter', function () {
             $attributeInstance->handle($postType, $method, $attributeInstance);
         }
     }
-    
+
     expect($postType->attributeArgs['admin_cols'])->toBeArray()
         ->toHaveKey('title')
         ->toHaveKey('featured_image');
-    
+
     expect($postType->attributeArgs['admin_cols']['title'])->toBeArray()
         ->toHaveKey('title')
         ->toHaveKey('function');
-    
+
     expect($postType->attributeArgs['admin_cols']['title']['title'])->toBe('Event Title');
     expect($postType->attributeArgs['admin_cols']['title']['function'])->toBeArray()
         ->toHaveCount(2)
         ->toContain($postType);
-    
+
     expect($postType->attributeArgs['admin_cols']['featured_image'])->toBeArray()
         ->toHaveKey('title')
         ->toHaveKey('function')
         ->not->toHaveKey('width');
-    
+
     expect($postType->attributeArgs['admin_cols']['featured_image']['title'])->toBe('Image');
 });
 
 test('AdminCols attribute sets admin_cols parameter', function () {
     $postType = new TestPostType;
-    
+
     // Réinitialiser admin_cols pour éviter les interférences
     $postType->attributeArgs = [];
-    
+
     // Créer une classe de test qui étend AdminCols pour accéder à la méthode protégée
-    $adminCols = new class(['title' => ['title' => 'Title'], 'date' => ['title' => 'Date']]) extends AdminCols {
-        public function publicConfigure(PostType $postType): void {
+    $adminCols = new class(['title' => ['title' => 'Title'], 'date' => ['title' => 'Date']]) extends AdminCols
+    {
+        public function publicConfigure(PostType $postType): void
+        {
             $this->configure($postType);
         }
     };
-    
+
     // Appliquer l'attribut AdminCols
     $adminCols->publicConfigure($postType);
-    
+
     expect($postType->attributeArgs['admin_cols'])->toBe(['title' => ['title' => 'Title'], 'date' => ['title' => 'Date']]);
 });
 

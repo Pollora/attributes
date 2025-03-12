@@ -21,22 +21,19 @@ class Exclusive extends TaxonomyAttribute
     /**
      * Constructor.
      *
-     * @param bool $value Whether the taxonomy should be exclusive
+     * @param  bool  $value  Whether the taxonomy should be exclusive
      */
     public function __construct(
         private bool $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the taxonomy with the exclusive parameter.
      *
-     * @param Taxonomy $taxonomy The taxonomy to configure
-     *
-     * @return void
+     * @param  Taxonomy  $taxonomy  The taxonomy to configure
      */
     protected function configure(Taxonomy $taxonomy): void
     {
         $taxonomy->attributeArgs['exclusive'] = $this->value;
     }
-} 
+}

@@ -21,22 +21,19 @@ class CheckedOntop extends TaxonomyAttribute
     /**
      * Constructor.
      *
-     * @param bool $value Whether checked terms should appear on top
+     * @param  bool  $value  Whether checked terms should appear on top
      */
     public function __construct(
         private bool $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the taxonomy with the checked_ontop parameter.
      *
-     * @param Taxonomy $taxonomy The taxonomy to configure
-     *
-     * @return void
+     * @param  Taxonomy  $taxonomy  The taxonomy to configure
      */
     protected function configure(Taxonomy $taxonomy): void
     {
         $taxonomy->attributeArgs['checked_ontop'] = $this->value;
     }
-} 
+}

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Pollora\Attributes;
 
+use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
-use ReflectionAttribute;
 use SplObjectStorage;
 
 /**
@@ -50,17 +50,16 @@ class AttributeProcessor
      * Processes all attributes on a given class instance and its methods.
      * Uses caching to avoid redundant processing and improve performance.
      *
-     * @param Attributable $instance The instance whose attributes should be processed.
+     * @param  Attributable  $instance  The instance whose attributes should be processed.
      *
      * @throws AttributeProcessingException If an error occurs during processing.
-     * @return void
      */
     public static function process(Attributable $instance): void
     {
         try {
             // Initialize the processed classes cache if not already done
             if (self::$processedClasses === null) {
-                self::$processedClasses = new SplObjectStorage();
+                self::$processedClasses = new SplObjectStorage;
             }
 
             $class = new ReflectionClass($instance);
@@ -73,7 +72,7 @@ class AttributeProcessor
             $className = $class->getName();
 
             // Cache attributes if not already cached
-            if (!isset(self::$attributeCache[$className])) {
+            if (! isset(self::$attributeCache[$className])) {
                 self::$attributeCache[$className] = self::extractAttributes($class);
             }
 
@@ -106,8 +105,7 @@ class AttributeProcessor
     /**
      * Extracts all attributes from a class and its methods.
      *
-     * @param ReflectionClass $class The reflection class to extract attributes from.
-     *
+     * @param  ReflectionClass  $class  The reflection class to extract attributes from.
      * @return array{class: ReflectionAttribute[], methods: array<int, array{ReflectionMethod, ReflectionAttribute[]}>}
      */
     private static function extractAttributes(ReflectionClass $class): array
@@ -118,14 +116,14 @@ class AttributeProcessor
         foreach ($class->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
             $attributes = $method->getAttributes();
             // Only include methods that have attributes
-            if (!empty($attributes)) {
+            if (! empty($attributes)) {
                 $methodsWithAttributes[] = [$method, $attributes];
             }
         }
 
         return [
             'class' => $classAttributes,
-            'methods' => $methodsWithAttributes
+            'methods' => $methodsWithAttributes,
         ];
     }
 
@@ -133,12 +131,11 @@ class AttributeProcessor
      * Processes an individual attribute.
      * Instantiates the attribute and invokes its handler if available.
      *
-     * @param object $instance The instance to which the attribute applies.
-     * @param ReflectionAttribute $attribute The reflection attribute instance.
-     * @param ReflectionClass|ReflectionMethod $context The context in which the attribute is applied (class or method).
+     * @param  object  $instance  The instance to which the attribute applies.
+     * @param  ReflectionAttribute  $attribute  The reflection attribute instance.
+     * @param  ReflectionClass|ReflectionMethod  $context  The context in which the attribute is applied (class or method).
      *
      * @throws AttributeProcessingException If an error occurs while processing the attribute.
-     * @return void
      */
     private static function processAttribute(object $instance, ReflectionAttribute $attribute, ReflectionClass|ReflectionMethod $context): void
     {
@@ -177,8 +174,7 @@ class AttributeProcessor
     /**
      * Resolves and caches the handler method for an attribute.
      *
-     * @param object $attributeInstance The attribute instance.
-     *
+     * @param  object  $attributeInstance  The attribute instance.
      * @return callable|null Returns the callable handler method if found, or null otherwise.
      */
     private static function resolveHandleMethod(object $attributeInstance): ?callable
@@ -202,21 +198,18 @@ class AttributeProcessor
     /**
      * Clears the attribute cache and processed classes storage.
      * Useful for testing and development environments.
-     *
-     * @return void
      */
     public static function clearCache(): void
     {
         self::$attributeCache = [];
         self::$handlersCache = [];
-        self::$processedClasses = new SplObjectStorage();
+        self::$processedClasses = new SplObjectStorage;
     }
 
     /**
      * Checks if an attribute is repeatable based on its configuration.
      *
-     * @param ReflectionAttribute $attribute The attribute to check.
-     *
+     * @param  ReflectionAttribute  $attribute  The attribute to check.
      * @return bool True if the attribute is repeatable, false otherwise.
      */
     private static function isRepeatableAttribute(ReflectionAttribute $attribute): bool

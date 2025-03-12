@@ -18,22 +18,19 @@ class Sort extends TaxonomyAttribute
     /**
      * Constructor.
      *
-     * @param bool $value Whether terms should be sorted
+     * @param  bool  $value  Whether terms should be sorted
      */
     public function __construct(
         private bool $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the taxonomy with the sort parameter.
      *
-     * @param Taxonomy $taxonomy The taxonomy to configure
-     *
-     * @return void
+     * @param  Taxonomy  $taxonomy  The taxonomy to configure
      */
     protected function configure(Taxonomy $taxonomy): void
     {
         $taxonomy->attributeArgs['sort'] = $this->value;
     }
-} 
+}

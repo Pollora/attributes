@@ -7,7 +7,6 @@ namespace Pollora\Attributes;
 use Attribute;
 use Pollora\Support\Facades\Filter as FilterFacade;
 use ReflectionMethod;
-use ReflectionClass;
 
 /**
  * Class Filter

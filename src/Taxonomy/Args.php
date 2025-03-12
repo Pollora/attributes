@@ -18,22 +18,19 @@ class Args extends TaxonomyAttribute
     /**
      * Constructor.
      *
-     * @param array $value Arguments to use inside wp_get_object_terms()
+     * @param  array  $value  Arguments to use inside wp_get_object_terms()
      */
     public function __construct(
         private array $value
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the taxonomy with the args parameter.
      *
-     * @param Taxonomy $taxonomy The taxonomy to configure
-     *
-     * @return void
+     * @param  Taxonomy  $taxonomy  The taxonomy to configure
      */
     protected function configure(Taxonomy $taxonomy): void
     {
         $taxonomy->attributeArgs['args'] = $this->value;
     }
-} 
+}

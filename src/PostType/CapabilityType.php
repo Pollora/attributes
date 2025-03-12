@@ -26,22 +26,19 @@ class CapabilityType extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param string $value The capability type to use for this post type
+     * @param  string  $value  The capability type to use for this post type
      */
     public function __construct(
         private string $value
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the capability_type parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {
         $postType->attributeArgs['capability_type'] = $this->value;
     }
-} 
+}

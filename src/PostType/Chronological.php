@@ -22,19 +22,16 @@ class Chronological extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param bool $value Whether to display the post type chronologically
+     * @param  bool  $value  Whether to display the post type chronologically
      */
     public function __construct(
         private bool $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the chronological parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {
@@ -44,4 +41,4 @@ class Chronological extends PostTypeAttribute
             $postType->attributeArgs['order'] = 'DESC';
         }
     }
-} 
+}

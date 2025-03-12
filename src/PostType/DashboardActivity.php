@@ -22,22 +22,19 @@ class DashboardActivity extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param bool $value Whether to show this post type in the dashboard activity widget
+     * @param  bool  $value  Whether to show this post type in the dashboard activity widget
      */
     public function __construct(
         private bool $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the dashboard_activity parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {
         $postType->attributeArgs['dashboard_activity'] = $this->value;
     }
-} 
+}

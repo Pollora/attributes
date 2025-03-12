@@ -20,22 +20,19 @@ class Supports extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param array<string> $features Array of features the post type supports
+     * @param  array<string>  $features  Array of features the post type supports
      */
     public function __construct(
         private array $features = ['title', 'editor']
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the supports parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {
         $postType->attributeArgs['supports'] = $this->features;
     }
-} 
+}

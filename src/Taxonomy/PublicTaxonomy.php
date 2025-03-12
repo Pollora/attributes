@@ -21,22 +21,19 @@ class PublicTaxonomy extends TaxonomyAttribute
     /**
      * Constructor.
      *
-     * @param bool $value Whether the taxonomy should be public
+     * @param  bool  $value  Whether the taxonomy should be public
      */
     public function __construct(
         private bool $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the taxonomy with the public parameter.
      *
-     * @param Taxonomy $taxonomy The taxonomy to configure
-     *
-     * @return void
+     * @param  Taxonomy  $taxonomy  The taxonomy to configure
      */
     protected function configure(Taxonomy $taxonomy): void
     {
         $taxonomy->attributeArgs['public'] = $this->value;
     }
-} 
+}

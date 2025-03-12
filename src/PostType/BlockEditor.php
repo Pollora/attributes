@@ -21,19 +21,16 @@ class BlockEditor extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param bool $value Whether to use the block editor for this post type
+     * @param  bool  $value  Whether to use the block editor for this post type
      */
     public function __construct(
         private bool $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the block_editor parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {

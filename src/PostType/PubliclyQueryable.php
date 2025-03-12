@@ -20,22 +20,19 @@ class PubliclyQueryable extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param bool $value Whether the post type should be publicly queryable
+     * @param  bool  $value  Whether the post type should be publicly queryable
      */
     public function __construct(
         private bool $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the publicly_queryable parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {
         $postType->attributeArgs['publicly_queryable'] = $this->value;
     }
-} 
+}

@@ -21,22 +21,19 @@ class Template extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param array $value An array of blocks to use as the default template
+     * @param  array  $value  An array of blocks to use as the default template
      */
     public function __construct(
         private array $value
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the template parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {
         $postType->attributeArgs['template'] = $this->value;
     }
-} 
+}

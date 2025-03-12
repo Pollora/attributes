@@ -22,22 +22,19 @@ class DeleteWithUser extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param bool $value Whether posts should be deleted with their author
+     * @param  bool  $value  Whether posts should be deleted with their author
      */
     public function __construct(
         private bool $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the delete_with_user parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {
         $postType->attributeArgs['delete_with_user'] = $this->value;
     }
-} 
+}

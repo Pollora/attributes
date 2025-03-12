@@ -20,22 +20,19 @@ class DashboardGlance extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param bool $value Whether to show the post type in the dashboard glance widget
+     * @param  bool  $value  Whether to show the post type in the dashboard glance widget
      */
     public function __construct(
         private bool $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the dashboard_glance parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {
         $postType->attributeArgs['dashboard_glance'] = $this->value;
     }
-} 
+}

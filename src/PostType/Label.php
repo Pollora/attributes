@@ -21,22 +21,19 @@ class Label extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param string $value The general name for the post type, usually plural
+     * @param  string  $value  The general name for the post type, usually plural
      */
     public function __construct(
         private string $value
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the label parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {
         $postType->attributeArgs['label'] = $this->value;
     }
-} 
+}

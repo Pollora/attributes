@@ -21,22 +21,19 @@ class RestNamespace extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param string $value The REST API namespace for the post type
+     * @param  string  $value  The REST API namespace for the post type
      */
     public function __construct(
         private string $value
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the rest_namespace parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {
         $postType->attributeArgs['rest_namespace'] = $this->value;
     }
-} 
+}

@@ -21,22 +21,19 @@ class ShowInNavMenus extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param bool $value Whether the post type should be available in navigation menus
+     * @param  bool  $value  Whether the post type should be available in navigation menus
      */
     public function __construct(
         private bool $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the show_in_nav_menus parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {
         $postType->attributeArgs['show_in_nav_menus'] = $this->value;
     }
-} 
+}

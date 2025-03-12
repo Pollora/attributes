@@ -21,22 +21,19 @@ class ShowInFeed extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param bool $value Whether to include this post type in the RSS feed
+     * @param  bool  $value  Whether to include this post type in the RSS feed
      */
     public function __construct(
         private bool $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the show_in_feed parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {
         $postType->attributeArgs['show_in_feed'] = $this->value;
     }
-} 
+}

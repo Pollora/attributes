@@ -18,22 +18,19 @@ class ObjectType extends TaxonomyAttribute
     /**
      * Constructor.
      *
-     * @param string|array<string> $value The post type(s) this taxonomy is associated with
+     * @param  string|array<string>  $value  The post type(s) this taxonomy is associated with
      */
     public function __construct(
         private string|array $value
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the taxonomy with the object_type parameter.
      *
-     * @param Taxonomy $taxonomy The taxonomy to configure
-     *
-     * @return void
+     * @param  Taxonomy  $taxonomy  The taxonomy to configure
      */
     protected function configure(Taxonomy $taxonomy): void
     {
         $taxonomy->attributeArgs['object_type'] = $this->value;
     }
-} 
+}

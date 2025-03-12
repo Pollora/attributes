@@ -23,22 +23,19 @@ class QueryVar extends PostTypeAttribute
     /**
      * Constructor.
      *
-     * @param bool|string $value The query_var value for the post type
+     * @param  bool|string  $value  The query_var value for the post type
      */
     public function __construct(
         private bool|string $value = true
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the query_var parameter.
      *
-     * @param PostType $postType The post type to configure
-     *
-     * @return void
+     * @param  PostType  $postType  The post type to configure
      */
     protected function configure(PostType $postType): void
     {
         $postType->attributeArgs['query_var'] = $this->value;
     }
-} 
+}
