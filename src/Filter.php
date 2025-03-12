@@ -7,6 +7,7 @@ namespace Pollora\Attributes;
 use Attribute;
 use Pollora\Support\Facades\Filter as FilterFacade;
 use ReflectionMethod;
+use ReflectionClass;
 
 /**
  * Class Filter
@@ -17,13 +18,13 @@ use ReflectionMethod;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class Filter extends Hook
 {
-    public static function handle(object $instance, ReflectionMethod $method, Filter $attributeInstance): void
+    public function handle(object $instance, ReflectionMethod|\ReflectionClass $context, object $attribute): void
     {
         FilterFacade::add(
-            $attributeInstance->hook,
-            [$instance, $method->getName()],
-            $attributeInstance->priority,
-            $method->getNumberOfParameters()
+            $attribute->hook,
+            [$instance, $context->getName()],
+            $attribute->priority,
+            $context->getNumberOfParameters()
         );
     }
 }

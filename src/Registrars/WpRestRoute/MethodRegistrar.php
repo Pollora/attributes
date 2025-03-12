@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace Pollora\Attributes\Registrars\WpRestRoute;
 
 use Pollora\Attributes\Attributable;
+use Pollora\Attributes\HandlesAttributes;
 use Pollora\Attributes\WpRestRoute\Method;
 use Pollora\Support\Facades\Action;
 use ReflectionMethod;
+use ReflectionClass;
 use WP_Error;
 use WP_REST_Request;
 
-class MethodRegistrar
+class MethodRegistrar implements HandlesAttributes
 {
     /**
      * Handles the registration of the REST route for the method.
@@ -20,7 +22,7 @@ class MethodRegistrar
      * @param  ReflectionMethod  $method  The method reflection
      * @param  Method  $methodAttribute  The method attribute instance
      */
-    public static function handle(Attributable $instance, ReflectionMethod $method, Method $methodAttribute): void
+    public function handle(Attributable $instance, ReflectionClass|ReflectionMethod $method, Method $methodAttribute): void
     {
         $methodPermission = $methodAttribute->permissionCallback;
         $permissionCallback = $methodPermission ?? $instance->classPermission;
