@@ -10,7 +10,7 @@ namespace Pollora\Attributes;
  * Abstract base class for WordPress hook attributes.
  * Provides common properties for hook attributes.
  */
-abstract class Hook
+abstract class Hook implements HandlesAttributes
 {
     /**
      * Constructor for the Hook class.

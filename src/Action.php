@@ -7,6 +7,7 @@ namespace Pollora\Attributes;
 use Attribute;
 use Pollora\Support\Facades\Action as ActionFacade;
 use ReflectionMethod;
+use ReflectionClass;
 
 /**
  * Class Action
@@ -28,13 +29,13 @@ class Action extends Hook
         parent::__construct($hook, $priority);
     }
 
-    public static function handle(object $instance, ReflectionMethod $method, Action $attributeInstance): void
+    public function handle(object $instance, ReflectionMethod|ReflectionClass $context, object $attribute): void
     {
         ActionFacade::add(
-            $attributeInstance->hook,
-            [$instance, $method->getName()],
-            $attributeInstance->priority,
-            $method->getNumberOfParameters()
+            $attribute->hook,
+            [$instance, $context->getName()],
+            $attribute->priority,
+            $context->getNumberOfParameters()
         );
     }
 }

@@ -7,13 +7,15 @@ namespace Pollora\Attributes\WpRestRoute;
 use Attribute;
 use InvalidArgumentException;
 use Pollora\Attributes\Attributable;
+use Pollora\Attributes\HandlesAttributes;
 use Pollora\Support\Facades\Action;
+use ReflectionClass;
 use ReflectionMethod;
 use WP_Error;
 use WP_REST_Request;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-class Method
+class Method implements HandlesAttributes
 {
     private const ALLOWED_METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
 
@@ -70,7 +72,7 @@ class Method
      * @param  ReflectionMethod  $method  The method reflection
      * @param  Method  $methodAttribute  The method attribute instance
      */
-    public static function handle(Attributable $instance, ReflectionMethod $method, Method $methodAttribute): void
+    public function handle(Attributable $instance, ReflectionMethod|ReflectionClass $method, object $methodAttribute): void
     {
         $methodPermission = $methodAttribute->permissionCallback;
         $permissionCallback = $methodPermission ?? $instance->classPermission;
