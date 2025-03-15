@@ -6,8 +6,8 @@ namespace Pollora\Attributes;
 
 use Attribute;
 use Pollora\Support\Facades\Action as ActionFacade;
-use ReflectionMethod;
 use ReflectionClass;
+use ReflectionMethod;
 
 /**
  * Class Action
