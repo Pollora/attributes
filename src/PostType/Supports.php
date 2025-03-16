@@ -23,7 +23,7 @@ class Supports extends PostTypeAttribute
      * @param  array<string>  $features  Array of features the post type supports
      */
     public function __construct(
-        private array $features = ['title', 'editor']
+        private readonly array $features = ['title', 'editor']
     ) {}
 
     /**

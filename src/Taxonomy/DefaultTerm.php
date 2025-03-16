@@ -21,7 +21,7 @@ class DefaultTerm extends TaxonomyAttribute
      * @param  string|array  $value  The default term name or an array with 'name', 'slug', and 'description'
      */
     public function __construct(
-        private string|array $value
+        private readonly string|array $value
     ) {}
 
     /**

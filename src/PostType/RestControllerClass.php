@@ -24,7 +24,7 @@ class RestControllerClass extends PostTypeAttribute
      * @param  string  $value  The REST controller class for the post type
      */
     public function __construct(
-        private string $value
+        private readonly string $value
     ) {}
 
     /**

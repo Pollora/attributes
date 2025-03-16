@@ -24,7 +24,7 @@ class Archive extends PostTypeAttribute
      * @param  array  $value  An array of archive display options
      */
     public function __construct(
-        private array $value
+        private readonly array $value
     ) {}
 
     /**

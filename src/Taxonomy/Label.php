@@ -21,7 +21,7 @@ class Label extends TaxonomyAttribute
      * @param  string  $value  The singular label for the taxonomy
      */
     public function __construct(
-        private string $value
+        private readonly string $value
     ) {}
 
     /**

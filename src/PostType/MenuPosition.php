@@ -35,7 +35,7 @@ class MenuPosition extends PostTypeAttribute
      * @param  int  $value  The position in the menu order the post type should appear
      */
     public function __construct(
-        private int $value
+        private readonly int $value
     ) {}
 
     /**

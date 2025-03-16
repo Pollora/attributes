@@ -24,7 +24,7 @@ class SiteFilters extends PostTypeAttribute
      * @param  array  $value  An array of site filters
      */
     public function __construct(
-        private array $value
+        private readonly array $value
     ) {}
 
     /**

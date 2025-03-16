@@ -21,7 +21,7 @@ class ShowInNavMenus extends TaxonomyAttribute
      * @param  bool  $value  Whether this taxonomy is available for selection in navigation menus
      */
     public function __construct(
-        private bool $value = true
+        private readonly bool $value = true
     ) {}
 
     /**

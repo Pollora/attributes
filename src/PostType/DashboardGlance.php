@@ -23,7 +23,7 @@ class DashboardGlance extends PostTypeAttribute
      * @param  bool  $value  Whether to show the post type in the dashboard glance widget
      */
     public function __construct(
-        private bool $value = true
+        private readonly bool $value = true
     ) {}
 
     /**

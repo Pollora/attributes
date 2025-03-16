@@ -23,7 +23,7 @@ class PubliclyQueryable extends PostTypeAttribute
      * @param  bool  $value  Whether the post type should be publicly queryable
      */
     public function __construct(
-        private bool $value = true
+        private readonly bool $value = true
     ) {}
 
     /**

@@ -24,7 +24,7 @@ class HasArchive extends PostTypeAttribute
      * @param  bool|string  $value  Whether the post type should have an archive or the archive slug
      */
     public function __construct(
-        private bool|string $value = true
+        private readonly bool|string $value = true
     ) {}
 
     /**

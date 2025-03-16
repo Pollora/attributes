@@ -43,7 +43,7 @@ class Method implements HandlesAttributes
     private function validateMethods(): void
     {
         foreach ($this->methods as $method) {
-            if (! in_array(strtoupper($method), self::ALLOWED_METHODS)) {
+            if (! in_array(strtoupper((string) $method), self::ALLOWED_METHODS)) {
                 throw new InvalidArgumentException(
                     sprintf(
                         'Invalid HTTP method "%s". Allowed methods are: %s',
@@ -68,24 +68,24 @@ class Method implements HandlesAttributes
     /**
      * Handles the registration of the REST route for the method.
      *
-     * @param  Attributable  $instance  The class instance
-     * @param  ReflectionMethod  $method  The method reflection
-     * @param  Method  $methodAttribute  The method attribute instance
+     * @param Attributable $instance The class instance
+     * @param ReflectionMethod|ReflectionClass $context
+     * @param object $attribute
      */
-    public function handle(Attributable $instance, ReflectionMethod|ReflectionClass $method, object $methodAttribute): void
+    public function handle(Attributable $instance, ReflectionMethod|ReflectionClass $context, object $attribute): void
     {
-        $methodPermission = $methodAttribute->permissionCallback;
+        $methodPermission = $attribute->permissionCallback;
         $permissionCallback = $methodPermission ?? $instance->classPermission;
 
-        Action::add('rest_api_init', function () use ($instance, $method, $permissionCallback, $methodAttribute) {
+        Action::add('rest_api_init', function () use ($instance, $context, $permissionCallback, $attribute): void {
             register_rest_route(
                 $instance->namespace,
                 $instance->route,
                 [
-                    'methods' => $methodAttribute->getMethods(),
-                    'callback' => fn (WP_REST_Request $request) => self::handleRequest($instance, $method, $request),
-                    'args' => self::extractArgsFromRoute($instance->route),
-                    'permission_callback' => self::resolvePermissionCallback($permissionCallback),
+                    'methods' => $attribute->getMethods(),
+                    'callback' => fn (WP_REST_Request $request) => $this->handleRequest($instance, $context, $request),
+                    'args' => $this->extractArgsFromRoute($instance->route),
+                    'permission_callback' => $this->resolvePermissionCallback($permissionCallback),
                 ]
             );
         });
@@ -99,13 +99,13 @@ class Method implements HandlesAttributes
      * @param  WP_REST_Request  $request  The REST request instance
      * @return mixed The result of the method invocation
      */
-    private static function handleRequest(Attributable $instance, ReflectionMethod $method, WP_REST_Request $request)
+    private function handleRequest(Attributable $instance, ReflectionMethod $method, WP_REST_Request $request): mixed
     {
         $args = [];
 
         foreach ($method->getParameters() as $param) {
             $paramName = $param->getName();
-            $args[] = $request->get_param($paramName) ?? null;
+            $args[] = $request->get_param($paramName);
         }
 
         return $method->invoke($instance, ...$args);
@@ -117,12 +117,12 @@ class Method implements HandlesAttributes
      * @param  string  $route  The route pattern
      * @return array The extracted arguments
      */
-    private static function extractArgsFromRoute(string $route): array
+    private function extractArgsFromRoute(string $route): array
     {
-        preg_match_all('/\\(\\?P<([a-zA-Z0-9_]+)>/', $route, $matches);
+        preg_match_all('/\(\?P<(\w+)>/', $route, $matches);
 
         return array_fill_keys($matches[1], [
-            'validate_callback' => fn ($param) => is_string($param) || is_numeric($param),
+            'validate_callback' => fn ($param): bool => is_string($param) || is_numeric($param),
         ]);
     }
 
@@ -132,17 +132,17 @@ class Method implements HandlesAttributes
      * @param  string|null  $permissionCallback  The permission class to use
      * @return callable The permission function
      */
-    private static function resolvePermissionCallback(?string $permissionCallback): callable
+    private function resolvePermissionCallback(?string $permissionCallback): callable
     {
         if ($permissionCallback === null) {
             return '__return_true';
         }
 
         if (! class_exists($permissionCallback) || ! is_subclass_of($permissionCallback, Permission::class)) {
-            return fn () => new WP_Error('rest_forbidden', __('Invalid permission handler.'), ['status' => 403]);
+            return fn (): \WP_Error => new WP_Error('rest_forbidden', __('Invalid permission handler.'), ['status' => 403]);
         }
 
-        return function (WP_REST_Request $request) use ($permissionCallback) {
+        return function (WP_REST_Request $request) use ($permissionCallback): bool|\WP_Error {
             $permissionInstance = new $permissionCallback;
 
             return $permissionInstance->allow($request);

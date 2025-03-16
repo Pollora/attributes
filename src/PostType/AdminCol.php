@@ -28,16 +28,16 @@ class AdminCol implements HandlesAttributes
      * @param  string  $title  The column title
      */
     public function __construct(
-        private string $key,
-        private string $title
+        private readonly string $key,
+        private readonly string $title
     ) {}
 
     /**
      * Handle the attribute processing.
      *
      * @param  object  $instance  The instance being processed
-     * @param  ReflectionMethod  $context  The method the attribute is applied to
-     * @param  self  $attribute  The attribute instance
+     * @param  ReflectionMethod|ReflectionClass  $context  The method the attribute is applied to
+     * @param  object  $attribute  The attribute instance
      */
     public function handle(object $instance, ReflectionMethod|ReflectionClass $context, object $attribute): void
     {

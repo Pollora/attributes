@@ -24,7 +24,7 @@ class Label extends PostTypeAttribute
      * @param  string  $value  The general name for the post type, usually plural
      */
     public function __construct(
-        private string $value
+        private readonly string $value
     ) {}
 
     /**

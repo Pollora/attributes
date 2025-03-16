@@ -25,7 +25,7 @@ class Chronological extends PostTypeAttribute
      * @param  bool  $value  Whether to display the post type chronologically
      */
     public function __construct(
-        private bool $value = true
+        private readonly bool $value = true
     ) {}
 
     /**

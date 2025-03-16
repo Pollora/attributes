@@ -21,7 +21,7 @@ class ObjectType extends TaxonomyAttribute
      * @param  string|array<string>  $value  The post type(s) this taxonomy is associated with
      */
     public function __construct(
-        private string|array $value
+        private readonly string|array $value
     ) {}
 
     /**

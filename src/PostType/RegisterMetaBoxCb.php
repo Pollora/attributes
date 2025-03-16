@@ -26,9 +26,9 @@ class RegisterMetaBoxCb implements HandlesAttributes
     /**
      * Handle the attribute processing.
      *
-     * @param  object  $instance  The instance being processed
-     * @param  ReflectionMethod  $context  The method the attribute is applied to
-     * @param  self  $attribute  The attribute instance
+     * @param object $instance The instance being processed
+     * @param ReflectionMethod|ReflectionClass $context The method the attribute is applied to
+     * @param object $attribute The attribute instance
      */
     public function handle(object $instance, ReflectionMethod|ReflectionClass $context, object $attribute): void
     {

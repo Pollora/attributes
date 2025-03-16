@@ -15,6 +15,8 @@ class IsAdmin implements Permission
      *
      * @param  WP_REST_Request  $request  The REST request instance.
      * @return bool|\WP_Error True if the user is an admin, WP_Error otherwise.
+     *
+     * @throws \Exception
      */
     public function allow(WP_REST_Request $request): bool|WP_Error
     {

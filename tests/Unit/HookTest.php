@@ -27,7 +27,7 @@ it('registers an action hook', function () {
         ->andReturn($mock);
 
     Facade::clearResolvedInstances();
-    Facade::setFacadeApplication(['wp.action' => $mock]);
+    Facade::setFacadeApplication([\Pollora\Hook\Action::class => $mock]);
 
     $testClass = new TestClass;
     AttributeProcessor::process($testClass);
@@ -69,7 +69,7 @@ it('registers a filter hook and modifies value', function () {
 
     // Configurer la façade
     Facade::clearResolvedInstances();
-    Facade::setFacadeApplication(['wp.filter' => $mock]);
+    Facade::setFacadeApplication([\Pollora\Hook\Filter::class => $mock]);
 
     $testClass = new TestFilterClass;
     AttributeProcessor::process($testClass);
@@ -89,7 +89,7 @@ it('executes filter and returns modified value', function () {
         ->andReturn('modified value');
 
     Facade::clearResolvedInstances();
-    Facade::setFacadeApplication(['wp.filter' => $mock]);
+    Facade::setFacadeApplication([\Pollora\Hook\Filter::class => $mock]);
 
     $testClass = new TestFilterClass;
     AttributeProcessor::process($testClass);

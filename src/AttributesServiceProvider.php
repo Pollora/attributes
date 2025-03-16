@@ -22,7 +22,7 @@ class AttributesServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->resolving(Attributable::class, function ($object) {
+        $this->app->resolving(Attributable::class, function ($object): void {
             AttributeProcessor::process($object);
         });
     }

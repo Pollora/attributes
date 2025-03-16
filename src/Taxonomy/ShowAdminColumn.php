@@ -21,7 +21,7 @@ class ShowAdminColumn extends TaxonomyAttribute
      * @param  bool  $value  Whether to display a column for the taxonomy
      */
     public function __construct(
-        private bool $value = true
+        private readonly bool $value = true
     ) {}
 
     /**

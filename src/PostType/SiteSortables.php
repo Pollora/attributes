@@ -24,7 +24,7 @@ class SiteSortables extends PostTypeAttribute
      * @param  array  $value  An array of site sortables
      */
     public function __construct(
-        private array $value
+        private readonly array $value
     ) {}
 
     /**

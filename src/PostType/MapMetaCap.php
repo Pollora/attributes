@@ -24,7 +24,7 @@ class MapMetaCap extends PostTypeAttribute
      * @param  bool  $value  Whether to map meta capabilities
      */
     public function __construct(
-        private bool $value = true
+        private readonly bool $value = true
     ) {}
 
     /**

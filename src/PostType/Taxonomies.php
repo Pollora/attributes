@@ -24,7 +24,7 @@ class Taxonomies extends PostTypeAttribute
      * @param  array  $value  An array of taxonomy names
      */
     public function __construct(
-        private array $value
+        private readonly array $value
     ) {}
 
     /**

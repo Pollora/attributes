@@ -40,7 +40,7 @@ beforeEach(function () {
     $actionMock = m::mock('stdClass');
     $actionMock->shouldReceive('add')->withAnyArgs()->andReturnNull();
 
-    $app->instance('wp.action', $actionMock);
+    $app->instance(Action::class, $actionMock);
     Action::clearResolvedInstances();
     Action::setFacadeApplication($app);
 });
@@ -102,7 +102,8 @@ test('Schedule attribute generates correct hook name', function () {
     $generateHookName = new ReflectionMethod(Schedule::class, 'generateHookName');
     $generateHookName->setAccessible(true);
 
-    $hookName = $generateHookName->invoke($schedule, $instance, $method);
+    // Le changement est ici: n'envoyez que le paramètre $method
+    $hookName = $generateHookName->invoke($schedule, $method);
 
     expect($hookName)->toBe('test_scheduled_task_test_method');
 });
@@ -127,7 +128,7 @@ test('Schedule attribute handles custom hook names', function () {
 
     // Remplacer le mock dans le container
     $app = Facade::getFacadeApplication();
-    $app->instance('wp.action', $actionMock);
+    $app->instance(\Pollora\Hook\Action::class, $actionMock);
 
     $schedule = new Schedule('hourly', 'custom_hook_name');
     $reflection = new ReflectionClass(TestScheduledTask::class);
@@ -162,7 +163,7 @@ test('Schedule attribute registers custom schedule', function () {
 
     // Remplacer le mock dans le container
     $app = Facade::getFacadeApplication();
-    $app->instance('wp.action', $actionMock);
+    $app->instance(\Pollora\Hook\Action::class, $actionMock);
 
     // Reset the WordPress mock for this specific test
     WP::$wpFunctions = m::mock('stdClass');

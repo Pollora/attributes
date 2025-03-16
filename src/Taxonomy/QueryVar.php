@@ -21,7 +21,7 @@ class QueryVar extends TaxonomyAttribute
      * @param  bool|string  $value  The query_var key for this taxonomy
      */
     public function __construct(
-        private bool|string $value = true
+        private readonly bool|string $value = true
     ) {}
 
     /**

@@ -24,7 +24,7 @@ class CanExport extends PostTypeAttribute
      * @param  bool  $value  Whether the post type can be exported
      */
     public function __construct(
-        private bool $value = true
+        private readonly bool $value = true
     ) {}
 
     /**

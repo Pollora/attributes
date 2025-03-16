@@ -25,7 +25,7 @@ class DeleteWithUser extends PostTypeAttribute
      * @param  bool  $value  Whether posts should be deleted with their author
      */
     public function __construct(
-        private bool $value = true
+        private readonly bool $value = true
     ) {}
 
     /**

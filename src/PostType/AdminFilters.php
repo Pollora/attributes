@@ -24,7 +24,7 @@ class AdminFilters extends PostTypeAttribute
      * @param  array  $value  An array of admin filters
      */
     public function __construct(
-        private array $value
+        private readonly array $value
     ) {}
 
     /**

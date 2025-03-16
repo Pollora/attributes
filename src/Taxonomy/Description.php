@@ -21,7 +21,7 @@ class Description extends TaxonomyAttribute
      * @param  string  $value  The description for the taxonomy
      */
     public function __construct(
-        private string $value
+        private readonly string $value
     ) {}
 
     /**

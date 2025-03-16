@@ -24,7 +24,7 @@ class MenuIcon extends PostTypeAttribute
      * @param  string  $value  The dashicon name or URL to use as the menu icon
      */
     public function __construct(
-        private string $value
+        private readonly string $value
     ) {}
 
     /**

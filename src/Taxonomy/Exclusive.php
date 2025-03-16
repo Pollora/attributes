@@ -24,7 +24,7 @@ class Exclusive extends TaxonomyAttribute
      * @param  bool  $value  Whether the taxonomy should be exclusive
      */
     public function __construct(
-        private bool $value = true
+        private readonly bool $value = true
     ) {}
 
     /**

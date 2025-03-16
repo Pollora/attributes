@@ -24,7 +24,7 @@ class AdminCols extends PostTypeAttribute
      * @param  array  $value  An array of admin columns configuration
      */
     public function __construct(
-        private array $value
+        private readonly array $value
     ) {}
 
     /**

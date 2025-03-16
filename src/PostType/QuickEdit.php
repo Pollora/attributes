@@ -25,7 +25,7 @@ class QuickEdit extends PostTypeAttribute
      * @param  bool  $value  Whether to enable quick edit for this post type
      */
     public function __construct(
-        private bool $value = true
+        private readonly bool $value = true
     ) {}
 
     /**

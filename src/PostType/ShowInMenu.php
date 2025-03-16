@@ -26,7 +26,7 @@ class ShowInMenu extends PostTypeAttribute
      * @param  bool|string  $value  Where to show the post type in the admin menu
      */
     public function __construct(
-        private bool|string $value = true
+        private readonly bool|string $value = true
     ) {}
 
     /**

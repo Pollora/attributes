@@ -21,7 +21,7 @@ class Sort extends TaxonomyAttribute
      * @param  bool  $value  Whether terms should be sorted
      */
     public function __construct(
-        private bool $value = true
+        private readonly bool $value = true
     ) {}
 
     /**

@@ -6,6 +6,7 @@ namespace Pollora\Attributes;
 
 use ReflectionAttribute;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionMethod;
 use SplObjectStorage;
 
@@ -21,7 +22,7 @@ class AttributeProcessor
      * Stores processed classes to prevent redundant processing.
      * Uses SplObjectStorage to avoid memory leaks caused by circular references.
      *
-     * @var SplObjectStorage<ReflectionClass, mixed>
+     * @var SplObjectStorage<ReflectionClass, mixed>|null
      */
     private static ?SplObjectStorage $processedClasses = null;
 
@@ -58,7 +59,7 @@ class AttributeProcessor
     {
         try {
             // Initialize the processed classes cache if not already done
-            if (self::$processedClasses === null) {
+            if (! self::$processedClasses instanceof \SplObjectStorage) {
                 self::$processedClasses = new SplObjectStorage;
             }
 
@@ -95,7 +96,7 @@ class AttributeProcessor
 
         } catch (\Throwable $e) {
             throw new AttributeProcessingException(
-                sprintf('Failed to process attributes for class %s: %s', get_class($instance), $e->getMessage()),
+                sprintf('Failed to process attributes for class %s: %s', $instance::class, $e->getMessage()),
                 0,
                 $e
             );
@@ -179,7 +180,7 @@ class AttributeProcessor
      */
     private static function resolveHandleMethod(object $attributeInstance): ?callable
     {
-        $attributeClass = get_class($attributeInstance);
+        $attributeClass = $attributeInstance::class;
 
         // Check cache first
         if (array_key_exists($attributeClass, self::$handlersCache)) {
@@ -188,7 +189,7 @@ class AttributeProcessor
 
         // Resolve and cache the handler
         if ($attributeInstance instanceof HandlesAttributes) {
-            return self::$handlersCache[$attributeClass] = [$attributeInstance, 'handle'];
+            return self::$handlersCache[$attributeClass] = $attributeInstance->handle(...);
         }
 
         // Cache null for non-handler attributes
@@ -211,13 +212,15 @@ class AttributeProcessor
      *
      * @param  ReflectionAttribute  $attribute  The attribute to check.
      * @return bool True if the attribute is repeatable, false otherwise.
+     *
+     * @throws ReflectionException
      */
     private static function isRepeatableAttribute(ReflectionAttribute $attribute): bool
     {
         $reflectionClass = new ReflectionClass($attribute->getName());
         $repeatable = $reflectionClass->getAttributes('Attribute');
 
-        if (empty($repeatable)) {
+        if ($repeatable === []) {
             return false;
         }
 

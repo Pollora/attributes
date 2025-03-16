@@ -24,7 +24,7 @@ class ShowInAdminBar extends PostTypeAttribute
      * @param  bool  $value  Whether the post type should be shown in the admin bar
      */
     public function __construct(
-        private bool $value = true
+        private readonly bool $value = true
     ) {}
 
     /**

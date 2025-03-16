@@ -14,7 +14,9 @@ use ReflectionMethod;
 class Schedule
 {
     /**
-     * Default WordPress recurrence schedules
+     * Default WordPress recurrence schedules.
+     *
+     * @var array<string>
      */
     private const DEFAULT_SCHEDULES = [
         'hourly',
@@ -24,16 +26,18 @@ class Schedule
     ];
 
     /**
-     * @param  string|array  $recurrence  Either a predefined schedule name or a custom schedule array
-     * @param  string|null  $hook  Optional custom hook name, if null will use class and method name
-     * @param  array  $args  Arguments to pass to the scheduled function
+     * Schedule constructor.
      *
-     * @throws InvalidArgumentException
+     * @param  string|array  $recurrence  Either a predefined WordPress schedule name or a custom schedule definition.
+     * @param  string|null  $hook  Optional custom hook name. If null, the hook name is generated from class and method names.
+     * @param  array  $args  Arguments to pass to the scheduled method.
+     *
+     * @throws InvalidArgumentException If the recurrence schedule is invalid.
      */
     public function __construct(
-        private string|array $recurrence,
-        private ?string $hook = null,
-        private array $args = []
+        private readonly string|array $recurrence,
+        private readonly ?string $hook = null,
+        private readonly array $args = []
     ) {
         if (is_string($this->recurrence)) {
             $this->validateRecurrence($this->recurrence);
@@ -43,22 +47,22 @@ class Schedule
     }
 
     /**
-     * Handle the scheduling of the event
+     * Registers the scheduled event with WordPress.
+     *
+     * @param  object  $instance  Instance of the class containing the method to schedule.
+     * @param  ReflectionMethod  $method  The method to invoke when the scheduled event runs.
      */
     public function handle(object $instance, ReflectionMethod $method): void
     {
-        // If no hook name provided, generate one from class and method
-        $hookName = $this->hook ?? $this->generateHookName($instance, $method);
+        $hookName = $this->hook ?? $this->generateHookName($method);
 
-        // Register custom schedule if provided
         if (is_array($this->recurrence)) {
             $this->registerCustomSchedule($hookName, $this->recurrence);
         }
 
-        Action::add('init', function () use ($instance, $hookName, $method) {
-            // Add action hook for the scheduled event
+        Action::add('init', function () use ($instance, $hookName, $method): void {
             Action::add($hookName, [$instance, $method->getName()]);
-            // Schedule the event if it's not already scheduled
+
             if (! $this->isEventScheduled($hookName)) {
                 $this->scheduleEvent($hookName);
             }
@@ -66,30 +70,28 @@ class Schedule
     }
 
     /**
-     * Generate a hook name from class and method if none provided
+     * Generates a unique hook name from the class and method names.
+     *
+     * @param  ReflectionMethod  $method  The reflection method to generate the hook from.
+     * @return string Generated hook name in snake_case format.
      */
-    /**
-     * Generate a hook name from class and method if none provided
-     */
-    private function generateHookName(object $instance, ReflectionMethod $method): string
+    private function generateHookName(ReflectionMethod $method): string
     {
-        // Get the short name of the class from the method's class
         $className = $method->getDeclaringClass()->getShortName();
 
-        // Convert to snake_case and combine with method name
-        $hookName = strtolower(sprintf(
+        return strtolower(sprintf(
             '%s_%s',
             Str::snake($className),
             Str::snake($method->getName())
         ));
-
-        return $hookName;
     }
 
     /**
-     * Validate predefined recurrence schedule
+     * Validates a predefined recurrence schedule.
      *
-     * @throws InvalidArgumentException
+     * @param  string  $recurrence  The recurrence schedule to validate.
+     *
+     * @throws InvalidArgumentException If the schedule name is invalid.
      */
     private function validateRecurrence(string $recurrence): void
     {
@@ -105,9 +107,11 @@ class Schedule
     }
 
     /**
-     * Validate custom recurrence array
+     * Validates a custom recurrence schedule definition.
      *
-     * @throws InvalidArgumentException
+     * @param  array  $recurrence  The custom recurrence definition to validate.
+     *
+     * @throws InvalidArgumentException If the recurrence definition lacks required keys or has invalid types.
      */
     private function validateCustomRecurrence(array $recurrence): void
     {
@@ -125,11 +129,14 @@ class Schedule
     }
 
     /**
-     * Register a custom schedule with WordPress
+     * Registers a custom recurrence schedule with WordPress.
+     *
+     * @param  string  $name  The unique schedule name.
+     * @param  array  $schedule  The custom recurrence definition (interval and display).
      */
     private function registerCustomSchedule(string $name, array $schedule): void
     {
-        add_filter('cron_schedules', function ($schedules) use ($name, $schedule) {
+        add_filter('cron_schedules', function (array $schedules) use ($name, $schedule) {
             $schedules[$name] = [
                 'interval' => $schedule['interval'],
                 'display' => $schedule['display'],
@@ -140,7 +147,10 @@ class Schedule
     }
 
     /**
-     * Check if an event is already scheduled
+     * Checks if the event is already scheduled in WordPress.
+     *
+     * @param  string  $hook  The hook name to check.
+     * @return bool True if the event is scheduled, false otherwise.
      */
     private function isEventScheduled(string $hook): bool
     {
@@ -148,7 +158,9 @@ class Schedule
     }
 
     /**
-     * Schedule the event with WordPress
+     * Schedules the event with WordPress cron.
+     *
+     * @param  string  $hook  The hook name to schedule.
      */
     private function scheduleEvent(string $hook): void
     {

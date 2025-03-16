@@ -25,7 +25,7 @@ class DashboardActivity extends PostTypeAttribute
      * @param  bool  $value  Whether to show this post type in the dashboard activity widget
      */
     public function __construct(
-        private bool $value = true
+        private readonly bool $value = true
     ) {}
 
     /**

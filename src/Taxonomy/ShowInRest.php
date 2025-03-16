@@ -21,7 +21,7 @@ class ShowInRest extends TaxonomyAttribute
      * @param  bool  $value  Whether this taxonomy should appear in the REST API
      */
     public function __construct(
-        private bool $value = true
+        private readonly bool $value = true
     ) {}
 
     /**

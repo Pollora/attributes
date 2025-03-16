@@ -24,7 +24,7 @@ class RestBase extends PostTypeAttribute
      * @param  string  $value  The base URL segment for REST API endpoints
      */
     public function __construct(
-        private string $value
+        private readonly string $value
     ) {}
 
     /**
