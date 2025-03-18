@@ -41,13 +41,6 @@ class AttributeProcessor
     private static array $handlersCache = [];
 
     /**
-     * Debug mode for logging attribute processing.
-     *
-     * @var bool
-     */
-    private const DEBUG = false;
-
-    /**
      * Processes all attributes on a given class instance and its methods.
      * Uses caching to avoid redundant processing and improve performance.
      *
@@ -144,16 +137,6 @@ class AttributeProcessor
             $attributeInstance = $attribute->newInstance();
             $handleMethod = self::resolveHandleMethod($attributeInstance);
 
-            if (self::DEBUG) {
-                error_log(
-                    sprintf(
-                        'Processing attribute %s on %s',
-                        $attribute->getName(),
-                        $context instanceof ReflectionMethod ? "method {$context->getName()}" : 'class'
-                    )
-                );
-            }
-
             // Invoke the handler method if available
             if ($handleMethod !== null) {
                 $handleMethod($instance, $context, $attributeInstance);
@@ -205,35 +188,5 @@ class AttributeProcessor
         self::$attributeCache = [];
         self::$handlersCache = [];
         self::$processedClasses = new SplObjectStorage;
-    }
-
-    /**
-     * Checks if an attribute is repeatable based on its configuration.
-     *
-     * @param  ReflectionAttribute  $attribute  The attribute to check.
-     * @return bool True if the attribute is repeatable, false otherwise.
-     *
-     * @throws ReflectionException
-     */
-    private static function isRepeatableAttribute(ReflectionAttribute $attribute): bool
-    {
-        $reflectionClass = new ReflectionClass($attribute->getName());
-        $repeatable = $reflectionClass->getAttributes('Attribute');
-
-        if ($repeatable === []) {
-            return false;
-        }
-
-        return $repeatable[0]->newInstance()->isRepeatable();
-    }
-
-    /**
-     * Gets the debug mode status.
-     *
-     * @return bool True if debug mode is enabled, false otherwise.
-     */
-    public static function isDebugMode(): bool
-    {
-        return self::DEBUG;
     }
 }

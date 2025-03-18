@@ -68,9 +68,7 @@ class Method implements HandlesAttributes
     /**
      * Handles the registration of the REST route for the method.
      *
-     * @param Attributable $instance The class instance
-     * @param ReflectionMethod|ReflectionClass $context
-     * @param object $attribute
+     * @param  Attributable  $instance  The class instance
      */
     public function handle(Attributable $instance, ReflectionMethod|ReflectionClass $context, object $attribute): void
     {
