@@ -63,6 +63,46 @@ class AttributeProcessor
                 return;
             }
 
+            // Check if the class specifies a hook for deferred processing
+            $hook = null;
+            if (method_exists($instance, 'getHook')) {
+                $hook = $instance->getHook();
+            }
+            
+            if ($hook !== null) {
+                // Defer processing to the specified WordPress hook
+                add_action($hook, function () use ($instance, $class) {
+                    self::processInstance($instance, $class);
+                }, 10);
+                
+                // Mark the class as processed to avoid duplicate processing
+                self::$processedClasses->attach($class);
+                return;
+            }
+            
+            // Process immediately if no hook is specified
+            self::processInstance($instance, $class);
+
+        } catch (\Throwable $e) {
+            throw new AttributeProcessingException(
+                sprintf('Failed to process attributes for class %s: %s', $instance::class, $e->getMessage()),
+                0,
+                $e
+            );
+        }
+    }
+    
+    /**
+     * Processes the attributes for a given instance and class.
+     * 
+     * @param  Attributable  $instance  The instance whose attributes should be processed.
+     * @param  ReflectionClass  $class  The reflection class of the instance.
+     * 
+     * @throws AttributeProcessingException If an error occurs during processing.
+     */
+    private static function processInstance(Attributable $instance, ReflectionClass $class): void
+    {
+        try {
             $className = $class->getName();
 
             // Cache attributes if not already cached
@@ -86,7 +126,7 @@ class AttributeProcessor
 
             // Mark the class as processed
             self::$processedClasses->attach($class);
-
+            
         } catch (\Throwable $e) {
             throw new AttributeProcessingException(
                 sprintf('Failed to process attributes for class %s: %s', $instance::class, $e->getMessage()),

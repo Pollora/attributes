@@ -8,7 +8,6 @@ use Attribute;
 use InvalidArgumentException;
 use Pollora\Attributes\Attributable;
 use Pollora\Attributes\HandlesAttributes;
-use Pollora\Support\Facades\Action;
 use ReflectionClass;
 use ReflectionMethod;
 use WP_Error;
@@ -75,18 +74,16 @@ class Method implements HandlesAttributes
         $methodPermission = $attribute->permissionCallback;
         $permissionCallback = $methodPermission ?? $instance->classPermission;
 
-        Action::add('rest_api_init', function () use ($instance, $context, $permissionCallback, $attribute): void {
-            register_rest_route(
-                $instance->namespace,
-                $instance->route,
-                [
-                    'methods' => $attribute->getMethods(),
-                    'callback' => fn (WP_REST_Request $request) => $this->handleRequest($instance, $context, $request),
-                    'args' => $this->extractArgsFromRoute($instance->route),
-                    'permission_callback' => $this->resolvePermissionCallback($permissionCallback),
-                ]
-            );
-        });
+        register_rest_route(
+            $instance->namespace,
+            $instance->route,
+            [
+                'methods' => $attribute->getMethods(),
+                'callback' => fn (WP_REST_Request $request) => $this->handleRequest($instance, $context, $request),
+                'args' => $this->extractArgsFromRoute($instance->route),
+                'permission_callback' => $this->resolvePermissionCallback($permissionCallback),
+            ]
+        );
     }
 
     /**
@@ -130,6 +127,18 @@ class Method implements HandlesAttributes
      * @param  string|null  $permissionCallback  The permission class to use
      * @return callable The permission function
      */
+    /**
+     * Resolves and executes the permission callback.
+     *
+     * @param  string|null  $permissionCallback  The permission class to use
+     * @return callable The permission function
+     */
+    /**
+     * Resolves and executes the permission callback.
+     *
+     * @param  string|null  $permissionCallback  The permission class to use
+     * @return callable The permission function
+     */
     private function resolvePermissionCallback(?string $permissionCallback): callable
     {
         if ($permissionCallback === null) {
@@ -140,9 +149,17 @@ class Method implements HandlesAttributes
             return fn (): \WP_Error => new WP_Error('rest_forbidden', __('Invalid permission handler.'), ['status' => 403]);
         }
 
-        return function (WP_REST_Request $request) use ($permissionCallback): bool|\WP_Error {
-            $permissionInstance = new $permissionCallback;
+        // Capture relevant global variables that will be needed
+        $globals = array_intersect_key($GLOBALS, array_flip([
+            'current_user', 'wpdb', 'wp_roles', 'wp', 'wp_query', 'post',
+        ]));
 
+        return function (WP_REST_Request $request) use ($permissionCallback, $globals): bool|\WP_Error {
+            foreach ($globals as $key => $value) {
+                $GLOBALS[$key] = $value;
+            }
+
+            $permissionInstance = new $permissionCallback;
             return $permissionInstance->allow($request);
         };
     }
