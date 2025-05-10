@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Pollora\Attributes;
 
 use Attribute;
+use Pollora\Hook\Infrastructure\Services\Filter as FilterService;
 use ReflectionClass;
 use ReflectionMethod;
-use Pollora\Hook\Infrastructure\Services\Filter as FilterService;
 
 /**
  * Class Filter
@@ -21,8 +21,8 @@ class Filter extends Hook
     /**
      * Constructor for the Filter attribute.
      *
-     * @param string $hook The name of the WordPress hook.
-     * @param int $priority The priority of the hook.
+     * @param  string  $hook  The name of the WordPress hook.
+     * @param  int  $priority  The priority of the hook.
      */
     public function __construct(
         string $hook,
@@ -34,10 +34,10 @@ class Filter extends Hook
     /**
      * Handle the attribute processing.
      *
-     * @param object $serviceLocator Le service locator pour résoudre les dépendances
-     * @param object $instance The instance being processed
-     * @param ReflectionMethod|ReflectionClass $context The reflection context
-     * @param object $attribute The attribute instance
+     * @param  object  $serviceLocator  Le service locator pour résoudre les dépendances
+     * @param  object  $instance  The instance being processed
+     * @param  ReflectionMethod|ReflectionClass  $context  The reflection context
+     * @param  object  $attribute  The attribute instance
      */
     public function handle(
         $serviceLocator,
@@ -47,7 +47,7 @@ class Filter extends Hook
     ): void {
         // Récupérer le service Filter depuis le service locator
         $filterService = $serviceLocator->resolve(FilterService::class);
-        if (!$filterService) {
+        if (! $filterService) {
             return;
         }
 

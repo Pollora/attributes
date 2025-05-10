@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Pollora\Attributes;
 
 use Attribute;
+use Pollora\Attributes\Contracts\HandlesAttributes;
 use ReflectionClass;
 use ReflectionMethod;
-use Pollora\Attributes\Contracts\HandlesAttributes;
-use Pollora\Container\Domain\ServiceLocator;
 
 /**
  * Attribute for defining WordPress REST API routes.
@@ -27,8 +26,7 @@ class WpRestRoute implements HandlesAttributes
         public readonly string $namespace,
         public readonly string $route,
         public readonly ?string $permissionCallback = null
-    ) {
-    }
+    ) {}
 
     /**
      * Handle the attribute processing.

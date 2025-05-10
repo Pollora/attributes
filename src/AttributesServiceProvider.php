@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Pollora\Attributes;
 
 use Illuminate\Support\ServiceProvider;
-use Pollora\Hook\Infrastructure\Services\Action;
-use Pollora\Hook\Infrastructure\Services\Filter;
 
 /**
  * Service provider for WordPress hook functionality.

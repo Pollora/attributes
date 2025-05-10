@@ -8,11 +8,11 @@ use Attribute;
 use InvalidArgumentException;
 use Pollora\Attributes\Attributable;
 use Pollora\Attributes\Contracts\HandlesAttributes;
+use Pollora\Support\WpGlobals;
 use ReflectionClass;
 use ReflectionMethod;
 use WP_Error;
 use WP_REST_Request;
-use Pollora\Support\WpGlobals;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class Method implements HandlesAttributes
@@ -145,6 +145,7 @@ class Method implements HandlesAttributes
 
         return WpGlobals::wrap(function (WP_REST_Request $request) use ($permissionCallback): bool|\WP_Error {
             $permissionInstance = new $permissionCallback;
+
             return $permissionInstance->allow($request);
         });
     }

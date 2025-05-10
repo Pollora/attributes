@@ -254,7 +254,7 @@ test('Schedule attribute on hourly method works correctly', function () {
         ->andReturn(true);
 
     // Process the hourly schedule method attribute
-    $instance = new TestScheduledTask();
+    $instance = new TestScheduledTask;
     $reflectionClass = new ReflectionClass($instance);
     $method = $reflectionClass->getMethod('testHourlySchedule');
     $methodAttributes = $method->getAttributes(Schedule::class);
@@ -277,7 +277,7 @@ test('AttributeProcessor processes all Schedule attributes on methods', function
     // We expect 2 Schedule attributes to be processed: testHourlySchedule and testCustomSchedule
     $hookNames = [
         'test_scheduled_task_test_hourly_schedule',
-        'custom_hook'
+        'custom_hook',
     ];
 
     // Mock for ActionService - specific configuration for this test
@@ -287,6 +287,7 @@ test('AttributeProcessor processes all Schedule attributes on methods', function
         ->andReturnUsing(function ($hook, $callback) use (&$initCallbacks) {
             // Stockez chaque callback dans le tableau au lieu d'écraser la variable
             $initCallbacks[] = $callback;
+
             return $this->mockAction;
         });
 
@@ -340,18 +341,22 @@ test('AttributeProcessor processes all Schedule attributes on methods', function
             expect($result)->toHaveKey('custom_hook')
                 ->and($result['custom_hook'])->toHaveKey('interval', 3600)
                 ->and($result['custom_hook'])->toHaveKey('display', 'Every hour');
+
             return $result;
         });
 
     // Create a real AttributeProcessor that will process all method attributes
-    $realProcessor = new class($this->mockServiceLocator) extends AttributeProcessor {
+    $realProcessor = new class($this->mockServiceLocator) extends AttributeProcessor
+    {
         private $serviceLocator;
 
-        public function __construct($serviceLocator) {
+        public function __construct($serviceLocator)
+        {
             $this->serviceLocator = $serviceLocator;
         }
 
-        public function process(object $instance): void {
+        public function process(object $instance): void
+        {
             $reflection = new ReflectionClass($instance);
             foreach ($reflection->getMethods() as $method) {
                 $attributes = $method->getAttributes(Schedule::class);
@@ -364,7 +369,7 @@ test('AttributeProcessor processes all Schedule attributes on methods', function
     };
 
     // Process the instance
-    $instance = new TestScheduledTask();
+    $instance = new TestScheduledTask;
     $realProcessor->process($instance);
 
     // Exécutez tous les callbacks stockés

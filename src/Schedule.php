@@ -7,10 +7,10 @@ namespace Pollora\Attributes;
 use Attribute;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use ReflectionMethod;
-use ReflectionClass;
-use Pollora\Hook\Infrastructure\Services\Action as ActionService;
 use Pollora\Attributes\Contracts\HandlesAttributes;
+use Pollora\Hook\Infrastructure\Services\Action as ActionService;
+use ReflectionClass;
+use ReflectionMethod;
 
 #[Attribute(Attribute::TARGET_METHOD)]
 class Schedule implements HandlesAttributes
@@ -59,13 +59,13 @@ class Schedule implements HandlesAttributes
     public function handle($container, Attributable $instance, ReflectionClass|ReflectionMethod $context, object $attribute): void
     {
         // Vérifier que le contexte est une méthode
-        if (!($context instanceof ReflectionMethod)) {
+        if (! ($context instanceof ReflectionMethod)) {
             return;
         }
 
         // Récupérer le service Action depuis le service locator
         $actionService = $container->resolve(ActionService::class);
-        if (!$actionService) {
+        if (! $actionService) {
             return;
         }
 
@@ -140,7 +140,7 @@ class Schedule implements HandlesAttributes
         $className = $method->getDeclaringClass()->getShortName();
         $methodName = $method->getName();
 
-        return Str::snake($className) . '_' . Str::snake($methodName);
+        return Str::snake($className).'_'.Str::snake($methodName);
     }
 
     /**

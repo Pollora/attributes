@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Pollora\Attributes\Contracts;
 
+use Pollora\Attributes\Attributable;
 use ReflectionClass;
 use ReflectionMethod;
-use Pollora\Attributes\Attributable;
 
 interface HandlesAttributes
 {

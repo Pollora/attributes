@@ -8,8 +8,6 @@ use Pollora\Attributes\Contracts\HandlesAttributes;
 use Pollora\Attributes\Exceptions\AttributeProcessingException;
 use Pollora\Container\Domain\ServiceLocator;
 use Pollora\Container\Infrastructure\ContainerServiceLocator;
-use Pollora\Hook\Infrastructure\Services\Action;
-use Pollora\Hook\Infrastructure\Services\Filter;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
