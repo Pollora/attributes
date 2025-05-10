@@ -2,6 +2,6 @@
 
 declare(strict_types=1);
 
-namespace Pollora\Attributes;
+namespace Pollora\Attributes\Exceptions;
 
 class AttributeProcessingException extends \RuntimeException {}

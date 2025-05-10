@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Pollora\Attributes;
 
 use Illuminate\Support\ServiceProvider;
+use Pollora\Hook\Infrastructure\Services\Action;
+use Pollora\Hook\Infrastructure\Services\Filter;
 
 /**
  * Service provider for WordPress hook functionality.
@@ -23,7 +25,8 @@ class AttributesServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->resolving(Attributable::class, function ($object): void {
-            AttributeProcessor::process($object);
+            $processor = new AttributeProcessor($this->app);
+            $processor->process($object);
         });
     }
 }

@@ -7,9 +7,11 @@ namespace Pollora\Attributes;
 use Attribute;
 use ReflectionClass;
 use ReflectionMethod;
+use Pollora\Attributes\Contracts\HandlesAttributes;
+use Pollora\Container\Domain\ServiceLocator;
 
 /**
- * Attribute to declare a route in the WordPress REST API.
+ * Attribute for defining WordPress REST API routes.
  */
 #[Attribute(Attribute::TARGET_CLASS)]
 class WpRestRoute implements HandlesAttributes
@@ -22,19 +24,21 @@ class WpRestRoute implements HandlesAttributes
      * @param  string|null  $permissionCallback  Optional callback method name to check permissions for the route.
      */
     public function __construct(
-        public string $namespace,
-        public string $route,
-        public ?string $permissionCallback = null
-    ) {}
+        public readonly string $namespace,
+        public readonly string $route,
+        public readonly ?string $permissionCallback = null
+    ) {
+    }
 
     /**
-     * Handles the initialization and assignment of route metadata.
+     * Handle the attribute processing.
      *
-     * @param  object  $instance  The class instance where the attribute is used.
-     * @param  ReflectionClass|ReflectionMethod  $context  The reflection context of the attribute usage.
+     * @param  object  $serviceLocator  Le service locator pour résoudre les dépendances
+     * @param  object  $instance  The instance to which the attribute applies.
+     * @param  ReflectionClass|ReflectionMethod  $context  The reflection context.
      * @param  object  $attribute  The attribute instance containing provided arguments.
      */
-    public function handle(object $instance, ReflectionClass|ReflectionMethod $context, object $attribute): void
+    public function handle($serviceLocator, object $instance, ReflectionClass|ReflectionMethod $context, object $attribute): void
     {
         $instance->namespace = $attribute->namespace;
         $instance->route = $attribute->route;

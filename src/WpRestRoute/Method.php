@@ -7,7 +7,7 @@ namespace Pollora\Attributes\WpRestRoute;
 use Attribute;
 use InvalidArgumentException;
 use Pollora\Attributes\Attributable;
-use Pollora\Attributes\HandlesAttributes;
+use Pollora\Attributes\Contracts\HandlesAttributes;
 use ReflectionClass;
 use ReflectionMethod;
 use WP_Error;
@@ -68,9 +68,12 @@ class Method implements HandlesAttributes
     /**
      * Handles the registration of the REST route for the method.
      *
+     * @param  object  $serviceLocator  Le service locator pour résoudre les dépendances
      * @param  Attributable  $instance  The class instance
+     * @param  ReflectionMethod|ReflectionClass  $context  The reflection context
+     * @param  object  $attribute  The attribute instance
      */
-    public function handle(Attributable $instance, ReflectionMethod|ReflectionClass $context, object $attribute): void
+    public function handle($serviceLocator, Attributable $instance, ReflectionMethod|ReflectionClass $context, object $attribute): void
     {
         $methodPermission = $attribute->permissionCallback;
         $permissionCallback = $methodPermission ?? $instance->classPermission;
@@ -119,7 +122,7 @@ class Method implements HandlesAttributes
     {
         preg_match_all('/\(\?P<(\w+)>/', $route, $matches);
 
-        return array_fill_keys($matches[1], [
+        return array_fill_keys($matches[1] ?? [], [
             'validate_callback' => fn ($param): bool => is_string($param) || is_numeric($param),
         ]);
     }

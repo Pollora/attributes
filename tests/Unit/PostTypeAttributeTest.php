@@ -51,7 +51,7 @@ use Pollora\Attributes\PostType\TemplateLock;
 use Pollora\Attributes\PostType\TitlePlaceholder;
 use Pollora\PostType\Contracts\PostType;
 
-// Classe de test qui implémente l'interface PostType
+// Test class that implements the PostType interface
 #[PubliclyQueryable]
 #[HasArchive]
 #[Supports(['title', 'editor', 'thumbnail'])]
@@ -159,35 +159,26 @@ class TestPostType implements PostType
     }
 }
 
-beforeAll(function () {
-    // Créer et configurer le container
-    $app = new Container;
-    Facade::setFacadeApplication($app);
-});
-
-afterAll(function () {
-    m::close();
-    Facade::clearResolvedInstances();
-    Facade::setFacadeApplication(null);
-});
-
 test('PubliclyQueryable attribute sets publicly_queryable parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['publicly_queryable'])->toBeTrue();
 });
 
 test('HasArchive attribute sets has_archive parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['has_archive'])->toBeTrue();
 });
 
 test('Supports attribute sets supports parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['supports'])
         ->toBe(['title', 'editor', 'thumbnail'])
@@ -197,119 +188,136 @@ test('Supports attribute sets supports parameter', function () {
 
 test('MenuIcon attribute sets menu_icon parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['menu_icon'])->toBe('dashicons-calendar');
 });
 
 test('ExcludeFromSearch attribute sets exclude_from_search parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['exclude_from_search'])->toBeTrue();
 });
 
 test('Hierarchical attribute sets hierarchical parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['hierarchical'])->toBeTrue();
 });
 
 test('ShowInAdminBar attribute sets show_in_admin_bar parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['show_in_admin_bar'])->toBeTrue();
 });
 
 test('MenuPosition attribute sets menu_position parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['menu_position'])->toBe(5);
 });
 
 test('CapabilityType attribute sets capability_type parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['capability_type'])->toBe('page');
 });
 
 test('MapMetaCap attribute sets map_meta_cap parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['map_meta_cap'])->toBeTrue();
 });
 
 test('CanExport attribute sets can_export parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['can_export'])->toBeTrue();
 });
 
 test('DeleteWithUser attribute sets delete_with_user parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['delete_with_user'])->toBeTrue();
 });
 
 test('ShowInRest attribute sets show_in_rest parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['show_in_rest'])->toBeTrue();
 });
 
 test('TitlePlaceholder attribute sets title_placeholder parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['title_placeholder'])->toBe('Enter event title here');
 });
 
 test('RestBase attribute sets rest_base parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['rest_base'])->toBe('events');
 });
 
 test('BlockEditor attribute sets block_editor parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['show_in_rest'])->toBeTrue();
 });
 
 test('DashboardActivity attribute sets dashboard_activity parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['dashboard_activity'])->toBeTrue();
 });
 
 test('QuickEdit attribute sets quick_edit parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['quick_edit'])->toBeTrue();
 });
 
 test('ShowInFeed attribute sets show_in_feed parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['show_in_feed'])->toBeTrue();
 });
 
 test('getArgs method merges attribute args with withArgs and labels', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     $args = $postType->getArgs();
 
@@ -356,73 +364,82 @@ test('getArgs method merges attribute args with withArgs and labels', function (
         ->toHaveKey('admin_cols')
         ->toHaveKey('orderby')
         ->toHaveKey('order')
-        ->toHaveKey('labels');
-
-    expect($args['can_export'])->toBeTrue();
-    expect($args['labels'])->toBeArray()
+        ->toHaveKey('labels')
+        ->and($args['can_export'])->toBeTrue()
+        ->and($args['labels'])->toBeArray()
         ->toHaveKey('name')
         ->toHaveKey('singular_name');
+
 });
 
 test('PublicPostType attribute sets public parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['public'])->toBeTrue();
 });
 
 test('SiteSortables attribute sets site_sortables parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['site_sortables'])->toBe(['title' => 'Title', 'date' => 'Date']);
 });
 
 test('SiteFilters attribute sets site_filters parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['site_filters'])->toBe(['date', 'author']);
 });
 
 test('FeaturedImage attribute sets featured_image parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['featured_image'])->toBe('Featured Image Label');
 });
 
 test('Archive attribute sets archive parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['archive'])->toBe(['nopaging' => true]);
 });
 
 test('AdminFilters attribute sets admin_filters parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['admin_filters'])->toBe(['date', 'author']);
 });
 
 test('TemplateLock attribute sets template_lock parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['template_lock'])->toBe('all');
 });
 
 test('Template attribute sets template parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['template'])->toBe([['core/paragraph', ['placeholder' => 'Add content here...']]]);
 });
 
 test('Taxonomies attribute sets taxonomies parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['taxonomies'])->toBe(['category', 'post_tag']);
 });
@@ -430,10 +447,10 @@ test('Taxonomies attribute sets taxonomies parameter', function () {
 test('RegisterMetaBoxCb attribute sets register_meta_box_cb parameter', function () {
     $postType = new TestPostType;
 
-    // Réinitialiser attributeArgs pour éviter les interférences
+    // Reset attributeArgs to avoid interference
     $postType->attributeArgs = [];
 
-    // Récupérer les méthodes avec l'attribut RegisterMetaBoxCb
+    // Get methods with RegisterMetaBoxCb attribute
     $reflectionClass = new ReflectionClass($postType);
     $methods = $reflectionClass->getMethods(ReflectionMethod::IS_PUBLIC);
 
@@ -441,92 +458,103 @@ test('RegisterMetaBoxCb attribute sets register_meta_box_cb parameter', function
         $attributes = $method->getAttributes(RegisterMetaBoxCb::class);
         foreach ($attributes as $attribute) {
             $attributeInstance = $attribute->newInstance();
-            $attributeInstance->handle($postType, $method, $attributeInstance);
+            $attributeInstance->handle(null, $postType, $method, $attributeInstance);
         }
     }
 
     expect($postType->attributeArgs['register_meta_box_cb'])->toBeArray()
         ->toHaveCount(2)
         ->toHaveKey(0)
-        ->toHaveKey(1);
+        ->toHaveKey(1)
+        ->and($postType->attributeArgs['register_meta_box_cb'][0])->toBe($postType)
+        ->and($postType->attributeArgs['register_meta_box_cb'][1])->toBe('registerMetaBoxCallback');
 
-    expect($postType->attributeArgs['register_meta_box_cb'][0])->toBe($postType);
-    expect($postType->attributeArgs['register_meta_box_cb'][1])->toBe('registerMetaBoxCallback');
 });
 
 test('Capabilities attribute sets capabilities parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['capabilities'])->toBe(['create_posts' => 'create_test']);
 });
 
 test('RestControllerClass attribute sets rest_controller_class parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['rest_controller_class'])->toBe('WP_REST_Posts_Controller');
 });
 
 test('RestNamespace attribute sets rest_namespace parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['rest_namespace'])->toBe('test/v1');
 });
 
 test('Rewrite attribute sets rewrite parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['rewrite'])->toBe(['slug' => 'test-slug']);
 });
 
 test('QueryVar attribute sets query_var parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['query_var'])->toBe('test_query_var');
 });
 
 test('ShowInNavMenus attribute sets show_in_nav_menus parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['show_in_nav_menus'])->toBeTrue();
 });
 
 test('ShowInMenu attribute sets show_in_menu parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['show_in_menu'])->toBeTrue();
 });
 
 test('ShowUI attribute sets show_ui parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['show_ui'])->toBeTrue();
 });
 
 test('Label attribute sets label parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['label'])->toBe('Test Post Types');
 });
 
 test('Description attribute sets description parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['description'])->toBe('This is a test post type description');
 });
 
 test('DashboardGlance attribute sets dashboard_glance parameter', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
     expect($postType->attributeArgs['dashboard_glance'])->toBeTrue();
 });
@@ -534,10 +562,10 @@ test('DashboardGlance attribute sets dashboard_glance parameter', function () {
 test('AdminCol attribute adds columns to admin_cols parameter', function () {
     $postType = new TestPostType;
 
-    // Réinitialiser admin_cols pour éviter les interférences
+    // Reset admin_cols to avoid interference
     $postType->attributeArgs = [];
 
-    // Récupérer les méthodes avec l'attribut AdminCol
+    // Get methods with AdminCol attribute
     $reflectionClass = new ReflectionClass($postType);
     $methods = $reflectionClass->getMethods(ReflectionMethod::IS_PUBLIC);
 
@@ -545,38 +573,35 @@ test('AdminCol attribute adds columns to admin_cols parameter', function () {
         $attributes = $method->getAttributes(AdminCol::class);
         foreach ($attributes as $attribute) {
             $attributeInstance = $attribute->newInstance();
-            $attributeInstance->handle($postType, $method, $attributeInstance);
+            $attributeInstance->handle(null, $postType, $method, $attributeInstance);
         }
     }
 
     expect($postType->attributeArgs['admin_cols'])->toBeArray()
         ->toHaveKey('title')
-        ->toHaveKey('featured_image');
-
-    expect($postType->attributeArgs['admin_cols']['title'])->toBeArray()
-        ->toHaveKey('title')
-        ->toHaveKey('function');
-
-    expect($postType->attributeArgs['admin_cols']['title']['title'])->toBe('Event Title');
-    expect($postType->attributeArgs['admin_cols']['title']['function'])->toBeArray()
-        ->toHaveCount(2)
-        ->toContain($postType);
-
-    expect($postType->attributeArgs['admin_cols']['featured_image'])->toBeArray()
+        ->toHaveKey('featured_image')
+        ->and($postType->attributeArgs['admin_cols']['title'])->toBeArray()
         ->toHaveKey('title')
         ->toHaveKey('function')
-        ->not->toHaveKey('width');
+        ->and($postType->attributeArgs['admin_cols']['title']['title'])->toBe('Event Title')
+        ->and($postType->attributeArgs['admin_cols']['title']['function'])->toBeArray()
+        ->toHaveCount(2)
+        ->toContain($postType)
+        ->and($postType->attributeArgs['admin_cols']['featured_image'])->toBeArray()
+        ->toHaveKey('title')
+        ->toHaveKey('function')
+        ->not->toHaveKey('width')
+        ->and($postType->attributeArgs['admin_cols']['featured_image']['title'])->toBe('Image');
 
-    expect($postType->attributeArgs['admin_cols']['featured_image']['title'])->toBe('Image');
 });
 
 test('AdminCols attribute sets admin_cols parameter', function () {
     $postType = new TestPostType;
 
-    // Réinitialiser admin_cols pour éviter les interférences
+    // Reset admin_cols to avoid interference
     $postType->attributeArgs = [];
 
-    // Créer une classe de test qui étend AdminCols pour accéder à la méthode protégée
+    // Create a test class that extends AdminCols to access the protected method
     $adminCols = new class(['title' => ['title' => 'Title'], 'date' => ['title' => 'Date']]) extends AdminCols
     {
         public function publicConfigure(PostType $postType): void
@@ -585,7 +610,7 @@ test('AdminCols attribute sets admin_cols parameter', function () {
         }
     };
 
-    // Appliquer l'attribut AdminCols
+    // Apply the AdminCols attribute
     $adminCols->publicConfigure($postType);
 
     expect($postType->attributeArgs['admin_cols'])->toBe(['title' => ['title' => 'Title'], 'date' => ['title' => 'Date']]);
@@ -593,8 +618,9 @@ test('AdminCols attribute sets admin_cols parameter', function () {
 
 test('Chronological attribute sets orderby and order parameters', function () {
     $postType = new TestPostType;
-    AttributeProcessor::process($postType);
+    $processor = new AttributeProcessor;
+    $processor->process($postType);
 
-    expect($postType->attributeArgs['orderby'])->toBe('date');
-    expect($postType->attributeArgs['order'])->toBe('DESC');
+    expect($postType->attributeArgs['orderby'])->toBe('date')
+        ->and($postType->attributeArgs['order'])->toBe('DESC');
 });

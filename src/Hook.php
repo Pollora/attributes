@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Pollora\Attributes;
 
+use Pollora\Attributes\Contracts\HandlesAttributes;
+
 /**
  * Class Hook
  *

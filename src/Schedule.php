@@ -7,11 +7,13 @@ namespace Pollora\Attributes;
 use Attribute;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Pollora\Support\Facades\Action;
 use ReflectionMethod;
+use ReflectionClass;
+use Pollora\Hook\Infrastructure\Services\Action as ActionService;
+use Pollora\Attributes\Contracts\HandlesAttributes;
 
 #[Attribute(Attribute::TARGET_METHOD)]
-class Schedule
+class Schedule implements HandlesAttributes
 {
     /**
      * Default WordPress recurrence schedules.
@@ -49,56 +51,55 @@ class Schedule
     /**
      * Registers the scheduled event with WordPress.
      *
-     * @param  object  $instance  Instance of the class containing the method to schedule.
-     * @param  ReflectionMethod  $method  The method to invoke when the scheduled event runs.
+     * @param  mixed  $container  Le service locator pour résoudre les dépendances.
+     * @param  Attributable  $instance  Instance of the class containing the method to schedule.
+     * @param  ReflectionClass|ReflectionMethod  $context  The reflection context.
+     * @param  object  $attribute  The attribute instance.
      */
-    public function handle(object $instance, ReflectionMethod $method): void
+    public function handle($container, Attributable $instance, ReflectionClass|ReflectionMethod $context, object $attribute): void
     {
-        $hookName = $this->hook ?? $this->generateHookName($method);
-
-        if (is_array($this->recurrence)) {
-            $this->registerCustomSchedule($hookName, $this->recurrence);
+        // Vérifier que le contexte est une méthode
+        if (!($context instanceof ReflectionMethod)) {
+            return;
         }
 
-        Action::add('init', function () use ($instance, $hookName, $method): void {
-            Action::add($hookName, [$instance, $method->getName()]);
+        // Récupérer le service Action depuis le service locator
+        $actionService = $container->resolve(ActionService::class);
+        if (!$actionService) {
+            return;
+        }
 
-            if (! $this->isEventScheduled($hookName)) {
-                $this->scheduleEvent($hookName);
+        // Utiliser les propriétés de l'attribut ou de l'instance
+        $hookName = $attribute->hook ?? $this->generateHookName($context);
+        $recurrence = $attribute->recurrence ?? $this->recurrence;
+        $args = $attribute->args ?? $this->args;
+
+        if (is_array($recurrence)) {
+            $this->registerCustomSchedule($hookName, $recurrence);
+        }
+
+        $actionService->add('init', function () use ($instance, $hookName, $context, $actionService, $recurrence, $args): void {
+            $actionService->add($hookName, [$instance, $context->getName()]);
+
+            if (! $this->isEventScheduled($hookName, $args)) {
+                $this->scheduleEvent($hookName, $recurrence, $args);
             }
         });
     }
 
     /**
-     * Generates a unique hook name from the class and method names.
+     * Validates a predefined WordPress recurrence schedule.
      *
-     * @param  ReflectionMethod  $method  The reflection method to generate the hook from.
-     * @return string Generated hook name in snake_case format.
-     */
-    private function generateHookName(ReflectionMethod $method): string
-    {
-        $className = $method->getDeclaringClass()->getShortName();
-
-        return strtolower(sprintf(
-            '%s_%s',
-            Str::snake($className),
-            Str::snake($method->getName())
-        ));
-    }
-
-    /**
-     * Validates a predefined recurrence schedule.
+     * @param  string  $recurrence  The recurrence schedule name.
      *
-     * @param  string  $recurrence  The recurrence schedule to validate.
-     *
-     * @throws InvalidArgumentException If the schedule name is invalid.
+     * @throws InvalidArgumentException If the recurrence schedule is invalid.
      */
     private function validateRecurrence(string $recurrence): void
     {
         if (! in_array($recurrence, self::DEFAULT_SCHEDULES)) {
             throw new InvalidArgumentException(
                 sprintf(
-                    'Invalid recurrence schedule "%s". Valid schedules are: %s',
+                    'Invalid recurrence schedule "%s". Allowed schedules are: %s',
                     $recurrence,
                     implode(', ', self::DEFAULT_SCHEDULES)
                 )
@@ -109,35 +110,49 @@ class Schedule
     /**
      * Validates a custom recurrence schedule definition.
      *
-     * @param  array  $recurrence  The custom recurrence definition to validate.
+     * @param  array  $recurrence  The custom recurrence schedule definition.
      *
-     * @throws InvalidArgumentException If the recurrence definition lacks required keys or has invalid types.
+     * @throws InvalidArgumentException If the custom recurrence schedule is invalid.
      */
     private function validateCustomRecurrence(array $recurrence): void
     {
         if (! isset($recurrence['interval']) || ! is_numeric($recurrence['interval'])) {
             throw new InvalidArgumentException(
-                'Custom recurrence must include a numeric interval in seconds'
+                'Custom recurrence schedule must have a numeric "interval" key.'
             );
         }
 
         if (! isset($recurrence['display']) || ! is_string($recurrence['display'])) {
             throw new InvalidArgumentException(
-                'Custom recurrence must include a display name'
+                'Custom recurrence schedule must have a string "display" key.'
             );
         }
     }
 
     /**
-     * Registers a custom recurrence schedule with WordPress.
+     * Generates a hook name based on the class and method names.
      *
-     * @param  string  $name  The unique schedule name.
-     * @param  array  $schedule  The custom recurrence definition (interval and display).
+     * @param  ReflectionMethod  $method  The method reflection.
+     * @return string The generated hook name.
      */
-    private function registerCustomSchedule(string $name, array $schedule): void
+    private function generateHookName(ReflectionMethod $method): string
     {
-        add_filter('cron_schedules', function (array $schedules) use ($name, $schedule) {
-            $schedules[$name] = [
+        $className = $method->getDeclaringClass()->getShortName();
+        $methodName = $method->getName();
+
+        return Str::snake($className) . '_' . Str::snake($methodName);
+    }
+
+    /**
+     * Registers a custom schedule with WordPress.
+     *
+     * @param  string  $hookName  The hook name.
+     * @param  array  $schedule  The custom schedule definition.
+     */
+    private function registerCustomSchedule(string $hookName, array $schedule): void
+    {
+        add_filter('cron_schedules', function (array $schedules) use ($hookName, $schedule): array {
+            $schedules[$hookName] = [
                 'interval' => $schedule['interval'],
                 'display' => $schedule['display'],
             ];
@@ -147,26 +162,29 @@ class Schedule
     }
 
     /**
-     * Checks if the event is already scheduled in WordPress.
+     * Checks if an event is already scheduled.
      *
      * @param  string  $hook  The hook name to check.
-     * @return bool True if the event is scheduled, false otherwise.
+     * @param  array  $args  The arguments to pass to the scheduled method.
+     * @return bool True if the event is already scheduled, false otherwise.
      */
-    private function isEventScheduled(string $hook): bool
+    private function isEventScheduled(string $hook, array $args = []): bool
     {
-        return (bool) wp_next_scheduled($hook, $this->args);
+        return (bool) wp_next_scheduled($hook, $args);
     }
 
     /**
      * Schedules the event with WordPress cron.
      *
      * @param  string  $hook  The hook name to schedule.
+     * @param  string|array  $recurrence  The recurrence schedule.
+     * @param  array  $args  The arguments to pass to the scheduled method.
      */
-    private function scheduleEvent(string $hook): void
+    private function scheduleEvent(string $hook, string|array $recurrence, array $args): void
     {
         $timestamp = time();
-        $recurrence = is_string($this->recurrence) ? $this->recurrence : $hook;
+        $recurrence = is_string($recurrence) ? $recurrence : $hook;
 
-        wp_schedule_event($timestamp, $recurrence, $hook, $this->args);
+        wp_schedule_event($timestamp, $recurrence, $hook, $args);
     }
 }
