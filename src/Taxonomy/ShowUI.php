@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\Taxonomy;
 
 use Attribute;
-use Pollora\Taxonomy\Contracts\Taxonomy;
+use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
 
 /**
  * Attribute to set whether to generate a default UI for managing this taxonomy in the admin.
@@ -27,9 +27,9 @@ class ShowUI extends TaxonomyAttribute
     /**
      * Configure the taxonomy with the show_ui parameter.
      *
-     * @param  Taxonomy  $taxonomy  The taxonomy to configure
+     * @param  TaxonomyAttributeInterface  $taxonomy  The taxonomy to configure
      */
-    protected function configure(Taxonomy $taxonomy): void
+    protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
         $taxonomy->attributeArgs['show_ui'] = $this->value;
     }

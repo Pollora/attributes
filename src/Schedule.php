@@ -63,8 +63,13 @@ class Schedule implements HandlesAttributes
             return;
         }
 
-        // Récupérer le service Action depuis le service locator
-        $actionService = $container->resolve(ActionService::class);
+        // Récupérer le service Action depuis le service locator - handle both modern and legacy containers
+        if (method_exists($container, 'resolve')) {
+            $actionService = $container->resolve(ActionService::class);
+        } else {
+            $actionService = $container->get(ActionService::class);
+        }
+
         if (! $actionService) {
             return;
         }

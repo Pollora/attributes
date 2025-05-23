@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Pollora\Attributes;
 
-use Pollora\Attributes\Contracts\HandlesAttributes;
 use Pollora\Attributes\Exceptions\AttributeProcessingException;
-use Pollora\Container\Domain\ServiceLocator;
-use Pollora\Container\Infrastructure\ContainerServiceLocator;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
@@ -178,9 +175,7 @@ class AttributeProcessor
             $handleMethod = $this->resolveHandleMethod($attributeInstance);
 
             if ($handleMethod !== null) {
-                // Créer un service locator à partir du container
-                $serviceLocator = $this->createServiceLocator();
-                $handleMethod($serviceLocator, $instance, $context, $attributeInstance);
+                $handleMethod($this->container, $instance, $context, $attributeInstance);
             }
         } catch (\Throwable $e) {
             throw new AttributeProcessingException(
@@ -197,16 +192,6 @@ class AttributeProcessor
     }
 
     /**
-     * Crée un service locator à partir du conteneur actuel.
-     *
-     * @return ServiceLocator Un service locator qui peut résoudre les dépendances
-     */
-    private function createServiceLocator(): ServiceLocator
-    {
-        return new ContainerServiceLocator($this->container);
-    }
-
-    /**
      * Instantiates an attribute with dependency injection.
      *
      * @param  \ReflectionAttribute  $attribute  The reflection attribute to instantiate.
@@ -214,8 +199,6 @@ class AttributeProcessor
      */
     private function instantiateAttribute(\ReflectionAttribute $attribute): object
     {
-        // Pour les attributs, nous devons préserver les arguments nommés
-        // Utilisons directement la méthode newInstance qui gère correctement les arguments nommés
         try {
             return $attribute->newInstance();
         } catch (\Throwable $e) {

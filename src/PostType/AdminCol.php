@@ -6,7 +6,7 @@ namespace Pollora\Attributes\PostType;
 
 use Attribute;
 use Pollora\Attributes\Contracts\HandlesAttributes;
-use Pollora\PostType\Contracts\PostType;
+use Pollora\PostType\Domain\Contracts\PostTypeAttributeInterface;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -41,7 +41,7 @@ class AdminCol implements HandlesAttributes
      */
     public function handle($container, object $instance, ReflectionMethod|ReflectionClass $context, object $attribute): void
     {
-        if (! $instance instanceof PostType) {
+        if (! $instance instanceof PostTypeAttributeInterface) {
             return;
         }
 

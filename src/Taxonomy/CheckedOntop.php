@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\Taxonomy;
 
 use Attribute;
-use Pollora\Taxonomy\Contracts\Taxonomy;
+use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
 
 /**
  * Attribute to set whether checked terms should appear on top.
@@ -32,7 +32,7 @@ class CheckedOntop extends TaxonomyAttribute
      *
      * @param  Taxonomy  $taxonomy  The taxonomy to configure
      */
-    protected function configure(Taxonomy $taxonomy): void
+    protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
         $taxonomy->attributeArgs['checked_ontop'] = $this->value;
     }

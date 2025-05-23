@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\Taxonomy;
 
 use Attribute;
-use Pollora\Taxonomy\Contracts\Taxonomy;
+use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
 
 /**
  * Attribute to set the default term name for this taxonomy.
@@ -27,9 +27,9 @@ class DefaultTerm extends TaxonomyAttribute
     /**
      * Configure the taxonomy with the default_term parameter.
      *
-     * @param  Taxonomy  $taxonomy  The taxonomy to configure
+     * @param  TaxonomyAttributeInterface  $taxonomy  The taxonomy to configure
      */
-    protected function configure(Taxonomy $taxonomy): void
+    protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
         $taxonomy->attributeArgs['default_term'] = $this->value;
     }

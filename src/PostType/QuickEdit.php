@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\PostType;
 
 use Attribute;
-use Pollora\PostType\Contracts\PostType;
+use Pollora\PostType\Domain\Contracts\PostTypeAttributeInterface;
 
 /**
  * Attribute to set the quick_edit parameter for a post type.
@@ -31,9 +31,9 @@ class QuickEdit extends PostTypeAttribute
     /**
      * Configure the post type with the quick_edit parameter.
      *
-     * @param  PostType  $postType  The post type to configure
+     * @param  PostTypeAttributeInterface  $postType  The post type to configure
      */
-    protected function configure(PostType $postType): void
+    protected function configure(PostTypeAttributeInterface $postType): void
     {
         $postType->attributeArgs['quick_edit'] = $this->value;
     }

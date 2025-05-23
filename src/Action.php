@@ -46,7 +46,7 @@ class Action extends Hook
         object $attribute,
     ): void {
         // Récupérer le service Action depuis le service locator
-        $actionService = $serviceLocator->resolve(ActionService::class);
+        $actionService = $serviceLocator->get(ActionService::class);
         if (! $actionService) {
             return;
         }

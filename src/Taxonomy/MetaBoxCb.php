@@ -6,7 +6,7 @@ namespace Pollora\Attributes\Taxonomy;
 
 use Attribute;
 use Pollora\Attributes\Contracts\HandlesAttributes;
-use Pollora\Taxonomy\Contracts\Taxonomy;
+use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -30,7 +30,7 @@ class MetaBoxCb implements HandlesAttributes
      */
     public function handle($container, object $instance, ReflectionMethod|ReflectionClass $context, object $attribute): void
     {
-        if (! $instance instanceof Taxonomy) {
+        if (! $instance instanceof TaxonomyAttributeInterface) {
             return;
         }
 

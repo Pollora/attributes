@@ -46,7 +46,7 @@ class Filter extends Hook
         object $attribute
     ): void {
         // Récupérer le service Filter depuis le service locator
-        $filterService = $serviceLocator->resolve(FilterService::class);
+        $filterService = $serviceLocator->get(FilterService::class);
         if (! $filterService) {
             return;
         }
