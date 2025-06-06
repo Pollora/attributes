@@ -31,8 +31,8 @@ class WpRestRoute implements HandlesAttributes
     /**
      * Handle the attribute processing.
      *
-     * @param  object  $serviceLocator  Le service locator pour résoudre les dépendances
-     * @param  object  $instance  The instance to which the attribute applies.
+     * @param  object  $serviceLocator  Service locator used to resolve dependencies
+     * @param  object  $instance  The instance to which the attribute applies
      * @param  ReflectionClass|ReflectionMethod  $context  The reflection context.
      * @param  object  $attribute  The attribute instance containing provided arguments.
      */

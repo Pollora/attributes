@@ -68,7 +68,7 @@ class Method implements HandlesAttributes
     /**
      * Handles the registration of the REST route for the method.
      *
-     * @param  object  $serviceLocator  Le service locator pour résoudre les dépendances
+     * @param  object  $serviceLocator  Service locator used to resolve dependencies
      * @param  Attributable  $instance  The class instance
      * @param  ReflectionMethod|ReflectionClass  $context  The reflection context
      * @param  object  $attribute  The attribute instance

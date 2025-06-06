@@ -34,7 +34,7 @@ class Filter extends Hook
     /**
      * Handle the attribute processing.
      *
-     * @param  object  $serviceLocator  Le service locator pour résoudre les dépendances
+     * @param  object  $serviceLocator  Service locator used to resolve dependencies
      * @param  object  $instance  The instance being processed
      * @param  ReflectionMethod|ReflectionClass  $context  The reflection context
      * @param  object  $attribute  The attribute instance
@@ -45,7 +45,7 @@ class Filter extends Hook
         ReflectionMethod|ReflectionClass $context,
         object $attribute
     ): void {
-        // Récupérer le service Filter depuis le service locator
+        // Retrieve the Filter service from the locator
         $filterService = $serviceLocator->get(FilterService::class);
         if (! $filterService) {
             return;
