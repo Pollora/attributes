@@ -51,19 +51,19 @@ class Schedule implements HandlesAttributes
     /**
      * Registers the scheduled event with WordPress.
      *
-     * @param  mixed  $container  Le service locator pour résoudre les dépendances.
+     * @param  mixed  $container  Service locator used to resolve dependencies.
      * @param  Attributable  $instance  Instance of the class containing the method to schedule.
      * @param  ReflectionClass|ReflectionMethod  $context  The reflection context.
      * @param  object  $attribute  The attribute instance.
      */
     public function handle($container, Attributable $instance, ReflectionClass|ReflectionMethod $context, object $attribute): void
     {
-        // Vérifier que le contexte est une méthode
+        // Ensure the context is a method
         if (! ($context instanceof ReflectionMethod)) {
             return;
         }
 
-        // Récupérer le service Action depuis le service locator - handle both modern and legacy containers
+        // Retrieve the Action service from the locator - handle both modern and legacy containers
         if (method_exists($container, 'resolve')) {
             $actionService = $container->resolve(ActionService::class);
         } else {
@@ -74,7 +74,7 @@ class Schedule implements HandlesAttributes
             return;
         }
 
-        // Utiliser les propriétés de l'attribut ou de l'instance
+        // Use the attribute properties or fall back to instance values
         $hookName = $attribute->hook ?? $this->generateHookName($context);
         $recurrence = $attribute->recurrence ?? $this->recurrence;
         $args = $attribute->args ?? $this->args;
