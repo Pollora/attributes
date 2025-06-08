@@ -10,8 +10,8 @@ use Pollora\Container\Domain\ServiceLocator;
 use Pollora\Hook\Infrastructure\Services\Action as ActionService;
 use Pollora\Hook\Infrastructure\Services\Filter as FilterService;
 
-// Modifions la classe de test pour utiliser l'attribut Schedule uniquement sur les méthodes
-// puisque Schedule ne cible que les méthodes
+// Modify the test class to use the Schedule attribute only on methods
+// since Schedule targets methods only
 class TestScheduledTask implements Attributable
 {
     public function testMethod(): void
@@ -285,7 +285,7 @@ test('AttributeProcessor processes all Schedule attributes on methods', function
         ->with('init', m::type('Closure'))
         ->twice()
         ->andReturnUsing(function ($hook, $callback) use (&$initCallbacks) {
-            // Stockez chaque callback dans le tableau au lieu d'écraser la variable
+            // Store each callback in the array instead of overwriting the variable
             $initCallbacks[] = $callback;
 
             return $this->mockAction;
@@ -372,7 +372,7 @@ test('AttributeProcessor processes all Schedule attributes on methods', function
     $instance = new TestScheduledTask;
     $realProcessor->process($instance);
 
-    // Exécutez tous les callbacks stockés
+    // Execute all stored callbacks
     foreach ($initCallbacks as $callback) {
         $callback();
     }
