@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\Facade;
 use Pollora\Attributes\Hook;
 
 /**
@@ -25,14 +26,14 @@ class ConcreteHook extends Hook
 
 it('initializes with default priority', function () {
     $hook = new ConcreteHook('test_hook');
-    expect($hook->hook)->toBe('test_hook')
-        ->and($hook->priority)->toBe(10);
+    expect($hook->hook)->toBe('test_hook');
+    expect($hook->priority)->toBe(10);
 });
 
 it('initializes with custom priority', function () {
     $hook = new ConcreteHook('test_hook', 20);
-    expect($hook->hook)->toBe('test_hook')
-        ->and($hook->priority)->toBe(20);
+    expect($hook->hook)->toBe('test_hook');
+    expect($hook->priority)->toBe(20);
 });
 
 it('stores hook name correctly', function () {
@@ -61,4 +62,5 @@ it('allows priority to be a large number', function () {
 
 afterEach(function () {
     Mockery::close();
+    Facade::clearResolvedInstances();
 });
