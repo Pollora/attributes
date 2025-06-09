@@ -64,10 +64,13 @@ class Schedule implements HandlesAttributes
         }
 
         // Retrieve the Action service from the locator - handle both modern and legacy containers
-        if (method_exists($container, 'resolve')) {
-            $actionService = $container->resolve(ActionService::class);
-        } else {
+        if (method_exists($container, 'make')) {
+            $actionService = $container->make(ActionService::class);
+        } elseif (method_exists($container, 'get')) {
             $actionService = $container->get(ActionService::class);
+        } else {
+            // Fallback for other container implementations
+            $actionService = null;
         }
 
         if (! $actionService) {
