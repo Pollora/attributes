@@ -68,6 +68,7 @@ class AttributeProcessor
                 return;
             }
 
+
             // Check if the class specifies a hook for deferred processing
             $hook = null;
             if (method_exists($instance, 'getHook')) {
