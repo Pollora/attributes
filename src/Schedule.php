@@ -9,6 +9,8 @@ use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Pollora\Attributes\Contracts\HandlesAttributes;
 use Pollora\Hook\Infrastructure\Services\Action as ActionService;
+use Pollora\Schedule\Every;
+use Pollora\Schedule\Interval;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -30,14 +32,14 @@ class Schedule implements HandlesAttributes
     /**
      * Schedule constructor.
      *
-     * @param  string|array  $recurrence  Either a predefined WordPress schedule name or a custom schedule definition.
+     * @param  string|array|Every|Interval  $recurrence  Either a predefined WordPress schedule name, custom schedule definition, Every enum, or Interval instance.
      * @param  string|null  $hook  Optional custom hook name. If null, the hook name is generated from class and method names.
      * @param  array  $args  Arguments to pass to the scheduled method.
      *
      * @throws InvalidArgumentException If the recurrence schedule is invalid.
      */
     public function __construct(
-        private readonly string|array $recurrence,
+        private readonly string|array|Every|Interval $recurrence,
         private readonly ?string $hook = null,
         private readonly array $args = []
     ) {
@@ -45,6 +47,12 @@ class Schedule implements HandlesAttributes
             $this->validateRecurrence($this->recurrence);
         } elseif (is_array($this->recurrence)) {
             $this->validateCustomRecurrence($this->recurrence);
+        } elseif ($this->recurrence instanceof Every) {
+            // OK
+        } elseif ($this->recurrence instanceof Interval) {
+            // OK
+        } else {
+            throw new InvalidArgumentException('Invalid recurrence type');
         }
     }
 
@@ -82,9 +90,19 @@ class Schedule implements HandlesAttributes
         $recurrence = $attribute->recurrence ?? $this->recurrence;
         $args = $attribute->args ?? $this->args;
 
-        if (is_array($recurrence)) {
-            $this->registerCustomSchedule($hookName, $recurrence);
-        }
+        $recurrence = match (true) {
+            $recurrence instanceof Every => $recurrence->isCustom()
+                ? $this->registerCustomAndReturnHook($hookName, $recurrence->toInterval())
+                : $recurrence->toScheduleKey(),
+
+            $recurrence instanceof Interval => $this->registerCustomAndReturnHook($hookName, $recurrence),
+
+            is_array($recurrence) => $this->registerCustomAndReturnHook($hookName, new Interval(...$recurrence)),
+
+            is_string($recurrence) => $recurrence,
+
+            default => throw new InvalidArgumentException('Unsupported recurrence type'),
+        };
 
         $actionService->add('init', function () use ($instance, $hookName, $context, $actionService, $recurrence, $args): void {
             $actionService->add($hookName, [$instance, $context->getName()]);
@@ -194,5 +212,19 @@ class Schedule implements HandlesAttributes
         $recurrence = is_string($recurrence) ? $recurrence : $hook;
 
         wp_schedule_event($timestamp, $recurrence, $hook, $args);
+    }
+
+    /**
+     * Registers a custom schedule and returns the hook name.
+     *
+     * @param  string  $hookName  The hook name.
+     * @param  Interval  $interval  The interval definition.
+     * @return string The hook name to use for scheduling.
+     */
+    private function registerCustomAndReturnHook(string $hookName, Interval $interval): string
+    {
+        $this->registerCustomSchedule($hookName, $interval->toScheduleArray());
+
+        return $hookName;
     }
 }
