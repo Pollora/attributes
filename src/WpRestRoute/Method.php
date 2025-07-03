@@ -109,7 +109,10 @@ class Method implements HandlesAttributes
             $args[] = $request->get_param($paramName);
         }
 
-        return $method->invoke($instance, ...$args);
+        // Get the real instance if available, otherwise use the provided instance
+        $realInstance = method_exists($instance, 'getRealInstance') ? $instance->getRealInstance() : $instance;
+
+        return $method->invoke($realInstance, ...$args);
     }
 
     /**
