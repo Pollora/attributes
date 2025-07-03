@@ -7,7 +7,9 @@ namespace Pollora\Attributes\Infrastructure\Providers;
 use Illuminate\Support\ServiceProvider;
 use Pollora\Attributes\Attributable;
 use Pollora\Attributes\AttributeProcessor;
-use Pollora\Discoverer\Framework\API\PolloraDiscover;
+use Pollora\Discovery\Application\Services\DiscoveryManager;
+use Pollora\Attributes\Infrastructure\Services\AttributableDiscovery;
+use Pollora\Discovery\Domain\Contracts\DiscoveryEngineInterface;
 
 /**
  * Service provider for attribute-based class registration.
@@ -24,7 +26,8 @@ class AttributableServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // No registration needed as the main service provider handles it
+        // Register Attributable Discovery
+        $this->app->singleton(AttributableDiscovery::class);
     }
 
     /**
@@ -35,6 +38,9 @@ class AttributableServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerAttributableClasses();
+        
+        // Register Attributable discovery with the discovery engine
+        $this->registerAttributableDiscovery();
     }
 
     /**
@@ -43,16 +49,27 @@ class AttributableServiceProvider extends ServiceProvider
     protected function registerAttributableClasses(): void
     {
         try {
-            $attributableClasses = PolloraDiscover::scout('attributable');
+            /** @var DiscoveryManager $discoveryManager */
+            $discoveryManager = $this->app->make(DiscoveryManager::class);
 
-            if ($attributableClasses->isEmpty()) {
+            // Check if attributable discovery is available
+            if (!$discoveryManager->hasDiscovery('attributable')) {
+                return;
+            }
+
+            $attributableItems = $discoveryManager->getDiscoveredItems('attributable');
+
+            if (empty($attributableItems)) {
                 return;
             }
 
             $processor = new AttributeProcessor($this->app);
 
-            foreach ($attributableClasses as $attributableClass) {
-                $this->registerAttributableClass($attributableClass, $processor);
+            foreach ($attributableItems as $attributableItem) {
+                $attributableClass = $attributableItem['class'] ?? null;
+                if ($attributableClass) {
+                    $this->registerAttributableClass($attributableClass, $processor);
+                }
             }
         } catch (\Throwable $e) {
             // Log error but don't break the application
@@ -81,5 +98,19 @@ class AttributableServiceProvider extends ServiceProvider
         // Process attributes - this will handle the registration automatically
         // through the AttributeProcessor
         $processor->process($attributableInstance);
+    }
+
+    /**
+     * Register Attributable discovery with the discovery engine.
+     */
+    private function registerAttributableDiscovery(): void
+    {
+        if ($this->app->bound(DiscoveryEngineInterface::class)) {
+            /** @var DiscoveryEngineInterface $engine */
+            $engine = $this->app->make(DiscoveryEngineInterface::class);
+            $attributableDiscovery = $this->app->make(AttributableDiscovery::class);
+            
+            $engine->addDiscovery('attributable', $attributableDiscovery);
+        }
     }
 }

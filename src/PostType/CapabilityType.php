@@ -29,7 +29,7 @@ class CapabilityType extends PostTypeAttribute
      * @param  string  $value  The capability type to use for this post type
      */
     public function __construct(
-        private readonly string $value
+        public readonly string $value
     ) {}
 
     /**

@@ -24,7 +24,7 @@ class ShowInFeed extends PostTypeAttribute
      * @param  bool  $value  Whether to include this post type in the RSS feed
      */
     public function __construct(
-        private readonly bool $value = true
+        public readonly bool $value = true
     ) {}
 
     /**

@@ -24,7 +24,7 @@ class ExcludeFromSearch extends PostTypeAttribute
      * @param  bool  $value  Whether the post type should be excluded from search results
      */
     public function __construct(
-        private readonly bool $value = true
+        public readonly bool $value = true
     ) {}
 
     /**

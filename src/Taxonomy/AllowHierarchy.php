@@ -24,7 +24,7 @@ class AllowHierarchy extends TaxonomyAttribute
      * @param  bool  $value  Whether to allow hierarchy in the taxonomy's rewrite rules
      */
     public function __construct(
-        private readonly bool $value = true
+        public readonly bool $value = true
     ) {}
 
     /**

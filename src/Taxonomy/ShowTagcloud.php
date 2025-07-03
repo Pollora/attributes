@@ -21,7 +21,7 @@ class ShowTagcloud extends TaxonomyAttribute
      * @param  bool  $value  Whether to show the taxonomy in the tag cloud widget
      */
     public function __construct(
-        private readonly bool $value = true
+        public readonly bool $value = true
     ) {}
 
     /**

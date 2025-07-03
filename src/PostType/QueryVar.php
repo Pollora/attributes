@@ -26,7 +26,7 @@ class QueryVar extends PostTypeAttribute
      * @param  bool|string  $value  The query_var value for the post type
      */
     public function __construct(
-        private readonly bool|string $value = true
+        public readonly bool|string $value = true
     ) {}
 
     /**

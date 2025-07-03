@@ -26,7 +26,7 @@ class Rewrite extends PostTypeAttribute
      * @param  bool|array  $value  The rewrite configuration for the post type
      */
     public function __construct(
-        private readonly bool|array $value = true
+        public readonly bool|array $value = true
     ) {}
 
     /**

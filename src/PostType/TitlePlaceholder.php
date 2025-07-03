@@ -24,7 +24,7 @@ class TitlePlaceholder extends PostTypeAttribute
      * @param  string  $value  The placeholder text for the title field
      */
     public function __construct(
-        private readonly string $value
+        public readonly string $value
     ) {}
 
     /**

@@ -21,7 +21,7 @@ class Rewrite extends TaxonomyAttribute
      * @param  bool|array  $value  The rewrite rules for the taxonomy
      */
     public function __construct(
-        private readonly bool|array $value = true
+        public readonly bool|array $value = true
     ) {}
 
     /**

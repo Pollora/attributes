@@ -21,7 +21,7 @@ class ShowInQuickEdit extends TaxonomyAttribute
      * @param  bool  $value  Whether to show the taxonomy in the quick/bulk edit panel
      */
     public function __construct(
-        private readonly bool $value = true
+        public readonly bool $value = true
     ) {}
 
     /**

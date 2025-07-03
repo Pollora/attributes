@@ -24,7 +24,7 @@ class Template extends PostTypeAttribute
      * @param  array  $value  An array of blocks to use as the default template
      */
     public function __construct(
-        private readonly array $value
+        public readonly array $value
     ) {}
 
     /**

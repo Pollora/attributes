@@ -35,6 +35,6 @@ class MetaBoxCb implements HandlesAttributes
         }
 
         // Set the meta_box_cb parameter to the method
-        $instance->attributeArgs['meta_box_cb'] = [$instance, $context->getName()];
+        $instance->attributeArgs['meta_box_cb'] = [new $context->class, $context->getName()];
     }
 }
