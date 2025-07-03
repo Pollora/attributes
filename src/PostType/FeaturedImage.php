@@ -24,7 +24,7 @@ class FeaturedImage extends PostTypeAttribute
      * @param  string  $value  The custom featured image label
      */
     public function __construct(
-        private readonly string $value
+        public readonly string $value
     ) {}
 
     /**

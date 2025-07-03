@@ -24,7 +24,7 @@ class ShowInNavMenus extends PostTypeAttribute
      * @param  bool  $value  Whether the post type should be available in navigation menus
      */
     public function __construct(
-        private readonly bool $value = true
+        public readonly bool $value = true
     ) {}
 
     /**

@@ -21,7 +21,7 @@ class RestBase extends TaxonomyAttribute
      * @param  string  $value  The base URL segment for REST API endpoints
      */
     public function __construct(
-        private readonly string $value
+        public readonly string $value
     ) {}
 
     /**

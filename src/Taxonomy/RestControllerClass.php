@@ -21,7 +21,7 @@ class RestControllerClass extends TaxonomyAttribute
      * @param  string  $value  The controller class for REST API requests
      */
     public function __construct(
-        private readonly string $value
+        public readonly string $value
     ) {}
 
     /**

@@ -24,7 +24,7 @@ class BlockEditor extends PostTypeAttribute
      * @param  bool  $value  Whether to use the block editor for this post type
      */
     public function __construct(
-        private readonly bool $value = true
+        public readonly bool $value = true
     ) {}
 
     /**

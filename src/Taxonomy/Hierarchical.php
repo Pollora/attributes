@@ -21,7 +21,7 @@ class Hierarchical extends TaxonomyAttribute
      * @param  bool  $value  Whether the taxonomy is hierarchical
      */
     public function __construct(
-        private readonly bool $value = true
+        public readonly bool $value = true
     ) {}
 
     /**

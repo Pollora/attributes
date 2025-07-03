@@ -24,7 +24,7 @@ class Description extends PostTypeAttribute
      * @param  string  $value  The description of the post type
      */
     public function __construct(
-        private readonly string $value
+        public readonly string $value
     ) {}
 
     /**

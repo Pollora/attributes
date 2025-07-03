@@ -25,7 +25,7 @@ class ShowInRest extends PostTypeAttribute
      * @param  bool  $value  Whether the post type should be available in the REST API
      */
     public function __construct(
-        private readonly bool $value = true
+        public readonly bool $value = true
     ) {}
 
     /**

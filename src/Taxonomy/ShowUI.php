@@ -21,7 +21,7 @@ class ShowUI extends TaxonomyAttribute
      * @param  bool  $value  Whether to generate a default UI for managing this taxonomy in the admin
      */
     public function __construct(
-        private readonly bool $value = true
+        public readonly bool $value = true
     ) {}
 
     /**

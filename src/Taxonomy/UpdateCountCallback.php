@@ -35,6 +35,6 @@ class UpdateCountCallback implements HandlesAttributes
         }
 
         // Set the update_count_callback parameter to the method
-        $instance->attributeArgs['update_count_callback'] = [$instance, $context->getName()];
+        $instance->attributeArgs['update_count_callback'] = [new $context->class, $context->getName()];
     }
 }

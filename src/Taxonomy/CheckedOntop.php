@@ -24,7 +24,7 @@ class CheckedOntop extends TaxonomyAttribute
      * @param  bool  $value  Whether checked terms should appear on top
      */
     public function __construct(
-        private readonly bool $value = true
+        public readonly bool $value = true
     ) {}
 
     /**

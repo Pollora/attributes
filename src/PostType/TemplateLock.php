@@ -26,7 +26,7 @@ class TemplateLock extends PostTypeAttribute
      * @param  bool|string  $value  The template lock setting
      */
     public function __construct(
-        private readonly bool|string $value
+        public readonly bool|string $value
     ) {}
 
     /**

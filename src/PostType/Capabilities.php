@@ -24,7 +24,7 @@ class Capabilities extends PostTypeAttribute
      * @param  array  $value  The capabilities array for the post type
      */
     public function __construct(
-        private readonly array $value
+        public readonly array $value
     ) {}
 
     /**

@@ -21,7 +21,7 @@ class RestNamespace extends TaxonomyAttribute
      * @param  string  $value  The REST API namespace for the taxonomy
      */
     public function __construct(
-        private readonly string $value
+        public readonly string $value
     ) {}
 
     /**
