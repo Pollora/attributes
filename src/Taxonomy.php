@@ -6,7 +6,6 @@ namespace Pollora\Attributes;
 
 use Attribute;
 use Illuminate\Support\Str;
-use Pollora\Attributes\Attributable;
 use Pollora\Attributes\Contracts\AttributeCompatibility;
 use Pollora\Attributes\Contracts\AttributeCompatibilityTrait;
 use Pollora\Attributes\Contracts\HandlesAttributes;

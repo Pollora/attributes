@@ -16,8 +16,6 @@ use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
  * Discovers classes that implement the Attributable interface and collects them
  * for attribute processing. This discovery class scans for classes that implement
  * the Attributable interface and processes them through the attribute system.
- *
- * @package Pollora\Attributes\Infrastructure\Services
  */
 final class AttributableDiscovery implements DiscoveryInterface
 {
@@ -32,7 +30,7 @@ final class AttributableDiscovery implements DiscoveryInterface
     public function discover(DiscoveryLocationInterface $location, DiscoveredStructure $structure): void
     {
         // Only process classes
-        if (!$structure instanceof \Spatie\StructureDiscoverer\Data\DiscoveredClass) {
+        if (! $structure instanceof \Spatie\StructureDiscoverer\Data\DiscoveredClass) {
             return;
         }
 

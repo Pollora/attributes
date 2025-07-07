@@ -25,8 +25,7 @@ class MenuIcon extends PostTypeAttribute
      */
     public function __construct(
         public readonly string $value
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type with the menu_icon parameter.

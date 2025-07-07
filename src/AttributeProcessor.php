@@ -29,8 +29,8 @@ use SplObjectStorage;
  * - Memory-efficient using SplObjectStorage to prevent memory leaks
  * - Thread-safe caching implementation
  *
- * @package Pollora\Attributes
  * @author  Pollora Team
+ *
  * @since   1.0.0
  */
 class AttributeProcessor
@@ -98,13 +98,12 @@ class AttributeProcessor
      *
      * Initializes the AttributeProcessor with an optional dependency injection container.
      *
-     * @param mixed $container Optional dependency injection container
+     * @param  mixed  $container  Optional dependency injection container
      */
     public function __construct($container = null)
     {
         $this->container = $container;
     }
-
 
     public function process(object $instance): void
     {
@@ -135,6 +134,7 @@ class AttributeProcessor
 
                 // Mark this instance as processed to prevent duplicate hook registration
                 self::$processedInstances->attach($instance);
+
                 return;
             }
 
@@ -163,8 +163,8 @@ class AttributeProcessor
      * Each attribute gets a fresh instance to prevent value pollution between
      * different object instances.
      *
-     * @param object          $instance The object instance being processed
-     * @param ReflectionClass $class    The reflection class of the instance
+     * @param  object  $instance  The object instance being processed
+     * @param  ReflectionClass  $class  The reflection class of the instance
      *
      * @throws AttributeProcessingException If an error occurs during processing
      *
@@ -176,7 +176,7 @@ class AttributeProcessor
             // Use caching for extracted attributes (they don't change per class)
             $className = $class->getName();
 
-            if (!isset(self::$extractedAttributesCache[$className])) {
+            if (! isset(self::$extractedAttributesCache[$className])) {
                 self::$extractedAttributesCache[$className] = $this->extractAttributes($class);
             }
 
@@ -211,10 +211,9 @@ class AttributeProcessor
      *
      * The results are cached to avoid repeated reflection operations for the same class.
      *
-     * @param ReflectionClass $class The reflection class to extract attributes from
-     *
+     * @param  ReflectionClass  $class  The reflection class to extract attributes from
      * @return array{class: ReflectionAttribute[], methods: array<int, array{ReflectionMethod, ReflectionAttribute[]}>}
-     *               An array containing class and method attributes
+     *                                                                                                                  An array containing class and method attributes
      *
      * @since 1.0.0
      */
@@ -247,9 +246,9 @@ class AttributeProcessor
      * Each call creates a new attribute instance to ensure that different object
      * instances don't share attribute state, preventing value pollution.
      *
-     * @param object                                $instance  The object instance being processed
-     * @param ReflectionAttribute                   $attribute The reflection attribute to process
-     * @param ReflectionClass|ReflectionMethod     $context   The context (class or method) where the attribute is defined
+     * @param  object  $instance  The object instance being processed
+     * @param  ReflectionAttribute  $attribute  The reflection attribute to process
+     * @param  ReflectionClass|ReflectionMethod  $context  The context (class or method) where the attribute is defined
      *
      * @throws AttributeProcessingException If an error occurs while processing the attribute
      *
@@ -289,8 +288,7 @@ class AttributeProcessor
      * The method manually creates instances using the class name and arguments to bypass
      * PHP's built-in attribute instance caching mechanism.
      *
-     * @param ReflectionAttribute $attribute The reflection attribute to instantiate
-     *
+     * @param  ReflectionAttribute  $attribute  The reflection attribute to instantiate
      * @return object The instantiated attribute object
      *
      * @throws \RuntimeException If an error occurs during instantiation
@@ -317,8 +315,7 @@ class AttributeProcessor
      * the result to avoid repeated `method_exists` calls. The caching is safe because
      * it's based on the attribute class, not the instance.
      *
-     * @param object $attributeInstance The attribute instance to check for a handler
-     *
+     * @param  object  $attributeInstance  The attribute instance to check for a handler
      * @return callable|null Returns the callable handler method if found, null otherwise
      *
      * @since 1.0.0
@@ -330,15 +327,18 @@ class AttributeProcessor
         // Cache handler method existence (safe because it's based on class, not instance)
         if (array_key_exists($attributeClass, self::$handleMethodsCache)) {
             $cachedMethod = self::$handleMethodsCache[$attributeClass];
+
             return $cachedMethod ? $attributeInstance->handle(...) : null;
         }
 
         if (method_exists($attributeInstance, 'handle')) {
             self::$handleMethodsCache[$attributeClass] = true;
+
             return $attributeInstance->handle(...);
         }
 
         self::$handleMethodsCache[$attributeClass] = false;
+
         return null;
     }
 
