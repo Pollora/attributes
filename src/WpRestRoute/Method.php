@@ -84,7 +84,7 @@ class Method implements HandlesAttributes
             [
                 'methods' => $attribute->getMethods(),
                 'callback' => WpGlobals::wrap(
-                    fn (WP_REST_Request $request) => $this->handleRequest($instance, $context, $request)
+                    fn (WP_REST_Request $request): mixed => $this->handleRequest($instance, $context, $request)
                 ),
                 'args' => $this->extractArgsFromRoute($instance->route),
                 'permission_callback' => $this->resolvePermissionCallback($permissionCallback),

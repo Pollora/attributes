@@ -18,19 +18,11 @@ use Pollora\Attributes\Exceptions\AttributeValidationException;
 class AttributeValidator
 {
     /**
-     * The attribute registry for compatibility checks.
-     */
-    private AttributeRegistry $registry;
-
-    /**
      * Create a new AttributeValidator instance.
      *
      * @param  AttributeRegistry  $registry  The attribute registry
      */
-    public function __construct(AttributeRegistry $registry)
-    {
-        $this->registry = $registry;
-    }
+    public function __construct(private readonly AttributeRegistry $registry) {}
 
     /**
      * Validates domain compatibility for an attributable instance.
@@ -52,7 +44,7 @@ class AttributeValidator
                 throw new AttributeValidationException(
                     sprintf(
                         'Instance of %s does not support domain %s',
-                        get_class($instance),
+                        $instance::class,
                         $domain
                     )
                 );
@@ -80,16 +72,14 @@ class AttributeValidator
      */
     private function validateAttribute(object $attribute, string $domain): void
     {
-        if ($attribute instanceof TypedAttribute) {
-            if (! $attribute->supportsDomain($domain)) {
-                throw new AttributeValidationException(
-                    sprintf(
-                        'Attribute %s does not support domain %s',
-                        get_class($attribute),
-                        $domain
-                    )
-                );
-            }
+        if ($attribute instanceof TypedAttribute && ! $attribute->supportsDomain($domain)) {
+            throw new AttributeValidationException(
+                sprintf(
+                    'Attribute %s does not support domain %s',
+                    $attribute::class,
+                    $domain
+                )
+            );
         }
     }
 
@@ -116,7 +106,7 @@ class AttributeValidator
                             throw new AttributeValidationException(
                                 sprintf(
                                     'Attribute %s (domain: %s) is not compatible with domain %s',
-                                    get_class($attribute),
+                                    $attribute::class,
                                     $domain,
                                     $otherDomain
                                 )

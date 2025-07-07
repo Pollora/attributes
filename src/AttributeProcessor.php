@@ -84,26 +84,21 @@ class AttributeProcessor
     private static array $handleMethodsCache = [];
 
     /**
-     * Dependency injection container.
-     *
-     * Optional container that can be used for dependency injection when
-     * instantiating attributes or passing to attribute handlers.
-     *
-     * @var mixed
-     */
-    private $container;
-
-    /**
      * Constructor.
      *
      * Initializes the AttributeProcessor with an optional dependency injection container.
      *
      * @param  mixed  $container  Optional dependency injection container
      */
-    public function __construct($container = null)
-    {
-        $this->container = $container;
-    }
+    public function __construct(
+        /**
+         * Dependency injection container.
+         *
+         * Optional container that can be used for dependency injection when
+         * instantiating attributes or passing to attribute handlers.
+         */
+        private readonly mixed $container = null
+    ) {}
 
     public function process(object $instance): void
     {
@@ -128,7 +123,7 @@ class AttributeProcessor
 
             // If a hook is specified, defer processing to that hook
             if ($hook !== null) {
-                add_action($hook, function () use ($instance, $class) {
+                add_action($hook, function () use ($instance, $class): void {
                     $this->processInstance($instance, $class);
                 }, 10);
 
@@ -380,7 +375,7 @@ class AttributeProcessor
     public static function getCacheStats(): array
     {
         return [
-            'processed_instances_count' => self::$processedInstances ? self::$processedInstances->count() : 0,
+            'processed_instances_count' => self::$processedInstances instanceof \SplObjectStorage ? self::$processedInstances->count() : 0,
             'extracted_attributes_cache_count' => count(self::$extractedAttributesCache),
             'handle_methods_cache_count' => count(self::$handleMethodsCache),
         ];

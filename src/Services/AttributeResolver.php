@@ -35,13 +35,13 @@ class AttributeResolver
 
         // Resolve method-level attributes
         $methodAttributes = $this->resolveMethodAttributes($reflection);
-        foreach ($methodAttributes as $methodName => $attributes) {
+        foreach ($methodAttributes as $attributes) {
             $this->groupAttributesByDomain($attributes, $attributesByDomain, $limitToDomains);
         }
 
         // Sort by priority within each domain
-        foreach ($attributesByDomain as $domain => &$attributes) {
-            usort($attributes, fn ($a, $b) => $a['priority'] <=> $b['priority']);
+        foreach ($attributesByDomain as &$attributes) {
+            usort($attributes, fn ($a, $b): int => $a['priority'] <=> $b['priority']);
         }
 
         return $attributesByDomain;
@@ -95,7 +95,7 @@ class AttributeResolver
                 ];
             }
 
-            if (! empty($attributes)) {
+            if ($attributes !== []) {
                 $methodAttributes[$method->getName()] = $attributes;
             }
         }
@@ -119,7 +119,7 @@ class AttributeResolver
             $domain = $attributeData['domain'];
 
             // Apply domain filter if specified
-            if (! empty($limitToDomains) && ! in_array($domain, $limitToDomains)) {
+            if ($limitToDomains !== [] && ! in_array($domain, $limitToDomains)) {
                 continue;
             }
 
