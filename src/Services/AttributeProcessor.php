@@ -21,26 +21,6 @@ use ReflectionClass;
 class AttributeProcessor
 {
     /**
-     * The attribute registry for handler and domain management.
-     */
-    private AttributeRegistry $registry;
-
-    /**
-     * The attribute resolver for extracting and grouping attributes.
-     */
-    private AttributeResolver $resolver;
-
-    /**
-     * The attribute validator for compatibility checking.
-     */
-    private AttributeValidator $validator;
-
-    /**
-     * The attribute orchestrator for processing coordination.
-     */
-    private AttributeOrchestrator $orchestrator;
-
-    /**
      * Create a new AttributeProcessor instance.
      *
      * @param  AttributeRegistry  $registry  The attribute registry
@@ -48,17 +28,7 @@ class AttributeProcessor
      * @param  AttributeValidator  $validator  The attribute validator
      * @param  AttributeOrchestrator  $orchestrator  The attribute orchestrator
      */
-    public function __construct(
-        AttributeRegistry $registry,
-        AttributeResolver $resolver,
-        AttributeValidator $validator,
-        AttributeOrchestrator $orchestrator
-    ) {
-        $this->registry = $registry;
-        $this->resolver = $resolver;
-        $this->validator = $validator;
-        $this->orchestrator = $orchestrator;
-    }
+    public function __construct(AttributeRegistry $registry, private readonly AttributeResolver $resolver, private readonly AttributeValidator $validator, private readonly AttributeOrchestrator $orchestrator) {}
 
     /**
      * Processes all attributes of a class with domain isolation.
@@ -101,7 +71,7 @@ class AttributeProcessor
             $reflection = new ReflectionClass($className);
 
             // Check for class-level attributes
-            if (! empty($reflection->getAttributes())) {
+            if ($reflection->getAttributes() !== []) {
                 return true;
             }
 
@@ -113,7 +83,7 @@ class AttributeProcessor
             }
 
             return false;
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             return false;
         }
     }
@@ -148,7 +118,7 @@ class AttributeProcessor
         // Resolve only for the specific domain
         $attributesByDomain = $this->resolver->resolveAttributesByDomain($reflection, [$domain]);
 
-        if (empty($attributesByDomain)) {
+        if ($attributesByDomain === []) {
             return $context;
         }
 

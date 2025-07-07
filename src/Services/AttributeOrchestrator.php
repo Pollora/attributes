@@ -28,8 +28,8 @@ class AttributeOrchestrator
         AttributeContextInterface $context,
         array $attributesByDomain
     ): void {
-        foreach ($attributesByDomain as $domain => $attributes) {
-            $this->processDomain($container, $context, $domain, $attributes);
+        foreach ($attributesByDomain as $attributes) {
+            $this->processDomain($container, $context, $attributes);
         }
     }
 
@@ -38,13 +38,11 @@ class AttributeOrchestrator
      *
      * @param  mixed  $container  The dependency injection container
      * @param  AttributeContextInterface  $context  The attribute context
-     * @param  string  $domain  The domain being processed
      * @param  array  $attributes  List of attributes for the domain
      */
     private function processDomain(
         mixed $container,
         AttributeContextInterface $context,
-        string $domain,
         array $attributes
     ): void {
         foreach ($attributes as $attributeData) {
@@ -68,7 +66,7 @@ class AttributeOrchestrator
     private function processAttribute(
         mixed $container,
         AttributeContextInterface $context,
-        $reflection,
+        \ReflectionClass|\ReflectionMethod $reflection,
         object $attribute
     ): void {
         if ($attribute instanceof HandlesAttributes) {

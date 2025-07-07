@@ -24,26 +24,12 @@ class AttributeContext implements AttributeContextInterface
     private array $domainData = [];
 
     /**
-     * The original instance being processed.
-     */
-    private object $originalInstance;
-
-    /**
-     * The reflection class of the original instance.
-     */
-    private ReflectionClass $classReflection;
-
-    /**
      * Create a new AttributeContext instance.
      *
      * @param  object  $originalInstance  The original instance being processed
      * @param  ReflectionClass  $classReflection  The reflection class
      */
-    public function __construct(object $originalInstance, ReflectionClass $classReflection)
-    {
-        $this->originalInstance = $originalInstance;
-        $this->classReflection = $classReflection;
-    }
+    public function __construct(private readonly object $originalInstance, private readonly ReflectionClass $classReflection) {}
 
     /**
      * {@inheritDoc}

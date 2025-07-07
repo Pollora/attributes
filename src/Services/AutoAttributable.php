@@ -17,11 +17,6 @@ use ReflectionClass;
 class AutoAttributable implements Attributable
 {
     /**
-     * The wrapped instance.
-     */
-    private object $instance;
-
-    /**
      * Cached supported domains.
      *
      * @var array<string>|null
@@ -33,10 +28,7 @@ class AutoAttributable implements Attributable
      *
      * @param  object  $instance  The instance to wrap
      */
-    public function __construct(object $instance)
-    {
-        $this->instance = $instance;
-    }
+    public function __construct(private readonly object $instance) {}
 
     /**
      * {@inheritDoc}
@@ -121,7 +113,7 @@ class AutoAttributable implements Attributable
                     // No domain methods found, try to infer from class name
                     $domains = array_merge($domains, $this->inferDomainFromAttributeClass($attributeClass));
                 }
-            } catch (\Throwable $e) {
+            } catch (\Throwable) {
                 // If we can't instantiate the attribute, try to infer from class name
                 $domains = array_merge($domains, $this->inferDomainFromAttributeClass($attributeClass));
             }
@@ -140,11 +132,11 @@ class AutoAttributable implements Attributable
     {
         // Map common attribute classes to their domains
         $domainMappings = [
-            'Pollora\Attributes\PostType' => ['post_type'],
-            'Pollora\Attributes\Taxonomy' => ['taxonomy'],
-            'Pollora\Attributes\Action' => ['hook'],
-            'Pollora\Attributes\Filter' => ['hook'],
-            'Pollora\Attributes\Schedule' => ['hook'],
+            \Pollora\Attributes\PostType::class => ['post_type'],
+            \Pollora\Attributes\Taxonomy::class => ['taxonomy'],
+            \Pollora\Attributes\Action::class => ['hook'],
+            \Pollora\Attributes\Filter::class => ['hook'],
+            \Pollora\Attributes\Schedule::class => ['hook'],
         ];
 
         // Check for PostType sub-attributes
@@ -189,7 +181,7 @@ class AutoAttributable implements Attributable
      * @param  string  $property  The property name
      * @param  mixed  $value  The property value
      */
-    public function __set(string $property, $value): void
+    public function __set(string $property, mixed $value): void
     {
         $this->instance->$property = $value;
     }
