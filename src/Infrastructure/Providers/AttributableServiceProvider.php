@@ -7,8 +7,8 @@ namespace Pollora\Attributes\Infrastructure\Providers;
 use Illuminate\Support\ServiceProvider;
 use Pollora\Attributes\Attributable;
 use Pollora\Attributes\AttributeProcessor;
-use Pollora\Discovery\Application\Services\DiscoveryManager;
 use Pollora\Attributes\Infrastructure\Services\AttributableDiscovery;
+use Pollora\Discovery\Application\Services\DiscoveryManager;
 use Pollora\Discovery\Domain\Contracts\DiscoveryEngineInterface;
 
 /**
@@ -38,7 +38,7 @@ class AttributableServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerAttributableClasses();
-        
+
         // Register Attributable discovery with the discovery engine
         $this->registerAttributableDiscovery();
     }
@@ -53,7 +53,7 @@ class AttributableServiceProvider extends ServiceProvider
             $discoveryManager = $this->app->make(DiscoveryManager::class);
 
             // Check if attributable discovery is available
-            if (!$discoveryManager->hasDiscovery('attributable')) {
+            if (! $discoveryManager->hasDiscovery('attributable')) {
                 return;
             }
 
@@ -109,7 +109,7 @@ class AttributableServiceProvider extends ServiceProvider
             /** @var DiscoveryEngineInterface $engine */
             $engine = $this->app->make(DiscoveryEngineInterface::class);
             $attributableDiscovery = $this->app->make(AttributableDiscovery::class);
-            
+
             $engine->addDiscovery('attributable', $attributableDiscovery);
         }
     }

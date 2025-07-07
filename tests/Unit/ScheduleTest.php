@@ -12,7 +12,6 @@ use Pollora\Schedule\Interval;
  * Tests for the simplified Schedule attribute that now only contains properties
  * and delegates all processing logic to the ScheduleDiscovery service.
  */
-
 it('creates Schedule attribute with string recurrence', function () {
     $schedule = new Schedule('daily');
 
@@ -95,9 +94,9 @@ it('creates Schedule attribute with complex Interval and parameters', function (
 
 it('stores recurrence as readonly property', function () {
     $schedule = new Schedule('daily');
-    
+
     expect($schedule->recurrence)->toBe('daily');
-    
+
     // Verify property is readonly by checking it cannot be modified
     $reflection = new ReflectionClass($schedule);
     $property = $reflection->getProperty('recurrence');
@@ -106,9 +105,9 @@ it('stores recurrence as readonly property', function () {
 
 it('stores hook as readonly property', function () {
     $schedule = new Schedule('daily', 'test_hook');
-    
+
     expect($schedule->hook)->toBe('test_hook');
-    
+
     // Verify property is readonly
     $reflection = new ReflectionClass($schedule);
     $property = $reflection->getProperty('hook');
@@ -118,9 +117,9 @@ it('stores hook as readonly property', function () {
 it('stores args as readonly property', function () {
     $args = ['key' => 'value'];
     $schedule = new Schedule('daily', null, $args);
-    
+
     expect($schedule->args)->toBe($args);
-    
+
     // Verify property is readonly
     $reflection = new ReflectionClass($schedule);
     $property = $reflection->getProperty('args');
@@ -130,9 +129,9 @@ it('stores args as readonly property', function () {
 it('has correct PHP attribute configuration', function () {
     $reflection = new ReflectionClass(Schedule::class);
     $attributes = $reflection->getAttributes(Attribute::class);
-    
+
     expect($attributes)->toHaveCount(1);
-    
+
     $attribute = $attributes[0]->newInstance();
     expect($attribute->flags)->toBe(Attribute::TARGET_METHOD);
 });
@@ -140,19 +139,19 @@ it('has correct PHP attribute configuration', function () {
 it('accepts all supported recurrence types without validation', function () {
     // No validation should happen in the attribute constructor
     // All validation is now handled by ScheduleDiscovery
-    
+
     // String recurrence
     expect(fn () => new Schedule('daily'))->not->toThrow(Exception::class);
     expect(fn () => new Schedule('invalid_schedule'))->not->toThrow(Exception::class); // No validation
-    
+
     // Array recurrence
     expect(fn () => new Schedule(['interval' => 3600, 'display' => 'Valid']))->not->toThrow(Exception::class);
     expect(fn () => new Schedule(['invalid' => 'array']))->not->toThrow(Exception::class); // No validation
-    
+
     // Every enum
     expect(fn () => new Schedule(Every::HOUR))->not->toThrow(Exception::class);
     expect(fn () => new Schedule(Every::MONTH))->not->toThrow(Exception::class);
-    
+
     // Interval instance
     $interval = new Interval(minutes: 30);
     expect(fn () => new Schedule($interval))->not->toThrow(Exception::class);
