@@ -14,29 +14,13 @@ use Pollora\Support\Slug;
  * that has the main #[WpCli] attribute. It allows for multiple commands to be
  * defined within a single class, creating subcommands.
  *
- * Example:
- * ```php
- * #[WpCli('Hello command suite')]
- * class HelloCommand
- * {
- *     #[Command('Say hello to the world')] // slug auto-generated from method name
- *     public function world(array $arguments, array $options): void
- *     {
- *         WP_CLI::success('Hello, World!');
- *     }
+ * The command description is automatically extracted from the method's PHPDoc comment.
  *
- *     #[Command('Say hello to a user', 'custom-name')] // custom slug
- *     public function user(array $arguments, array $options): void
- *     {
- *         $name = $arguments[0] ?? 'there';
- *         WP_CLI::success("Hello, {$name}!");
- *     }
- * }
- * ```
- *
- * This would create:
- * - wp hello world
- * - wp hello custom-name
+ * Usage:
+ * - Use #[Command] for auto-generated subcommand slug from method name
+ * - Use #[Command('custom-slug')] for custom subcommand slug
+ * - Add PHPDoc comments to define subcommand description and help
+ * - Declare methods as private to avoid automatic exposure by WP CLI
  */
 #[Attribute(Attribute::TARGET_METHOD)]
 final class Command
@@ -44,11 +28,9 @@ final class Command
     /**
      * Create a new WP CLI Command attribute.
      *
-     * @param string $description The subcommand description
      * @param string|null $commandName Optional custom subcommand name/slug. If null, generated from method name.
      */
     public function __construct(
-        public readonly string $description,
         public readonly ?string $commandName = null
     ) {}
 
