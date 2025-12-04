@@ -28,7 +28,7 @@ final class Command
     /**
      * Create a new WP CLI Command attribute.
      *
-     * @param string|null $commandName Optional custom subcommand name/slug. If null, generated from method name.
+     * @param  string|null  $commandName  Optional custom subcommand name/slug. If null, generated from method name.
      */
     public function __construct(
         public readonly ?string $commandName = null
@@ -37,7 +37,7 @@ final class Command
     /**
      * Get the subcommand name, generating it from method name if not provided.
      *
-     * @param string $methodName The method name
+     * @param  string  $methodName  The method name
      * @return string The subcommand name/slug
      */
     public function getSubcommandName(string $methodName): string

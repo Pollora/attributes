@@ -22,8 +22,7 @@ class Priority extends TaxonomyAttribute
      */
     public function __construct(
         public readonly int $priority = 5
-    ) {
-    }
+    ) {}
 
     /**
      * Configure the post type priority declaration parameter.

@@ -18,7 +18,7 @@ final class When
     /**
      * Create a new When attribute.
      *
-     * @param string $hook The WP-CLI hook name to execute on
+     * @param  string  $hook  The WP-CLI hook name to execute on
      */
     public function __construct(
         public readonly string $hook

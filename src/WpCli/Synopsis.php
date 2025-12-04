@@ -18,7 +18,7 @@ final class Synopsis
     /**
      * Create a new Synopsis attribute.
      *
-     * @param string|array $synopsis The synopsis for the command
+     * @param  string|array  $synopsis  The synopsis for the command
      */
     public function __construct(
         public readonly string|array $synopsis

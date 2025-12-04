@@ -17,7 +17,7 @@ final class IsDeferred
     /**
      * Create a new Is Deferred attribute.
      *
-     * @param bool $deferred Whether the command addition should be deferred
+     * @param  bool  $deferred  Whether the command addition should be deferred
      */
     public function __construct(
         public readonly bool $deferred = true
