@@ -13,7 +13,7 @@ use Attribute;
  * Common hooks include: before_wp_load, after_wp_load, after_wp_config_load
  */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
-final class When
+final readonly class When
 {
     /**
      * Create a new When attribute.
@@ -21,6 +21,6 @@ final class When
      * @param  string  $hook  The WP-CLI hook name to execute on
      */
     public function __construct(
-        public readonly string $hook
+        public string $hook
     ) {}
 }

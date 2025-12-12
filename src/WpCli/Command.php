@@ -23,7 +23,7 @@ use Pollora\Support\Slug;
  * - Declare methods as private to avoid automatic exposure by WP CLI
  */
 #[Attribute(Attribute::TARGET_METHOD)]
-final class Command
+final readonly class Command
 {
     /**
      * Create a new WP CLI Command attribute.
@@ -31,7 +31,7 @@ final class Command
      * @param  string|null  $commandName  Optional custom subcommand name/slug. If null, generated from method name.
      */
     public function __construct(
-        public readonly ?string $commandName = null
+        public ?string $commandName = null
     ) {}
 
     /**

@@ -170,7 +170,7 @@ class AutoAttributable implements Attributable
      * @param  string  $property  The property name
      * @return mixed The property value
      */
-    public function __get(string $property)
+    public function __get(string $property): mixed
     {
         return $this->instance->$property;
     }

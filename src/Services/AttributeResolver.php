@@ -41,7 +41,7 @@ class AttributeResolver
 
         // Sort by priority within each domain
         foreach ($attributesByDomain as &$attributes) {
-            usort($attributes, fn ($a, $b): int => $a['priority'] <=> $b['priority']);
+            usort($attributes, fn (array $a, array $b): int => $a['priority'] <=> $b['priority']);
         }
 
         return $attributesByDomain;
