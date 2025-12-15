@@ -7,7 +7,7 @@ namespace Pollora\Attributes;
 /**
  * Marker interface that allows a class to be interpreted for PHP attributes.
  *
- * Classes implementing this interface can be processed by the AttributeProcessor
+ * Classes implementing this interface can be processed by discovery services
  * to analyze and handle their attributes dynamically.
  */
 interface Attributable {}
