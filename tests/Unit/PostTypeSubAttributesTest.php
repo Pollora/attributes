@@ -47,7 +47,7 @@ class ProductWithSubAttributes
     }
 }
 
-it('detects all class-level PostType attributes', function () {
+it('detects all class-level PostType attributes', function (): void {
     $reflection = new ReflectionClass(ProductWithSubAttributes::class);
 
     // Should detect PostType main attribute
@@ -67,7 +67,7 @@ it('detects all class-level PostType attributes', function () {
     expect($menuIconAttrs)->toHaveCount(1);
 });
 
-it('detects all method-level AdminCol attributes', function () {
+it('detects all method-level AdminCol attributes', function (): void {
     $reflection = new ReflectionClass(ProductWithSubAttributes::class);
 
     // Check price method
@@ -91,7 +91,7 @@ it('detects all method-level AdminCol attributes', function () {
     expect($nameAttrs)->toHaveCount(0);
 });
 
-it('extracts correct values from class-level attributes', function () {
+it('extracts correct values from class-level attributes', function (): void {
     $reflection = new ReflectionClass(ProductWithSubAttributes::class);
 
     // Extract PostType attribute
@@ -117,7 +117,7 @@ it('extracts correct values from class-level attributes', function () {
     expect($menuIcon->value)->toBe('dashicons-cart');
 });
 
-it('extracts correct values from method-level AdminCol attributes', function () {
+it('extracts correct values from method-level AdminCol attributes', function (): void {
     $reflection = new ReflectionClass(ProductWithSubAttributes::class);
 
     // Extract price AdminCol
@@ -148,7 +148,7 @@ it('extracts correct values from method-level AdminCol attributes', function () 
     expect($categoryAdminCol->sortable)->toBeFalse(); // Default value
 });
 
-it('supports multiple AdminCol attributes on different methods', function () {
+it('supports multiple AdminCol attributes on different methods', function (): void {
     $reflection = new ReflectionClass(ProductWithSubAttributes::class);
     $adminColMethods = [];
 
@@ -163,12 +163,12 @@ it('supports multiple AdminCol attributes on different methods', function () {
     expect($adminColMethods)->toHaveKeys(['getPriceColumn', 'getStockColumn', 'getCategoryColumn']);
 
     // Verify each column has unique key
-    $keys = array_map(fn ($adminCol) => $adminCol->key, $adminColMethods);
+    $keys = array_map(fn (AdminCol $adminCol): string => $adminCol->key, $adminColMethods);
     expect($keys)->toBe(['getPriceColumn' => 'price', 'getStockColumn' => 'stock', 'getCategoryColumn' => 'category']);
     expect(array_unique($keys))->toHaveCount(3); // All keys are unique
 });
 
-it('demonstrates attribute composition pattern', function () {
+it('demonstrates attribute composition pattern', function (): void {
     // This test demonstrates how the new system works:
     // 1. PostType attribute defines the main post type
     // 2. Sub-attributes (HasArchive, Supports, MenuIcon) configure post type settings
@@ -220,7 +220,7 @@ it('demonstrates attribute composition pattern', function () {
     expect($allMethodAttributes)->toHaveCount(3); // 3 AdminCol attributes
 });
 
-it('attributes have correct target configurations', function () {
+it('attributes have correct target configurations', function (): void {
     // Verify class-level attributes target classes
     $classLevelAttributes = [
         PostType::class,
@@ -253,19 +253,19 @@ it('attributes have correct target configurations', function () {
     }
 });
 
-it('demonstrates no validation in attributes', function () {
+it('demonstrates no validation in attributes', function (): void {
     // All attributes should accept any values without validation
     // Validation will be handled by PostTypeDiscovery
 
-    expect(fn () => new PostType('', '', ''))->not->toThrow(Exception::class);
-    expect(fn () => new HasArchive(''))->not->toThrow(Exception::class);
-    expect(fn () => new Supports([]))->not->toThrow(Exception::class);
-    expect(fn () => new MenuIcon(''))->not->toThrow(Exception::class);
-    expect(fn () => new AdminCol('', ''))->not->toThrow(Exception::class);
+    expect(fn (): PostType => new PostType('', '', ''))->not->toThrow(Exception::class);
+    expect(fn (): HasArchive => new HasArchive(''))->not->toThrow(Exception::class);
+    expect(fn (): Supports => new Supports([]))->not->toThrow(Exception::class);
+    expect(fn (): MenuIcon => new MenuIcon(''))->not->toThrow(Exception::class);
+    expect(fn (): AdminCol => new AdminCol('', ''))->not->toThrow(Exception::class);
 
     // Even completely invalid values should not throw
-    expect(fn () => new PostType('invalid slug with spaces', 'inv@lid', 'pl{ur}al'))->not->toThrow(Exception::class);
-    expect(fn () => new HasArchive(123))->not->toThrow(Exception::class); // Wrong type
-    expect(fn () => new Supports(['invalid-feature', '', null]))->not->toThrow(Exception::class);
-    expect(fn () => new MenuIcon(null))->not->toThrow(Exception::class); // Wrong type
+    expect(fn (): PostType => new PostType('invalid slug with spaces', 'inv@lid', 'pl{ur}al'))->not->toThrow(Exception::class);
+    expect(fn (): HasArchive => new HasArchive(123))->not->toThrow(Exception::class); // Wrong type
+    expect(fn (): Supports => new Supports(['invalid-feature', '', null]))->not->toThrow(Exception::class);
+    expect(fn (): MenuIcon => new MenuIcon(null))->not->toThrow(Exception::class); // Wrong type
 });

@@ -49,7 +49,7 @@ class TestProduct
     }
 }
 
-it('creates PostType attribute with all parameters', function () {
+it('creates PostType attribute with all parameters', function (): void {
     $postType = new PostType('custom-slug', 'Custom Type', 'Custom Types');
 
     expect($postType->slug)->toBe('custom-slug');
@@ -57,7 +57,7 @@ it('creates PostType attribute with all parameters', function () {
     expect($postType->plural)->toBe('Custom Types');
 });
 
-it('creates PostType attribute with only slug', function () {
+it('creates PostType attribute with only slug', function (): void {
     $postType = new PostType('events');
 
     expect($postType->slug)->toBe('events');
@@ -65,7 +65,7 @@ it('creates PostType attribute with only slug', function () {
     expect($postType->plural)->toBeNull();
 });
 
-it('creates PostType attribute with no parameters', function () {
+it('creates PostType attribute with no parameters', function (): void {
     $postType = new PostType;
 
     expect($postType->slug)->toBeNull();
@@ -73,7 +73,7 @@ it('creates PostType attribute with no parameters', function () {
     expect($postType->plural)->toBeNull();
 });
 
-it('stores PostType properties as readonly', function () {
+it('stores PostType properties as readonly', function (): void {
     $postType = new PostType('test');
 
     expect($postType->slug)->toBe('test');
@@ -89,72 +89,72 @@ it('stores PostType properties as readonly', function () {
     expect($pluralProperty->isReadOnly())->toBeTrue();
 });
 
-it('creates HasArchive attribute with default value', function () {
+it('creates HasArchive attribute with default value', function (): void {
     $hasArchive = new HasArchive;
 
     expect($hasArchive->value)->toBeTrue();
 });
 
-it('creates HasArchive attribute with custom slug', function () {
+it('creates HasArchive attribute with custom slug', function (): void {
     $hasArchive = new HasArchive('custom-archive');
 
     expect($hasArchive->value)->toBe('custom-archive');
 });
 
-it('creates HasArchive attribute disabled', function () {
+it('creates HasArchive attribute disabled', function (): void {
     $hasArchive = new HasArchive(false);
 
     expect($hasArchive->value)->toBeFalse();
 });
 
-it('creates Supports attribute with default features', function () {
+it('creates Supports attribute with default features', function (): void {
     $supports = new Supports;
 
     expect($supports->features)->toBe(['title', 'editor']);
 });
 
-it('creates Supports attribute with custom features', function () {
+it('creates Supports attribute with custom features', function (): void {
     $features = ['title', 'editor', 'thumbnail', 'excerpt'];
     $supports = new Supports($features);
 
     expect($supports->features)->toBe($features);
 });
 
-it('creates MenuIcon attribute with dashicon', function () {
+it('creates MenuIcon attribute with dashicon', function (): void {
     $menuIcon = new MenuIcon('dashicons-admin-post');
 
     expect($menuIcon->value)->toBe('dashicons-admin-post');
 });
 
-it('creates MenuIcon attribute with custom URL', function () {
+it('creates MenuIcon attribute with custom URL', function (): void {
     $menuIcon = new MenuIcon('https://example.com/icon.png');
 
     expect($menuIcon->value)->toBe('https://example.com/icon.png');
 });
 
-it('creates PubliclyQueryable attribute with default value', function () {
+it('creates PubliclyQueryable attribute with default value', function (): void {
     $publiclyQueryable = new PubliclyQueryable;
 
     expect($publiclyQueryable->value)->toBeTrue();
 });
 
-it('creates PubliclyQueryable attribute disabled', function () {
+it('creates PubliclyQueryable attribute disabled', function (): void {
     $publiclyQueryable = new PubliclyQueryable(false);
 
     expect($publiclyQueryable->value)->toBeFalse();
 });
 
-it('creates AdminCol attribute with all parameters', function () {
+it('creates AdminCol attribute with all parameters', function (): void {
     $adminCol = new AdminCol(
         'price',
         'Product Price',
         sortable: true,
-        width: 120,
         titleIcon: 'dashicons-money',
         dateFormat: 'd/m/Y',
         link: 'edit',
         cap: 'edit_posts',
-        default: 'ASC'
+        default: 'ASC',
+        width: 120
     );
 
     expect($adminCol->key)->toBe('price');
@@ -168,7 +168,7 @@ it('creates AdminCol attribute with all parameters', function () {
     expect($adminCol->default)->toBe('ASC');
 });
 
-it('creates AdminCol attribute with minimal parameters', function () {
+it('creates AdminCol attribute with minimal parameters', function (): void {
     $adminCol = new AdminCol('title', 'Title');
 
     expect($adminCol->key)->toBe('title');
@@ -182,7 +182,7 @@ it('creates AdminCol attribute with minimal parameters', function () {
     expect($adminCol->default)->toBeNull();
 });
 
-it('creates AdminCol attribute for meta fields', function () {
+it('creates AdminCol attribute for meta fields', function (): void {
     $adminCol = new AdminCol(
         'custom_price',
         'Price',
@@ -196,7 +196,7 @@ it('creates AdminCol attribute for meta fields', function () {
     expect($adminCol->metaKey)->toBe('product_price');
 });
 
-it('creates AdminCol attribute for taxonomy fields', function () {
+it('creates AdminCol attribute for taxonomy fields', function (): void {
     $adminCol = new AdminCol(
         'categories',
         'Categories',
@@ -208,7 +208,7 @@ it('creates AdminCol attribute for taxonomy fields', function () {
     expect($adminCol->taxonomy)->toBe('product_category');
 });
 
-it('creates AdminCol attribute for featured image', function () {
+it('creates AdminCol attribute for featured image', function (): void {
     $adminCol = new AdminCol(
         'image',
         'Featured Image',
@@ -222,13 +222,13 @@ it('creates AdminCol attribute for featured image', function () {
     expect($adminCol->width)->toBe(80);
 });
 
-it('creates RegisterMetaBoxCb attribute', function () {
+it('creates RegisterMetaBoxCb attribute', function (): void {
     $registerMetaBoxCb = new RegisterMetaBoxCb;
 
     expect($registerMetaBoxCb)->toBeInstanceOf(RegisterMetaBoxCb::class);
 });
 
-it('has correct PHP attribute configurations', function () {
+it('has correct PHP attribute configurations', function (): void {
     // Test PostType attribute configuration
     $postTypeReflection = new ReflectionClass(PostType::class);
     $postTypeAttributes = $postTypeReflection->getAttributes(Attribute::class);
@@ -254,7 +254,7 @@ it('has correct PHP attribute configurations', function () {
     expect($registerMetaBoxCbAttribute->flags)->toBe(Attribute::TARGET_METHOD);
 });
 
-it('test class has correct attributes applied', function () {
+it('test class has correct attributes applied', function (): void {
     $reflection = new ReflectionClass(TestProduct::class);
 
     // Check class-level attributes
@@ -281,7 +281,7 @@ it('test class has correct attributes applied', function () {
     expect($metaBoxAttrs)->toHaveCount(1);
 });
 
-it('attribute values can be extracted correctly', function () {
+it('attribute values can be extracted correctly', function (): void {
     $reflection = new ReflectionClass(TestProduct::class);
 
     // Extract PostType attribute values
@@ -309,26 +309,26 @@ it('attribute values can be extracted correctly', function () {
     expect($adminCol->title)->toBe('Price');
 });
 
-it('accepts all types without validation', function () {
+it('accepts all types without validation', function (): void {
     // No validation should happen in attribute constructors
     // All validation is now handled by PostTypeDiscovery
 
     // PostType with any values
-    expect(fn () => new PostType('', '', ''))->not->toThrow(Exception::class);
-    expect(fn () => new PostType('invalid slug', 'invalid name', 'invalid plural'))->not->toThrow(Exception::class);
+    expect(fn (): PostType => new PostType('', '', ''))->not->toThrow(Exception::class);
+    expect(fn (): PostType => new PostType('invalid slug', 'invalid name', 'invalid plural'))->not->toThrow(Exception::class);
 
     // HasArchive with any values
-    expect(fn () => new HasArchive(''))->not->toThrow(Exception::class);
-    expect(fn () => new HasArchive('invalid-archive'))->not->toThrow(Exception::class);
+    expect(fn (): HasArchive => new HasArchive(''))->not->toThrow(Exception::class);
+    expect(fn (): HasArchive => new HasArchive('invalid-archive'))->not->toThrow(Exception::class);
 
     // Supports with any array
-    expect(fn () => new Supports([]))->not->toThrow(Exception::class);
-    expect(fn () => new Supports(['invalid-feature']))->not->toThrow(Exception::class);
+    expect(fn (): Supports => new Supports([]))->not->toThrow(Exception::class);
+    expect(fn (): Supports => new Supports(['invalid-feature']))->not->toThrow(Exception::class);
 
     // MenuIcon with any string
-    expect(fn () => new MenuIcon(''))->not->toThrow(Exception::class);
-    expect(fn () => new MenuIcon('invalid-icon'))->not->toThrow(Exception::class);
+    expect(fn (): MenuIcon => new MenuIcon(''))->not->toThrow(Exception::class);
+    expect(fn (): MenuIcon => new MenuIcon('invalid-icon'))->not->toThrow(Exception::class);
 
     // AdminCol with any values
-    expect(fn () => new AdminCol('', ''))->not->toThrow(Exception::class);
+    expect(fn (): AdminCol => new AdminCol('', ''))->not->toThrow(Exception::class);
 });

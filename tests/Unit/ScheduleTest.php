@@ -12,7 +12,7 @@ use Pollora\Schedule\Interval;
  * Tests for the simplified Schedule attribute that now only contains properties
  * and delegates all processing logic to the ScheduleDiscovery service.
  */
-it('creates Schedule attribute with string recurrence', function () {
+it('creates Schedule attribute with string recurrence', function (): void {
     $schedule = new Schedule('daily');
 
     expect($schedule)->toBeInstanceOf(Schedule::class);
@@ -21,7 +21,7 @@ it('creates Schedule attribute with string recurrence', function () {
     expect($schedule->args)->toBe([]);
 });
 
-it('creates Schedule attribute with custom hook name', function () {
+it('creates Schedule attribute with custom hook name', function (): void {
     $schedule = new Schedule('hourly', 'custom_hook_name');
 
     expect($schedule->recurrence)->toBe('hourly');
@@ -29,7 +29,7 @@ it('creates Schedule attribute with custom hook name', function () {
     expect($schedule->args)->toBe([]);
 });
 
-it('creates Schedule attribute with arguments', function () {
+it('creates Schedule attribute with arguments', function (): void {
     $args = ['type' => 'full', 'force' => true];
     $schedule = new Schedule('daily', null, $args);
 
@@ -38,7 +38,7 @@ it('creates Schedule attribute with arguments', function () {
     expect($schedule->args)->toBe($args);
 });
 
-it('creates Schedule attribute with all parameters', function () {
+it('creates Schedule attribute with all parameters', function (): void {
     $args = ['batch_size' => 100];
     $schedule = new Schedule('weekly', 'weekly_cleanup', $args);
 
@@ -47,7 +47,7 @@ it('creates Schedule attribute with all parameters', function () {
     expect($schedule->args)->toBe($args);
 });
 
-it('creates Schedule attribute with array recurrence', function () {
+it('creates Schedule attribute with array recurrence', function (): void {
     $recurrence = ['interval' => 3600, 'display' => 'Every Hour'];
     $schedule = new Schedule($recurrence);
 
@@ -56,7 +56,7 @@ it('creates Schedule attribute with array recurrence', function () {
     expect($schedule->args)->toBe([]);
 });
 
-it('creates Schedule attribute with Every enum', function () {
+it('creates Schedule attribute with Every enum', function (): void {
     $schedule = new Schedule(Every::DAY);
 
     expect($schedule->recurrence)->toBe(Every::DAY);
@@ -64,8 +64,8 @@ it('creates Schedule attribute with Every enum', function () {
     expect($schedule->args)->toBe([]);
 });
 
-it('creates Schedule attribute with Interval instance', function () {
-    $interval = new Interval(hours: 2, minutes: 30);
+it('creates Schedule attribute with Interval instance', function (): void {
+    $interval = new Interval(minutes: 30, hours: 2);
     $schedule = new Schedule($interval);
 
     expect($schedule->recurrence)->toBe($interval);
@@ -73,7 +73,7 @@ it('creates Schedule attribute with Interval instance', function () {
     expect($schedule->args)->toBe([]);
 });
 
-it('creates Schedule attribute with complex Every enum and parameters', function () {
+it('creates Schedule attribute with complex Every enum and parameters', function (): void {
     $args = ['source' => 'api', 'limit' => 50];
     $schedule = new Schedule(Every::MONTH, 'monthly_sync', $args);
 
@@ -82,8 +82,8 @@ it('creates Schedule attribute with complex Every enum and parameters', function
     expect($schedule->args)->toBe($args);
 });
 
-it('creates Schedule attribute with complex Interval and parameters', function () {
-    $interval = new Interval(days: 1, hours: 12, minutes: 30);
+it('creates Schedule attribute with complex Interval and parameters', function (): void {
+    $interval = new Interval(minutes: 30, hours: 12, days: 1);
     $args = ['cleanup_type' => 'deep'];
     $schedule = new Schedule($interval, 'complex_cleanup', $args);
 
@@ -92,7 +92,7 @@ it('creates Schedule attribute with complex Interval and parameters', function (
     expect($schedule->args)->toBe($args);
 });
 
-it('stores recurrence as readonly property', function () {
+it('stores recurrence as readonly property', function (): void {
     $schedule = new Schedule('daily');
 
     expect($schedule->recurrence)->toBe('daily');
@@ -103,7 +103,7 @@ it('stores recurrence as readonly property', function () {
     expect($property->isReadOnly())->toBeTrue();
 });
 
-it('stores hook as readonly property', function () {
+it('stores hook as readonly property', function (): void {
     $schedule = new Schedule('daily', 'test_hook');
 
     expect($schedule->hook)->toBe('test_hook');
@@ -114,7 +114,7 @@ it('stores hook as readonly property', function () {
     expect($property->isReadOnly())->toBeTrue();
 });
 
-it('stores args as readonly property', function () {
+it('stores args as readonly property', function (): void {
     $args = ['key' => 'value'];
     $schedule = new Schedule('daily', null, $args);
 
@@ -126,7 +126,7 @@ it('stores args as readonly property', function () {
     expect($property->isReadOnly())->toBeTrue();
 });
 
-it('has correct PHP attribute configuration', function () {
+it('has correct PHP attribute configuration', function (): void {
     $reflection = new ReflectionClass(Schedule::class);
     $attributes = $reflection->getAttributes(Attribute::class);
 
@@ -136,23 +136,23 @@ it('has correct PHP attribute configuration', function () {
     expect($attribute->flags)->toBe(Attribute::TARGET_METHOD);
 });
 
-it('accepts all supported recurrence types without validation', function () {
+it('accepts all supported recurrence types without validation', function (): void {
     // No validation should happen in the attribute constructor
     // All validation is now handled by ScheduleDiscovery
 
     // String recurrence
-    expect(fn () => new Schedule('daily'))->not->toThrow(Exception::class);
-    expect(fn () => new Schedule('invalid_schedule'))->not->toThrow(Exception::class); // No validation
+    expect(fn (): Schedule => new Schedule('daily'))->not->toThrow(Exception::class);
+    expect(fn (): Schedule => new Schedule('invalid_schedule'))->not->toThrow(Exception::class); // No validation
 
     // Array recurrence
-    expect(fn () => new Schedule(['interval' => 3600, 'display' => 'Valid']))->not->toThrow(Exception::class);
-    expect(fn () => new Schedule(['invalid' => 'array']))->not->toThrow(Exception::class); // No validation
+    expect(fn (): Schedule => new Schedule(['interval' => 3600, 'display' => 'Valid']))->not->toThrow(Exception::class);
+    expect(fn (): Schedule => new Schedule(['invalid' => 'array']))->not->toThrow(Exception::class); // No validation
 
     // Every enum
-    expect(fn () => new Schedule(Every::HOUR))->not->toThrow(Exception::class);
-    expect(fn () => new Schedule(Every::MONTH))->not->toThrow(Exception::class);
+    expect(fn (): Schedule => new Schedule(Every::HOUR))->not->toThrow(Exception::class);
+    expect(fn (): Schedule => new Schedule(Every::MONTH))->not->toThrow(Exception::class);
 
     // Interval instance
     $interval = new Interval(minutes: 30);
-    expect(fn () => new Schedule($interval))->not->toThrow(Exception::class);
+    expect(fn (): Schedule => new Schedule($interval))->not->toThrow(Exception::class);
 });

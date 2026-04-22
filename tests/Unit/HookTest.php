@@ -24,43 +24,43 @@ class ConcreteHook extends Hook
     }
 }
 
-it('initializes with default priority', function () {
+it('initializes with default priority', function (): void {
     $hook = new ConcreteHook('test_hook');
     expect($hook->hook)->toBe('test_hook');
     expect($hook->priority)->toBe(10);
 });
 
-it('initializes with custom priority', function () {
+it('initializes with custom priority', function (): void {
     $hook = new ConcreteHook('test_hook', 20);
     expect($hook->hook)->toBe('test_hook');
     expect($hook->priority)->toBe(20);
 });
 
-it('stores hook name correctly', function () {
+it('stores hook name correctly', function (): void {
     $hookName = 'custom_hook_name';
     $hook = new ConcreteHook($hookName);
     expect($hook->hook)->toBe($hookName);
 });
 
-it('allows priority to be a negative number', function () {
+it('allows priority to be a negative number', function (): void {
     $priority = -1;
     $hook = new ConcreteHook('test_hook', $priority);
     expect($hook->priority)->toBe($priority);
 });
 
-it('allows priority to be zero', function () {
+it('allows priority to be zero', function (): void {
     $priority = 0;
     $hook = new ConcreteHook('test_hook', $priority);
     expect($hook->priority)->toBe($priority);
 });
 
-it('allows priority to be a large number', function () {
+it('allows priority to be a large number', function (): void {
     $priority = 9999;
     $hook = new ConcreteHook('test_hook', $priority);
     expect($hook->priority)->toBe($priority);
 });
 
-afterEach(function () {
+afterEach(function (): void {
     Mockery::close();
     Facade::clearResolvedInstances();
 });

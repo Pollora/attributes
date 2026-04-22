@@ -49,7 +49,7 @@ class ProductCategoryWithSubAttributes
     public function sanitizeTerms($terms): array
     {
         // Sanitize the terms
-        return array_map('sanitize_text_field', (array) $terms);
+        return array_map(sanitize_text_field(...), (array) $terms);
     }
 
     public function getTaxonomyName(): string
@@ -58,7 +58,7 @@ class ProductCategoryWithSubAttributes
     }
 }
 
-it('detects all class-level Taxonomy attributes', function () {
+it('detects all class-level Taxonomy attributes', function (): void {
     $reflection = new ReflectionClass(ProductCategoryWithSubAttributes::class);
 
     // Should detect Taxonomy main attribute
@@ -86,7 +86,7 @@ it('detects all class-level Taxonomy attributes', function () {
     expect($objectTypeAttrs)->toHaveCount(1);
 });
 
-it('detects all method-level callback attributes', function () {
+it('detects all method-level callback attributes', function (): void {
     $reflection = new ReflectionClass(ProductCategoryWithSubAttributes::class);
 
     // Check custom meta box method
@@ -114,7 +114,7 @@ it('detects all method-level callback attributes', function () {
     expect($nameCallbackAttrs)->toHaveCount(0);
 });
 
-it('extracts correct values from class-level attributes', function () {
+it('extracts correct values from class-level attributes', function (): void {
     $reflection = new ReflectionClass(ProductCategoryWithSubAttributes::class);
 
     // Extract Taxonomy attribute
@@ -147,7 +147,7 @@ it('extracts correct values from class-level attributes', function () {
     expect($objectType)->toBeInstanceOf(ObjectType::class);
 });
 
-it('extracts correct values from method-level callback attributes', function () {
+it('extracts correct values from method-level callback attributes', function (): void {
     $reflection = new ReflectionClass(ProductCategoryWithSubAttributes::class);
 
     // Extract MetaBoxCb
@@ -169,7 +169,7 @@ it('extracts correct values from method-level callback attributes', function () 
     expect($sanitizeCb)->toBeInstanceOf(MetaBoxSanitizeCb::class);
 });
 
-it('supports multiple callback attributes on different methods', function () {
+it('supports multiple callback attributes on different methods', function (): void {
     $reflection = new ReflectionClass(ProductCategoryWithSubAttributes::class);
     $callbackMethods = [];
 
@@ -180,7 +180,7 @@ it('supports multiple callback attributes on different methods', function () {
             $method->getAttributes(MetaBoxSanitizeCb::class)
         );
 
-        if (! empty($callbackAttrs)) {
+        if ($callbackAttrs !== []) {
             $callbackMethods[$method->getName()] = $callbackAttrs[0]->newInstance();
         }
     }
@@ -194,7 +194,7 @@ it('supports multiple callback attributes on different methods', function () {
     expect($callbackMethods['sanitizeTerms'])->toBeInstanceOf(MetaBoxSanitizeCb::class);
 });
 
-it('demonstrates attribute composition pattern for taxonomies', function () {
+it('demonstrates attribute composition pattern for taxonomies', function (): void {
     // This test demonstrates how the taxonomy attribute system works:
     // 1. Taxonomy attribute defines the main taxonomy
     // 2. Sub-attributes (Hierarchical, PublicTaxonomy, ShowUI, etc.) configure taxonomy settings
@@ -231,7 +231,7 @@ it('demonstrates attribute composition pattern for taxonomies', function () {
             $method->getAttributes(MetaBoxSanitizeCb::class)
         );
 
-        if (! empty($callbackAttrs)) {
+        if ($callbackAttrs !== []) {
             $callbackMethods[] = [
                 'method' => $method->getName(),
                 'attribute' => $callbackAttrs[0]->newInstance(),
@@ -255,7 +255,7 @@ it('demonstrates attribute composition pattern for taxonomies', function () {
     expect($allMethodAttributes)->toHaveCount(3); // 3 callback attributes
 });
 
-it('attributes have correct target configurations', function () {
+it('attributes have correct target configurations', function (): void {
     // Verify class-level attributes target classes
     $classLevelAttributes = [
         Taxonomy::class,
@@ -292,22 +292,22 @@ it('attributes have correct target configurations', function () {
     }
 });
 
-it('demonstrates no validation in attributes', function () {
+it('demonstrates no validation in attributes', function (): void {
     // All attributes should accept any values without validation
     // Validation will be handled by TaxonomyDiscovery
 
-    expect(fn () => new Taxonomy('', '', '', []))->not->toThrow(Throwable::class);
-    expect(fn () => new Hierarchical(false))->not->toThrow(Throwable::class);
-    expect(fn () => new PublicTaxonomy(false))->not->toThrow(Throwable::class);
-    expect(fn () => new ShowUI(false))->not->toThrow(Throwable::class);
-    expect(fn () => new ShowInRest(false))->not->toThrow(Throwable::class);
-    expect(fn () => new ObjectType([]))->not->toThrow(Throwable::class);
-    expect(fn () => new MetaBoxCb)->not->toThrow(Throwable::class);
-    expect(fn () => new UpdateCountCallback)->not->toThrow(Throwable::class);
-    expect(fn () => new MetaBoxSanitizeCb)->not->toThrow(Throwable::class);
+    expect(fn (): Taxonomy => new Taxonomy('', '', '', []))->not->toThrow(Throwable::class);
+    expect(fn (): Hierarchical => new Hierarchical(false))->not->toThrow(Throwable::class);
+    expect(fn (): PublicTaxonomy => new PublicTaxonomy(false))->not->toThrow(Throwable::class);
+    expect(fn (): ShowUI => new ShowUI(false))->not->toThrow(Throwable::class);
+    expect(fn (): ShowInRest => new ShowInRest(false))->not->toThrow(Throwable::class);
+    expect(fn (): ObjectType => new ObjectType([]))->not->toThrow(Throwable::class);
+    expect(fn (): MetaBoxCb => new MetaBoxCb)->not->toThrow(Throwable::class);
+    expect(fn (): UpdateCountCallback => new UpdateCountCallback)->not->toThrow(Throwable::class);
+    expect(fn (): MetaBoxSanitizeCb => new MetaBoxSanitizeCb)->not->toThrow(Throwable::class);
 
     // Even completely invalid values should not throw
-    expect(fn () => new Taxonomy('invalid slug with spaces', 'inv@lid', 'pl{ur}al', 'invalid'))->not->toThrow(Throwable::class);
-    expect(fn () => new Hierarchical('not-boolean'))->not->toThrow(Throwable::class); // Wrong type
-    expect(fn () => new ObjectType('not-array'))->not->toThrow(Throwable::class); // Wrong type
+    expect(fn (): Taxonomy => new Taxonomy('invalid slug with spaces', 'inv@lid', 'pl{ur}al', 'invalid'))->not->toThrow(Throwable::class);
+    expect(fn (): Hierarchical => new Hierarchical('not-boolean'))->not->toThrow(Throwable::class); // Wrong type
+    expect(fn (): ObjectType => new ObjectType('not-array'))->not->toThrow(Throwable::class); // Wrong type
 });
