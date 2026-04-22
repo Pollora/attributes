@@ -143,7 +143,7 @@ class Method implements HandlesAttributes
         }
 
         if (! class_exists($permissionCallback) || ! is_subclass_of($permissionCallback, Permission::class)) {
-            return fn (): \WP_Error => new WP_Error('rest_forbidden', __('Invalid permission handler.'), ['status' => 403]);
+            return fn (): WP_Error => new WP_Error('rest_forbidden', __('Invalid permission handler.'), ['status' => 403]);
         }
 
         return WpGlobals::wrap(function (WP_REST_Request $request) use ($permissionCallback): bool|\WP_Error {

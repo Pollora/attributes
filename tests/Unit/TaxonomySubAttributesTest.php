@@ -296,18 +296,18 @@ it('demonstrates no validation in attributes', function () {
     // All attributes should accept any values without validation
     // Validation will be handled by TaxonomyDiscovery
 
-    expect(fn () => new Taxonomy('', '', '', []))->not->toThrow(\Throwable::class);
-    expect(fn () => new Hierarchical(false))->not->toThrow(\Throwable::class);
-    expect(fn () => new PublicTaxonomy(false))->not->toThrow(\Throwable::class);
-    expect(fn () => new ShowUI(false))->not->toThrow(\Throwable::class);
-    expect(fn () => new ShowInRest(false))->not->toThrow(\Throwable::class);
-    expect(fn () => new ObjectType([]))->not->toThrow(\Throwable::class);
-    expect(fn () => new MetaBoxCb)->not->toThrow(\Throwable::class);
-    expect(fn () => new UpdateCountCallback)->not->toThrow(\Throwable::class);
-    expect(fn () => new MetaBoxSanitizeCb)->not->toThrow(\Throwable::class);
+    expect(fn () => new Taxonomy('', '', '', []))->not->toThrow(Throwable::class);
+    expect(fn () => new Hierarchical(false))->not->toThrow(Throwable::class);
+    expect(fn () => new PublicTaxonomy(false))->not->toThrow(Throwable::class);
+    expect(fn () => new ShowUI(false))->not->toThrow(Throwable::class);
+    expect(fn () => new ShowInRest(false))->not->toThrow(Throwable::class);
+    expect(fn () => new ObjectType([]))->not->toThrow(Throwable::class);
+    expect(fn () => new MetaBoxCb)->not->toThrow(Throwable::class);
+    expect(fn () => new UpdateCountCallback)->not->toThrow(Throwable::class);
+    expect(fn () => new MetaBoxSanitizeCb)->not->toThrow(Throwable::class);
 
     // Even completely invalid values should not throw
-    expect(fn () => new Taxonomy('invalid slug with spaces', 'inv@lid', 'pl{ur}al', 'invalid'))->not->toThrow(\Throwable::class);
-    expect(fn () => new Hierarchical('not-boolean'))->not->toThrow(\Throwable::class); // Wrong type
-    expect(fn () => new ObjectType('not-array'))->not->toThrow(\Throwable::class); // Wrong type
+    expect(fn () => new Taxonomy('invalid slug with spaces', 'inv@lid', 'pl{ur}al', 'invalid'))->not->toThrow(Throwable::class);
+    expect(fn () => new Hierarchical('not-boolean'))->not->toThrow(Throwable::class); // Wrong type
+    expect(fn () => new ObjectType('not-array'))->not->toThrow(Throwable::class); // Wrong type
 });
