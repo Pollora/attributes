@@ -43,7 +43,7 @@ class Method implements HandlesAttributes
     private function validateMethods(): void
     {
         foreach ($this->methods as $method) {
-            if (! in_array(strtoupper((string) $method), self::ALLOWED_METHODS)) {
+            if (! in_array(strtoupper((string) $method), self::ALLOWED_METHODS, true)) {
                 throw new InvalidArgumentException(
                     sprintf(
                         'Invalid HTTP method "%s". Allowed methods are: %s',
