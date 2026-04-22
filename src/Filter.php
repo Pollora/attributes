@@ -19,19 +19,6 @@ use ReflectionMethod;
 class Filter extends Hook
 {
     /**
-     * Constructor for the Filter attribute.
-     *
-     * @param  string  $hook  The name of the WordPress hook.
-     * @param  int  $priority  The priority of the hook.
-     */
-    public function __construct(
-        string $hook,
-        int $priority = 10
-    ) {
-        parent::__construct($hook, $priority);
-    }
-
-    /**
      * Handle the attribute processing.
      *
      * @param  object  $serviceLocator  Service locator used to resolve dependencies

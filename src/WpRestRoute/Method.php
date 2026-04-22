@@ -17,7 +17,7 @@ use WP_REST_Request;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class Method implements HandlesAttributes
 {
-    private const ALLOWED_METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
+    private const array ALLOWED_METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
 
     /**
      * Constructor for the Method attribute.
