@@ -11,14 +11,17 @@ use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
  * Attribute to set custom labels for a taxonomy.
  *
  * Labels provided here are merged with auto-generated labels,
- * allowing partial overrides. Use literal __() calls for extractible translations:
+ * allowing partial overrides with named parameters:
  *
  * ```php
  * #[Labels(
- *     allItems: __('All Categories', 'my-theme'),
- *     editItem: __('Edit Category', 'my-theme'),
+ *     allItems: 'All Categories',
+ *     editItem: 'Edit Category',
  * )]
  * ```
+ *
+ * For translatable labels, use withArgs() where __() can be
+ * evaluated at runtime (PHP attributes only accept constants).
  */
 #[Attribute(Attribute::TARGET_CLASS)]
 class Labels extends TaxonomyAttribute

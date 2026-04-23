@@ -11,14 +11,16 @@ use Pollora\PostType\Domain\Contracts\PostTypeAttributeInterface;
  * Attribute to set custom labels for a post type.
  *
  * Labels provided here are merged with auto-generated labels,
- * allowing partial overrides. Use literal __() calls for extractible translations:
+ * allowing partial overrides with named parameters:
  *
  * ```php
  * #[Labels(
- *     allItems: __('All Projects', 'my-theme'),
- *     addNew: __('Add Project', 'my-theme'),
+ *     allItems: 'All Projects',
+ *     addNew: 'Add Project',
  * )]
  * ```
+ *
+ * For runtime translations, use withArgs() in the class instead.
  */
 #[Attribute(Attribute::TARGET_CLASS)]
 class Labels extends PostTypeAttribute
