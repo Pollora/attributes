@@ -45,7 +45,8 @@ final readonly class Taxonomy
         public ?string $slug = null,
         public ?string $singular = null,
         public ?string $plural = null,
-        public array|string|null $objectType = null
+        public array|string|null $objectType = null,
+        public ?string $textDomain = null
     ) {}
 
 }
