@@ -8,32 +8,77 @@ use Attribute;
 use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
 
 /**
- * Attribute to set the label parameter for a taxonomy.
+ * Attribute to set custom labels for a taxonomy.
  *
- * The label parameter is a general name for the taxonomy, usually plural.
- * This is used in various places in the WordPress admin.
+ * Labels provided here are merged with auto-generated labels,
+ * allowing partial overrides. Use literal __() calls for extractible translations:
  *
- * @Attribute
+ * ```php
+ * #[Labels(
+ *     allItems: __('All Categories', 'my-theme'),
+ *     editItem: __('Edit Category', 'my-theme'),
+ * )]
+ * ```
  */
 #[Attribute(Attribute::TARGET_CLASS)]
 class Labels extends TaxonomyAttribute
 {
-    /**
-     * Constructor.
-     *
-     * @param  string  $value  The general name for the taxonomy, usually plural
-     */
-    public function __construct(
-        public readonly array $value
-    ) {}
+    /** @var array<string, string> */
+    private readonly array $labels;
 
-    /**
-     * Configure the taxonomy with the label parameter.
-     *
-     * @param  TaxonomyAttributeInterface  $taxonomy  The taxonomy to configure
-     */
+    public function __construct(
+        ?string $name = null,
+        ?string $singularName = null,
+        ?string $menuName = null,
+        ?string $allItems = null,
+        ?string $editItem = null,
+        ?string $viewItem = null,
+        ?string $updateItem = null,
+        ?string $addNewItem = null,
+        ?string $newItemName = null,
+        ?string $searchItems = null,
+        ?string $popularItems = null,
+        ?string $separateItemsWithCommas = null,
+        ?string $addOrRemoveItems = null,
+        ?string $chooseFromMostUsed = null,
+        ?string $notFound = null,
+        ?string $parentItem = null,
+        ?string $parentItemColon = null,
+        ?string $noTerms = null,
+        ?string $filterByItem = null,
+        ?string $itemsListNavigation = null,
+        ?string $itemsList = null,
+        ?string $backToItems = null,
+    ) {
+        $this->labels = array_filter([
+            'name' => $name,
+            'singular_name' => $singularName,
+            'menu_name' => $menuName,
+            'all_items' => $allItems,
+            'edit_item' => $editItem,
+            'view_item' => $viewItem,
+            'update_item' => $updateItem,
+            'add_new_item' => $addNewItem,
+            'new_item_name' => $newItemName,
+            'search_items' => $searchItems,
+            'popular_items' => $popularItems,
+            'separate_items_with_commas' => $separateItemsWithCommas,
+            'add_or_remove_items' => $addOrRemoveItems,
+            'choose_from_most_used' => $chooseFromMostUsed,
+            'not_found' => $notFound,
+            'parent_item' => $parentItem,
+            'parent_item_colon' => $parentItemColon,
+            'no_terms' => $noTerms,
+            'filter_by_item' => $filterByItem,
+            'items_list_navigation' => $itemsListNavigation,
+            'items_list' => $itemsList,
+            'back_to_items' => $backToItems,
+        ], fn (?string $v): bool => $v !== null);
+    }
+
     protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
-        $taxonomy->attributeArgs['labels'] = $this->value;
+        $existing = $taxonomy->attributeArgs['labels'] ?? [];
+        $taxonomy->attributeArgs['labels'] = array_merge($existing, $this->labels);
     }
 }
