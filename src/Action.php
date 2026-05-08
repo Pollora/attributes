@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes;
 
 use Attribute;
-use Pollora\Hook\Infrastructure\Services\Action as ActionService;
+use Pollora\Hook\Domain\Contracts\Action as ActionService;
 use ReflectionClass;
 use ReflectionMethod;
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes;
 
 use Attribute;
-use Pollora\Hook\Infrastructure\Services\Filter as FilterService;
+use Pollora\Hook\Domain\Contracts\Filter as FilterService;
 use ReflectionClass;
 use ReflectionMethod;
 
