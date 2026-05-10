@@ -19,7 +19,7 @@ describe('Interval', function (): void {
     });
 
     it('returns zero for empty interval', function (): void {
-        $interval = new Interval();
+        $interval = new Interval;
 
         expect($interval->totalSeconds())->toBe(0);
     });
