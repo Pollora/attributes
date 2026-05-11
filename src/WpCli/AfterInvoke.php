@@ -17,8 +17,6 @@ final readonly class AfterInvoke
 {
     /**
      * Create a new After Invoke attribute.
-     *
-     * @param  string|callable  $callback  The callback to execute after command invocation
      */
     public function __construct(
         public string|array $callback

@@ -17,8 +17,6 @@ class Priority extends PostTypeAttribute
 {
     /**
      * Constructor.
-     *
-     * @param  init  $priority  The post type priority declaration
      */
     public function __construct(
         public readonly int $priority = 5

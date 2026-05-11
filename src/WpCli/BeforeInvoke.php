@@ -17,8 +17,6 @@ final readonly class BeforeInvoke
 {
     /**
      * Create a new Before Invoke attribute.
-     *
-     * @param  string|callable  $callback  The callback to execute before command invocation
      */
     public function __construct(
         public string|array $callback
