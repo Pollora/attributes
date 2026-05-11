@@ -125,7 +125,7 @@ class Method implements HandlesAttributes
     {
         preg_match_all('/\(\?P<(\w+)>/', $route, $matches);
 
-        return array_fill_keys($matches[1] ?? [], [
+        return array_fill_keys($matches[1], [
             'validate_callback' => fn ($param): bool => is_string($param) || is_numeric($param),
         ]);
     }

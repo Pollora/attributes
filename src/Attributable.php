@@ -9,5 +9,9 @@ namespace Pollora\Attributes;
  *
  * Classes implementing this interface can be processed by discovery services
  * to analyze and handle their attributes dynamically.
+ *
+ * @property string|null $classPermission
+ * @property string $namespace
+ * @property string $route
  */
 interface Attributable {}
