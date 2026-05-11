@@ -35,6 +35,6 @@ class QuickEdit extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['quick_edit'] = $this->value;
+        $postType->setArg('quick_edit', $this->value);
     }
 }

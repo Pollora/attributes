@@ -34,6 +34,6 @@ class MapMetaCap extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['map_meta_cap'] = $this->value;
+        $postType->setArg('map_meta_cap', $this->value);
     }
 }

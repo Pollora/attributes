@@ -34,6 +34,6 @@ class MenuIcon extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['menu_icon'] = $this->value;
+        $postType->setArg('menu_icon', $this->value);
     }
 }

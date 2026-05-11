@@ -31,6 +31,6 @@ class ShowInRest extends TaxonomyAttribute
      */
     protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
-        $taxonomy->attributeArgs['show_in_rest'] = $this->value;
+        $taxonomy->setArg('show_in_rest', $this->value);
     }
 }

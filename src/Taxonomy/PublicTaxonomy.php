@@ -34,6 +34,6 @@ class PublicTaxonomy extends TaxonomyAttribute
      */
     protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
-        $taxonomy->attributeArgs['public'] = $this->value;
+        $taxonomy->setArg('public', $this->value);
     }
 }

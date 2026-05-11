@@ -34,6 +34,6 @@ class Exclusive extends TaxonomyAttribute
      */
     protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
-        $taxonomy->attributeArgs['exclusive'] = $this->value;
+        $taxonomy->setArg('exclusive', $this->value);
     }
 }

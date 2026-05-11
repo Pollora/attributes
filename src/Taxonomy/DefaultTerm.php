@@ -31,6 +31,6 @@ class DefaultTerm extends TaxonomyAttribute
      */
     protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
-        $taxonomy->attributeArgs['default_term'] = $this->value;
+        $taxonomy->setArg('default_term', $this->value);
     }
 }

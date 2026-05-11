@@ -36,6 +36,6 @@ class QueryVar extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['query_var'] = $this->value;
+        $postType->setArg('query_var', $this->value);
     }
 }

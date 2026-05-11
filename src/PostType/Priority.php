@@ -29,6 +29,6 @@ class Priority extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['priority'] = $this->priority;
+        $postType->setArg('priority', $this->priority);
     }
 }

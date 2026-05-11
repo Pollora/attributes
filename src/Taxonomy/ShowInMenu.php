@@ -36,6 +36,6 @@ class ShowInMenu extends TaxonomyAttribute
      */
     protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
-        $taxonomy->attributeArgs['show_in_menu'] = $this->value;
+        $taxonomy->setArg('show_in_menu', $this->value);
     }
 }

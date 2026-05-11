@@ -34,6 +34,6 @@ class Archive extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['archive'] = $this->value;
+        $postType->setArg('archive', $this->value);
     }
 }

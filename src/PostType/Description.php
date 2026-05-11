@@ -34,6 +34,6 @@ class Description extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['description'] = $this->value;
+        $postType->setArg('description', $this->value);
     }
 }

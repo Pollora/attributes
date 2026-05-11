@@ -81,7 +81,7 @@ class Labels extends TaxonomyAttribute
 
     protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
-        $existing = $taxonomy->attributeArgs['labels'] ?? [];
-        $taxonomy->attributeArgs['labels'] = array_merge($existing, $this->labels);
+        $existing = $taxonomy->getArg('labels', []);
+        $taxonomy->setArg('labels', array_merge($existing, $this->labels));
     }
 }

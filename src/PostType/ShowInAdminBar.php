@@ -34,6 +34,6 @@ class ShowInAdminBar extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['show_in_admin_bar'] = $this->value;
+        $postType->setArg('show_in_admin_bar', $this->value);
     }
 }

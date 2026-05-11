@@ -34,6 +34,6 @@ class RestNamespace extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['rest_namespace'] = $this->value;
+        $postType->setArg('rest_namespace', $this->value);
     }
 }

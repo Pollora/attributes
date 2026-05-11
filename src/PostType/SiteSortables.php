@@ -34,6 +34,6 @@ class SiteSortables extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['site_sortables'] = $this->value;
+        $postType->setArg('site_sortables', $this->value);
     }
 }

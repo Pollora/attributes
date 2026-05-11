@@ -34,6 +34,6 @@ class RestBase extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['rest_base'] = $this->value;
+        $postType->setArg('rest_base', $this->value);
     }
 }

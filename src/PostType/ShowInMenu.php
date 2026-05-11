@@ -36,6 +36,6 @@ class ShowInMenu extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['show_in_menu'] = $this->value;
+        $postType->setArg('show_in_menu', $this->value);
     }
 }

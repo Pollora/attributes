@@ -34,6 +34,6 @@ class FeaturedImage extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['featured_image'] = $this->value;
+        $postType->setArg('featured_image', $this->value);
     }
 }

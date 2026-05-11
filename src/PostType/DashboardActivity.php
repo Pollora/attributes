@@ -35,6 +35,6 @@ class DashboardActivity extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['dashboard_activity'] = $this->value;
+        $postType->setArg('dashboard_activity', $this->value);
     }
 }

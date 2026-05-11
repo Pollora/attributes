@@ -37,8 +37,8 @@ class Chronological extends PostTypeAttribute
     {
         if ($this->value) {
             // Set default ordering to date, descending
-            $postType->attributeArgs['orderby'] = 'date';
-            $postType->attributeArgs['order'] = 'DESC';
+            $postType->setArg('orderby', 'date');
+            $postType->setArg('order', 'DESC');
         }
     }
 }

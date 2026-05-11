@@ -35,6 +35,6 @@ class DeleteWithUser extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['delete_with_user'] = $this->value;
+        $postType->setArg('delete_with_user', $this->value);
     }
 }

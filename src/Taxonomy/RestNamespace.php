@@ -31,6 +31,6 @@ class RestNamespace extends TaxonomyAttribute
      */
     protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
-        $taxonomy->attributeArgs['rest_namespace'] = $this->value;
+        $taxonomy->setArg('rest_namespace', $this->value);
     }
 }

@@ -34,6 +34,6 @@ class AdminCols extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['admin_cols'] = $this->value;
+        $postType->setArg('admin_cols', $this->value);
     }
 }

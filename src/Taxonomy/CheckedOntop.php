@@ -32,6 +32,6 @@ class CheckedOntop extends TaxonomyAttribute
      */
     protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
-        $taxonomy->attributeArgs['checked_ontop'] = $this->value;
+        $taxonomy->setArg('checked_ontop', $this->value);
     }
 }

@@ -29,6 +29,6 @@ class Priority extends TaxonomyAttribute
      */
     protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
-        $taxonomy->attributeArgs['priority'] = $this->priority;
+        $taxonomy->setArg('priority', $this->priority);
     }
 }

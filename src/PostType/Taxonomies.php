@@ -34,6 +34,6 @@ class Taxonomies extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['taxonomies'] = $this->value;
+        $postType->setArg('taxonomies', $this->value);
     }
 }
