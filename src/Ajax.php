@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes;
 
 use Attribute;
-use Pollora\Ajax\AjaxAccess;
+use Pollora\Ajax\Domain\Model\AjaxAccess;
 use Pollora\Ajax\Infrastructure\Services\AjaxDiscovery;
 
 /**
