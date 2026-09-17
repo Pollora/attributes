@@ -34,6 +34,6 @@ class Hierarchical extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['hierarchical'] = $this->value;
+        $postType->setArg('hierarchical', $this->value);
     }
 }

@@ -34,6 +34,6 @@ class PublicPostType extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['public'] = $this->value;
+        $postType->setArg('public', $this->value);
     }
 }

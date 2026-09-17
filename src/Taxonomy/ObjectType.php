@@ -31,6 +31,6 @@ class ObjectType extends TaxonomyAttribute
      */
     protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
-        $taxonomy->attributeArgs['object_type'] = $this->value;
+        $taxonomy->setArg('object_type', $this->value);
     }
 }

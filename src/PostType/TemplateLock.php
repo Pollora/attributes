@@ -36,6 +36,6 @@ class TemplateLock extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['template_lock'] = $this->value;
+        $postType->setArg('template_lock', $this->value);
     }
 }

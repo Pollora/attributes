@@ -34,6 +34,6 @@ class Capabilities extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['capabilities'] = $this->value;
+        $postType->setArg('capabilities', $this->value);
     }
 }

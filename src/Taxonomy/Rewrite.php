@@ -31,6 +31,6 @@ class Rewrite extends TaxonomyAttribute
      */
     protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
-        $taxonomy->attributeArgs['rewrite'] = $this->value;
+        $taxonomy->setArg('rewrite', $this->value);
     }
 }

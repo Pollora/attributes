@@ -33,6 +33,6 @@ class DashboardGlance extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['dashboard_glance'] = $this->value;
+        $postType->setArg('dashboard_glance', $this->value);
     }
 }

@@ -28,11 +28,13 @@ class PostType
      * @param  string|null  $slug  The post type slug. If null, auto-generated from class name using kebab-case
      * @param  string|null  $singular  The singular name for the post type. If null, auto-generated from class name
      * @param  string|null  $plural  The plural name for the post type. If null, auto-pluralized from singular name
+     * @param  string|null  $textDomain  The text domain for i18n. If null, defaults to 'pollora'
      */
     public function __construct(
         public readonly ?string $slug = null,
         public readonly ?string $singular = null,
-        public readonly ?string $plural = null
+        public readonly ?string $plural = null,
+        public readonly ?string $textDomain = null
     ) {
         // No validation here - will be handled by PostTypeDiscovery
     }

@@ -34,6 +34,6 @@ class AllowHierarchy extends TaxonomyAttribute
      */
     protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
-        $taxonomy->attributeArgs['allow_hierarchy'] = $this->value;
+        $taxonomy->setArg('allow_hierarchy', $this->value);
     }
 }

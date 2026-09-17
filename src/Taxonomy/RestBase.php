@@ -31,6 +31,6 @@ class RestBase extends TaxonomyAttribute
      */
     protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
-        $taxonomy->attributeArgs['rest_base'] = $this->value;
+        $taxonomy->setArg('rest_base', $this->value);
     }
 }

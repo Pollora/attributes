@@ -34,6 +34,6 @@ class ShowInNavMenus extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['show_in_nav_menus'] = $this->value;
+        $postType->setArg('show_in_nav_menus', $this->value);
     }
 }

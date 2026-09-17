@@ -31,6 +31,6 @@ class Sort extends TaxonomyAttribute
      */
     protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
-        $taxonomy->attributeArgs['sort'] = $this->value;
+        $taxonomy->setArg('sort', $this->value);
     }
 }

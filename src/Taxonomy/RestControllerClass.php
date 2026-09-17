@@ -31,6 +31,6 @@ class RestControllerClass extends TaxonomyAttribute
      */
     protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
-        $taxonomy->attributeArgs['rest_controller_class'] = $this->value;
+        $taxonomy->setArg('rest_controller_class', $this->value);
     }
 }

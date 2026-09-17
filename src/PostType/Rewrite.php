@@ -36,6 +36,6 @@ class Rewrite extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['rewrite'] = $this->value;
+        $postType->setArg('rewrite', $this->value);
     }
 }

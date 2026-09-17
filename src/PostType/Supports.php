@@ -33,6 +33,6 @@ class Supports extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['supports'] = $this->features;
+        $postType->setArg('supports', $this->features);
     }
 }

@@ -31,6 +31,6 @@ class Hierarchical extends TaxonomyAttribute
      */
     protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
-        $taxonomy->attributeArgs['hierarchical'] = $this->value;
+        $taxonomy->setArg('hierarchical', $this->value);
     }
 }

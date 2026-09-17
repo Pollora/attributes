@@ -31,6 +31,6 @@ class QueryVar extends TaxonomyAttribute
      */
     protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
-        $taxonomy->attributeArgs['query_var'] = $this->value;
+        $taxonomy->setArg('query_var', $this->value);
     }
 }

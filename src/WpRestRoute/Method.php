@@ -125,7 +125,7 @@ class Method implements HandlesAttributes
     {
         preg_match_all('/\(\?P<(\w+)>/', $route, $matches);
 
-        return array_fill_keys($matches[1] ?? [], [
+        return array_fill_keys($matches[1], [
             'validate_callback' => fn ($param): bool => is_string($param) || is_numeric($param),
         ]);
     }
@@ -146,7 +146,7 @@ class Method implements HandlesAttributes
             return fn (): WP_Error => new WP_Error('rest_forbidden', __('Invalid permission handler.'), ['status' => 403]);
         }
 
-        return WpGlobals::wrap(function (WP_REST_Request $request) use ($permissionCallback): bool|\WP_Error {
+        return WpGlobals::wrap(function (WP_REST_Request $request) use ($permissionCallback): bool|WP_Error {
             $permissionInstance = new $permissionCallback;
 
             return $permissionInstance->allow($request);

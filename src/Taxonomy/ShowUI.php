@@ -31,6 +31,6 @@ class ShowUI extends TaxonomyAttribute
      */
     protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
-        $taxonomy->attributeArgs['show_ui'] = $this->value;
+        $taxonomy->setArg('show_ui', $this->value);
     }
 }

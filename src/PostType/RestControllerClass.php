@@ -34,6 +34,6 @@ class RestControllerClass extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['rest_controller_class'] = $this->value;
+        $postType->setArg('rest_controller_class', $this->value);
     }
 }

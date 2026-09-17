@@ -17,8 +17,6 @@ class Priority extends TaxonomyAttribute
 {
     /**
      * Constructor.
-     *
-     * @param  init  $priority  The taxonomy priority declaration
      */
     public function __construct(
         public readonly int $priority = 5
@@ -31,6 +29,6 @@ class Priority extends TaxonomyAttribute
      */
     protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
-        $taxonomy->attributeArgs['priority'] = $this->priority;
+        $taxonomy->setArg('priority', $this->priority);
     }
 }

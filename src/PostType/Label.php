@@ -34,6 +34,6 @@ class Label extends PostTypeAttribute
      */
     protected function configure(PostTypeAttributeInterface $postType): void
     {
-        $postType->attributeArgs['label'] = $this->value;
+        $postType->setArg('label', $this->value);
     }
 }

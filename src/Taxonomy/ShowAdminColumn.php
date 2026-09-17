@@ -31,6 +31,6 @@ class ShowAdminColumn extends TaxonomyAttribute
      */
     protected function configure(TaxonomyAttributeInterface $taxonomy): void
     {
-        $taxonomy->attributeArgs['show_admin_column'] = $this->value;
+        $taxonomy->setArg('show_admin_column', $this->value);
     }
 }
