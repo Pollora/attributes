@@ -105,14 +105,42 @@ class Method implements HandlesAttributes
         $args = [];
 
         foreach ($method->getParameters() as $param) {
-            $paramName = $param->getName();
-            $args[] = $request->get_param($paramName);
+            // A WP_REST_Request type hint gets the request itself. Looking its
+            // name up among the route parameters found nothing — no route
+            // declares one called "request" — so the handler was invoked with
+            // null and a controller declaring the type fataled before running.
+            if ($this->expectsTheRequest($param)) {
+                $args[] = $request;
+
+                continue;
+            }
+
+            $args[] = $request->get_param($param->getName());
         }
 
         // Get the real instance if available, otherwise use the provided instance
         $realInstance = method_exists($instance, 'getRealInstance') ? $instance->getRealInstance() : $instance;
 
         return $method->invoke($realInstance, ...$args);
+    }
+
+    /**
+     * Whether a parameter asks for the request object rather than a route value.
+     */
+    private function expectsTheRequest(\ReflectionParameter $param): bool
+    {
+        $type = $param->getType();
+
+        if (! $type instanceof \ReflectionNamedType || $type->isBuiltin()) {
+            return false;
+        }
+
+        $name = $type->getName();
+
+        // The name comparison stands on its own: ::class resolves whether or
+        // not WordPress is loaded, so this holds outside a WordPress runtime.
+        return $name === WP_REST_Request::class
+            || is_a($name, WP_REST_Request::class, true);
     }
 
     /**
