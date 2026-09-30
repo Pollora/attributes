@@ -332,3 +332,13 @@ it('accepts all types without validation', function (): void {
     // AdminCol with any values
     expect(fn (): AdminCol => new AdminCol('', ''))->not->toThrow(Exception::class);
 });
+
+test('resolveSlug returns the explicit slug', function (): void {
+    expect((new PostType('synthese-presse'))->resolveSlug('App\\Cms\\PostTypes\\SyntheseDePresse'))
+        ->toBe('synthese-presse');
+});
+
+test('resolveSlug derives the slug from the class name, cut to 20 characters', function (): void {
+    expect((new PostType)->resolveSlug('App\\Cms\\PostTypes\\SyntheseDePresse'))->toBe('synthese-de-presse')
+        ->and((new PostType)->resolveSlug('App\\VeryLongPostTypeClassName'))->toBe('very-long-post-type-');
+});
