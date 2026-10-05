@@ -30,11 +30,13 @@ final readonly class Role
      * @param  string|null  $label  The name shown in the admin. Defaults to the class name, humanized
      * @param  string|null  $inherits  A role whose capabilities are the starting point: a slug, or the class of a #[Role]
      * @param  bool  $allowSensitive  Required to grant a sensitive capability (manage_options, edit_users…)
+     * @param  string|null  $textDomain  The text domain the label is translated with in the admin, such as the declaring theme's or plugin's
      */
     public function __construct(
         public string $slug,
         public ?string $label = null,
         public ?string $inherits = null,
         public bool $allowSensitive = false,
+        public ?string $textDomain = null,
     ) {}
 }
