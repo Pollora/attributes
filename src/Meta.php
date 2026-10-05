@@ -10,7 +10,8 @@ use Illuminate\Support\Str;
 /**
  * Meta Attribute
  *
- * Marks a public typed property of a `#[PostType]` or `#[Taxonomy]` class as a
+ * Marks a public typed property of a `#[PostType]`, `#[Taxonomy]`, `#[PostMeta]`,
+ * `#[TermMeta]`, `#[UserMeta]` or `#[CommentMeta]` class as a
  * WordPress meta. The property type gives the meta type, its initial value the
  * default and its name the key:
  *
