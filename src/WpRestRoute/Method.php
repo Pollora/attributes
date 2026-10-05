@@ -23,13 +23,13 @@ class Method implements HandlesAttributes
      * Constructor for the Method attribute.
      *
      * @param  array|string  $methods  The HTTP methods allowed for this route.
-     * @param  string|null  $permissionCallback  The callback function to check permissions for the route.
+     * @param  class-string<Permission>|Permission|null  $permissionCallback  The permission for this method, replacing the route's: a Permission class, or an instance such as `new Can('edit_posts')`.
      *
      * @throws InvalidArgumentException If an invalid HTTP method is provided.
      */
     public function __construct(
         public array|string $methods,
-        public ?string $permissionCallback = null
+        public string|Permission|null $permissionCallback = null
     ) {
         $this->methods = is_array($methods) ? $methods : [$methods];
         $this->validateMethods();
@@ -161,21 +161,21 @@ class Method implements HandlesAttributes
     /**
      * Resolves and executes the permission callback.
      *
-     * @param  string|null  $permissionCallback  The permission class to use
+     * @param  class-string<Permission>|Permission|null  $permissionCallback  The permission class or instance to use
      * @return callable The permission function
      */
-    private function resolvePermissionCallback(?string $permissionCallback): callable
+    private function resolvePermissionCallback(string|Permission|null $permissionCallback): callable
     {
         if ($permissionCallback === null) {
             return '__return_true';
         }
 
-        if (! class_exists($permissionCallback) || ! is_subclass_of($permissionCallback, Permission::class)) {
+        if (is_string($permissionCallback) && (! class_exists($permissionCallback) || ! is_subclass_of($permissionCallback, Permission::class))) {
             return fn (): WP_Error => new WP_Error('rest_forbidden', __('Invalid permission handler.'), ['status' => 403]);
         }
 
         return WpGlobals::wrap(function (WP_REST_Request $request) use ($permissionCallback): bool|WP_Error {
-            $permissionInstance = new $permissionCallback;
+            $permissionInstance = is_string($permissionCallback) ? new $permissionCallback : $permissionCallback;
 
             return $permissionInstance->allow($request);
         });
