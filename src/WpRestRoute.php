@@ -6,6 +6,7 @@ namespace Pollora\Attributes;
 
 use Attribute;
 use Pollora\Attributes\Contracts\HandlesAttributes;
+use Pollora\Attributes\WpRestRoute\Permission;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -20,12 +21,12 @@ class WpRestRoute implements HandlesAttributes
      *
      * @param  string  $namespace  The namespace for the REST API route (e.g., "my-plugin/v1").
      * @param  string  $route  The specific route within the namespace (e.g., "/items").
-     * @param  string|null  $permissionCallback  Optional callback method name to check permissions for the route.
+     * @param  class-string<Permission>|Permission|null  $permissionCallback  The permission for the route: a Permission class, or an instance such as `new Can('edit_posts')`.
      */
     public function __construct(
         public readonly string $namespace,
         public readonly string $route,
-        public readonly ?string $permissionCallback = null
+        public readonly string|Permission|null $permissionCallback = null
     ) {}
 
     /**
