@@ -6,6 +6,7 @@ namespace Pollora\Attributes;
 
 use Attribute;
 use Illuminate\Support\Str;
+use Pollora\Meta\Domain\Enums\Control;
 
 /**
  * Meta Attribute
@@ -41,6 +42,9 @@ final readonly class Meta
      * @param  array<int, mixed>  $rules  Laravel validation rules, checked on writes from PHP and REST
      * @param  bool  $single  On an `array` property, false stores one row per item instead of one serialized array
      * @param  string|null  $items  On an `array` property, the item type: `'string'`, `'int'`, `'float'`, `'bool'` or a class. Defaults to the `@var list<…>` docblock
+     * @param  Control|null  $control  The input a UI driver should build. Defaults to one derived from the type
+     * @param  string|null  $group  The group of fields a UI driver puts the meta in
+     * @param  array<string, mixed>  $hints  Options passed as they are to UI drivers, by driver: `['acf' => ['wrapper' => ['width' => 50]]]`
      */
     public function __construct(
         public ?string $key = null,
@@ -53,6 +57,9 @@ final readonly class Meta
         public array $rules = [],
         public bool $single = true,
         public ?string $items = null,
+        public ?Control $control = null,
+        public ?string $group = null,
+        public array $hints = [],
     ) {}
 
     /**
