@@ -38,6 +38,7 @@ final readonly class Meta
      * @param  string|array{0: class-string|object, 1: string}|null  $sanitize  Callable replacing the sanitization derived from the type
      * @param  string|null  $capability  Capability required to write the meta through REST and the editor
      * @param  bool  $revisions  Versions the meta with post revisions (post types only)
+     * @param  array<int, mixed>  $rules  Laravel validation rules, checked on writes from PHP and REST
      */
     public function __construct(
         public ?string $key = null,
@@ -47,6 +48,7 @@ final readonly class Meta
         public string|array|null $sanitize = null,
         public ?string $capability = null,
         public bool $revisions = false,
+        public array $rules = [],
     ) {}
 
     /**
