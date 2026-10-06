@@ -45,6 +45,8 @@ final readonly class Meta
      * @param  Control|null  $control  The input a UI driver should build. Defaults to one derived from the type
      * @param  string|null  $group  The group of fields a UI driver puts the meta in
      * @param  array<string, mixed>  $hints  Options passed as they are to UI drivers, by driver: `['acf' => ['wrapper' => ['width' => 50]]]`
+     * @param  bool  $media  On an `int` property, the value is an attachment ID: a block binding gives its URL, alt text or caption
+     * @param  bool  $public  The value may be shown to anyone: required for a user meta to be read by the `pollora/author-meta` block binding
      */
     public function __construct(
         public ?string $key = null,
@@ -60,6 +62,8 @@ final readonly class Meta
         public ?Control $control = null,
         public ?string $group = null,
         public array $hints = [],
+        public bool $media = false,
+        public bool $public = false,
     ) {}
 
     /**
