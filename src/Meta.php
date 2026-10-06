@@ -39,6 +39,8 @@ final readonly class Meta
      * @param  string|null  $capability  Capability required to write the meta through REST and the editor
      * @param  bool  $revisions  Versions the meta with post revisions (post types only)
      * @param  array<int, mixed>  $rules  Laravel validation rules, checked on writes from PHP and REST
+     * @param  bool  $single  On an `array` property, false stores one row per item instead of one serialized array
+     * @param  string|null  $items  On an `array` property, the item type: `'string'`, `'int'`, `'float'`, `'bool'` or a class. Defaults to the `@var list<…>` docblock
      */
     public function __construct(
         public ?string $key = null,
@@ -49,6 +51,8 @@ final readonly class Meta
         public ?string $capability = null,
         public bool $revisions = false,
         public array $rules = [],
+        public bool $single = true,
+        public ?string $items = null,
     ) {}
 
     /**
