@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes;
 
 use Attribute;
+use Pollora\Hook\Application\Services\AsyncDeclarationFailures;
 use Pollora\Hook\Domain\Contract\Action as ActionService;
 use Pollora\Hook\Infrastructure\Services\AsyncAttributeRegistrar;
 use Psr\Log\LoggerInterface;
@@ -46,7 +47,10 @@ class Action extends Hook
         }
 
         // Asynchronously when the method or its class carries #[Async]
-        (new AsyncAttributeRegistrar($actionService, $this->logger($serviceLocator)))->register(
+        $logger = $this->optional($serviceLocator, LoggerInterface::class);
+        $failures = $this->optional($serviceLocator, AsyncDeclarationFailures::class);
+
+        (new AsyncAttributeRegistrar($actionService, $logger, $failures))->register(
             $attribute->hook,
             $instance,
             $context,
@@ -56,16 +60,21 @@ class Action extends Hook
     }
 
     /**
-     * The application logger, when the service locator provides one.
+     * A service the service locator may not provide: the logger, the record of ignored #[Async].
+     *
+     * @template T of object
+     *
+     * @param  class-string<T>  $class
+     * @return T|null
      */
-    private function logger(object $serviceLocator): ?LoggerInterface
+    private function optional(object $serviceLocator, string $class): ?object
     {
         try {
-            $logger = $serviceLocator->get(LoggerInterface::class);
+            $service = $serviceLocator->get($class);
         } catch (\Throwable) {
             return null;
         }
 
-        return $logger instanceof LoggerInterface ? $logger : null;
+        return $service instanceof $class ? $service : null;
     }
 }
