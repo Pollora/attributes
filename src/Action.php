@@ -6,6 +6,8 @@ namespace Pollora\Attributes;
 
 use Attribute;
 use Pollora\Hook\Domain\Contract\Action as ActionService;
+use Pollora\Hook\Infrastructure\Services\AsyncAttributeRegistrar;
+use Psr\Log\LoggerInterface;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -38,11 +40,32 @@ class Action extends Hook
             return;
         }
 
-        $actionService->add(
+        // #[Action] targets methods only
+        if (! $context instanceof ReflectionMethod) {
+            return;
+        }
+
+        // Asynchronously when the method or its class carries #[Async]
+        (new AsyncAttributeRegistrar($actionService, $this->logger($serviceLocator)))->register(
             $attribute->hook,
-            [$instance, $context->getName()],
+            $instance,
+            $context,
             $attribute->priority,
             $context->getNumberOfParameters()
         );
+    }
+
+    /**
+     * The application logger, when the service locator provides one.
+     */
+    private function logger(object $serviceLocator): ?LoggerInterface
+    {
+        try {
+            $logger = $serviceLocator->get(LoggerInterface::class);
+        } catch (\Throwable) {
+            return null;
+        }
+
+        return $logger instanceof LoggerInterface ? $logger : null;
     }
 }
