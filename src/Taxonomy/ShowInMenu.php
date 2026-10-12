@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\Taxonomy;
 
 use Attribute;
-use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
+use Pollora\Attributes\Contracts\ConfiguresArguments;
 
 /**
  * Attribute to set the show_in_menu parameter for a taxonomy.
@@ -18,7 +18,7 @@ use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
  * @Attribute
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class ShowInMenu extends TaxonomyAttribute
+class ShowInMenu implements ConfiguresArguments
 {
     /**
      * Constructor.
@@ -32,10 +32,13 @@ class ShowInMenu extends TaxonomyAttribute
     /**
      * Configure the taxonomy with the show_in_menu parameter.
      *
-     * @param  TaxonomyAttributeInterface  $taxonomy  The taxonomy to configure
+     * @param  array<string, mixed>  $arguments  The registration arguments gathered so far
+     * @return array<string, mixed>
      */
-    protected function configure(TaxonomyAttributeInterface $taxonomy): void
+    public function configureArguments(array $arguments): array
     {
-        $taxonomy->setArg('show_in_menu', $this->value);
+        $arguments['show_in_menu'] = $this->value;
+
+        return $arguments;
     }
 }

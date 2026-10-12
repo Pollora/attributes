@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\Taxonomy;
 
 use Attribute;
-use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
+use Pollora\Attributes\Contracts\ConfiguresArguments;
 
 /**
  * Attribute to set whether to display a column for the taxonomy on its post type listing screens.
@@ -13,7 +13,7 @@ use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
  * @Attribute
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class ShowAdminColumn extends TaxonomyAttribute
+class ShowAdminColumn implements ConfiguresArguments
 {
     /**
      * Constructor.
@@ -27,10 +27,13 @@ class ShowAdminColumn extends TaxonomyAttribute
     /**
      * Configure the taxonomy with the show_admin_column parameter.
      *
-     * @param  TaxonomyAttributeInterface  $taxonomy  The taxonomy to configure
+     * @param  array<string, mixed>  $arguments  The registration arguments gathered so far
+     * @return array<string, mixed>
      */
-    protected function configure(TaxonomyAttributeInterface $taxonomy): void
+    public function configureArguments(array $arguments): array
     {
-        $taxonomy->setArg('show_admin_column', $this->value);
+        $arguments['show_admin_column'] = $this->value;
+
+        return $arguments;
     }
 }

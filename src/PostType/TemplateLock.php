@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\PostType;
 
 use Attribute;
-use Pollora\PostType\Domain\Contracts\PostTypeAttributeInterface;
+use Pollora\Attributes\Contracts\ConfiguresArguments;
 
 /**
  * Attribute to set the template_lock parameter for a post type.
@@ -18,7 +18,7 @@ use Pollora\PostType\Domain\Contracts\PostTypeAttributeInterface;
  * @Attribute
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class TemplateLock extends PostTypeAttribute
+class TemplateLock implements ConfiguresArguments
 {
     /**
      * Constructor.
@@ -32,10 +32,13 @@ class TemplateLock extends PostTypeAttribute
     /**
      * Configure the post type with the template_lock parameter.
      *
-     * @param  PostTypeAttributeInterface  $postType  The post type to configure
+     * @param  array<string, mixed>  $arguments  The registration arguments gathered so far
+     * @return array<string, mixed>
      */
-    protected function configure(PostTypeAttributeInterface $postType): void
+    public function configureArguments(array $arguments): array
     {
-        $postType->setArg('template_lock', $this->value);
+        $arguments['template_lock'] = $this->value;
+
+        return $arguments;
     }
 }

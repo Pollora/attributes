@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\PostType;
 
 use Attribute;
-use Pollora\PostType\Domain\Contracts\PostTypeAttributeInterface;
+use Pollora\Attributes\Contracts\ConfiguresArguments;
 
 /**
  * Attribute to set the supports parameter for a post type.
@@ -15,7 +15,7 @@ use Pollora\PostType\Domain\Contracts\PostTypeAttributeInterface;
  * @Attribute
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class Supports extends PostTypeAttribute
+class Supports implements ConfiguresArguments
 {
     /**
      * Constructor.
@@ -29,10 +29,13 @@ class Supports extends PostTypeAttribute
     /**
      * Configure the post type with the supports parameter.
      *
-     * @param  PostTypeAttributeInterface  $postType  The post type to configure
+     * @param  array<string, mixed>  $arguments  The registration arguments gathered so far
+     * @return array<string, mixed>
      */
-    protected function configure(PostTypeAttributeInterface $postType): void
+    public function configureArguments(array $arguments): array
     {
-        $postType->setArg('supports', $this->features);
+        $arguments['supports'] = $this->features;
+
+        return $arguments;
     }
 }

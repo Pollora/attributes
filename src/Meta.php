@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes;
 
 use Attribute;
-use Illuminate\Support\Str;
+use Pollora\Attributes\Support\Naming;
 use Pollora\Meta\Domain\Enums\Control;
 
 /**
@@ -71,6 +71,6 @@ final readonly class Meta
      */
     public function resolveKey(string $property): string
     {
-        return $this->key ?? Str::snake($property);
+        return $this->key ?? Naming::snake($property);
     }
 }

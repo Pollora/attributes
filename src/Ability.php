@@ -5,16 +5,13 @@ declare(strict_types=1);
 namespace Pollora\Attributes;
 
 use Attribute;
-use Pollora\Abilities\Domain\Contracts\AbilityHandler;
 use Pollora\Abilities\Domain\Model\Behaviour;
-use Pollora\Ability\Infrastructure\Services\AbilityDiscovery;
 
 /**
  * Attribute for declarative WordPress ability registration.
  *
- * Place this attribute on a class implementing {@see AbilityHandler}. The class
- * is discovered and registered with the WordPress Abilities API through the
- * {@see AbilityDiscovery} system, and published to AI clients — an MCP server,
+ * Place this attribute on a class implementing `AbilityHandler` (pollora/abilities).
+ * The class is discovered and registered with the WordPress Abilities API, and published to AI clients — an MCP server,
  * the core abilities REST controllers — by whatever consumes them.
  *
  * The attribute carries what the ability *is*; the handler carries what it
@@ -33,8 +30,7 @@ use Pollora\Ability\Infrastructure\Services\AbilityDiscovery;
  * The category must exist. Declare it once — in a service provider, through the
  * `Ability` facade — before the abilities that file under it.
  *
- * @see AbilityHandler  The interface the decorated class implements.
- * @see Behaviour       How the ability's effect on the site is described to clients.
+ * @see Behaviour  How the ability's effect on the site is described to clients.
  */
 #[Attribute(Attribute::TARGET_CLASS)]
 class Ability

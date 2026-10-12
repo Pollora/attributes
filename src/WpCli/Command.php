@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\WpCli;
 
 use Attribute;
-use Pollora\Support\Slug;
+use Pollora\Attributes\Support\Naming;
 
 /**
  * WP CLI Command Attribute for Method-Level Subcommands
@@ -42,6 +42,6 @@ final readonly class Command
      */
     public function getSubcommandName(string $methodName): string
     {
-        return $this->commandName ?? Slug::fromMethodName($methodName);
+        return $this->commandName ?? Naming::slug($methodName);
     }
 }

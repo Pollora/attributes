@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Pollora\Attributes;
 
-use Pollora\Attributes\Contracts\HandlesAttributes;
-
 /**
  * Class Hook
  *
  * Abstract base class for WordPress hook attributes.
  * Provides common properties for hook attributes.
  */
-abstract class Hook implements HandlesAttributes
+abstract class Hook
 {
     /**
      * Constructor for the Hook class.
