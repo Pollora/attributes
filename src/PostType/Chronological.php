@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\PostType;
 
 use Attribute;
-use Pollora\PostType\Domain\Contracts\PostTypeAttributeInterface;
+use Pollora\Attributes\Contracts\ConfiguresArguments;
 
 /**
  * Attribute to set the chronological parameter for a post type.
@@ -17,7 +17,7 @@ use Pollora\PostType\Domain\Contracts\PostTypeAttributeInterface;
  * @Attribute
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class Chronological extends PostTypeAttribute
+class Chronological implements ConfiguresArguments
 {
     /**
      * Constructor.
@@ -31,14 +31,17 @@ class Chronological extends PostTypeAttribute
     /**
      * Configure the post type with the chronological parameter.
      *
-     * @param  PostTypeAttributeInterface  $postType  The post type to configure
+     * @param  array<string, mixed>  $arguments  The registration arguments gathered so far
+     * @return array<string, mixed>
      */
-    protected function configure(PostTypeAttributeInterface $postType): void
+    public function configureArguments(array $arguments): array
     {
         if ($this->value) {
             // Set default ordering to date, descending
-            $postType->setArg('orderby', 'date');
-            $postType->setArg('order', 'DESC');
+            $arguments['orderby'] = 'date';
+            $arguments['order'] = 'DESC';
         }
+
+        return $arguments;
     }
 }

@@ -6,14 +6,12 @@ namespace Pollora\Attributes;
 
 use Attribute;
 use Pollora\Ajax\Domain\Model\AjaxAccess;
-use Pollora\Ajax\Infrastructure\Services\AjaxDiscovery;
 
 /**
  * Attribute for declarative WordPress AJAX action registration.
  *
  * Place this attribute on a public method to register it as a WordPress AJAX
- * handler. The method is automatically discovered and wired via the
- * {@see AjaxDiscovery} system.
+ * handler. The method is discovered and wired automatically.
  *
  * By default, the action is restricted to **logged-in users** (security-by-default).
  * Use the `access` parameter to change targeting.

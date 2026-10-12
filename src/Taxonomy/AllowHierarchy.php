@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\Taxonomy;
 
 use Attribute;
-use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
+use Pollora\Attributes\Contracts\ConfiguresArguments;
 
 /**
  * Attribute to set whether to allow hierarchy in the taxonomy's rewrite rules.
@@ -16,7 +16,7 @@ use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
  * @Attribute
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class AllowHierarchy extends TaxonomyAttribute
+class AllowHierarchy implements ConfiguresArguments
 {
     /**
      * Constructor.
@@ -30,10 +30,13 @@ class AllowHierarchy extends TaxonomyAttribute
     /**
      * Configure the taxonomy with the allow_hierarchy parameter.
      *
-     * @param  TaxonomyAttributeInterface  $taxonomy  The taxonomy to configure
+     * @param  array<string, mixed>  $arguments  The registration arguments gathered so far
+     * @return array<string, mixed>
      */
-    protected function configure(TaxonomyAttributeInterface $taxonomy): void
+    public function configureArguments(array $arguments): array
     {
-        $taxonomy->setArg('allow_hierarchy', $this->value);
+        $arguments['allow_hierarchy'] = $this->value;
+
+        return $arguments;
     }
 }

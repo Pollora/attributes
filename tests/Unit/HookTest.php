@@ -12,17 +12,7 @@ use Pollora\Attributes\Hook;
  */
 
 // Create a concrete implementation of the abstract Hook class for testing
-class ConcreteHook extends Hook
-{
-    public function handle(
-        $serviceLocator,
-        object $instance,
-        ReflectionClass|ReflectionMethod $context,
-        object $attribute
-    ): void {
-        // Implementation for testing
-    }
-}
+class ConcreteHook extends Hook {}
 
 it('initializes with default priority', function (): void {
     $hook = new ConcreteHook('test_hook');

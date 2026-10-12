@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\PostType;
 
 use Attribute;
-use Pollora\PostType\Domain\Contracts\PostTypeAttributeInterface;
+use Pollora\Attributes\Contracts\ConfiguresArguments;
 
 /**
  * Attribute to set the has_archive parameter for a post type.
@@ -16,7 +16,7 @@ use Pollora\PostType\Domain\Contracts\PostTypeAttributeInterface;
  * @Attribute
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class HasArchive extends PostTypeAttribute
+class HasArchive implements ConfiguresArguments
 {
     /**
      * Constructor.
@@ -30,10 +30,13 @@ class HasArchive extends PostTypeAttribute
     /**
      * Configure the post type with the has_archive parameter.
      *
-     * @param  PostTypeAttributeInterface  $postType  The post type to configure
+     * @param  array<string, mixed>  $arguments  The registration arguments gathered so far
+     * @return array<string, mixed>
      */
-    protected function configure(PostTypeAttributeInterface $postType): void
+    public function configureArguments(array $arguments): array
     {
-        $postType->setArg('has_archive', $this->value);
+        $arguments['has_archive'] = $this->value;
+
+        return $arguments;
     }
 }

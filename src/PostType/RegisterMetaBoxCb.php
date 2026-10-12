@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\PostType;
 
 use Attribute;
-use Pollora\Attributes\Contracts\HandlesAttributes;
-use Pollora\PostType\Domain\Contracts\PostTypeAttributeInterface;
-use ReflectionClass;
-use ReflectionMethod;
+use Pollora\Attributes\Contracts\ConfiguresArgumentsWithMethod;
 
 /**
  * Attribute to define a callback function that will be called when setting up meta boxes for the edit form.
@@ -21,22 +18,19 @@ use ReflectionMethod;
  * @Attribute
  */
 #[Attribute(Attribute::TARGET_METHOD)]
-class RegisterMetaBoxCb implements HandlesAttributes
+class RegisterMetaBoxCb implements ConfiguresArgumentsWithMethod
 {
     /**
-     * Handle the attribute processing.
+     * Set the register_meta_box_cb argument to the decorated method.
      *
-     * @param  object  $instance  The instance being processed
-     * @param  ReflectionMethod|ReflectionClass  $context  The method the attribute is applied to
-     * @param  object  $attribute  The attribute instance
+     * @param  array<string, mixed>  $arguments  The registration arguments gathered so far
+     * @param  callable  $method  The decorated method
+     * @return array<string, mixed>
      */
-    public function handle($container, object $instance, ReflectionMethod|ReflectionClass $context, object $attribute): void
+    public function configureArguments(array $arguments, callable $method): array
     {
-        if (! $instance instanceof PostTypeAttributeInterface) {
-            return;
-        }
+        $arguments['register_meta_box_cb'] = $method;
 
-        // Set the register_meta_box_cb parameter to the method
-        $instance->setArg('register_meta_box_cb', [new $context->class, $context->getName()]);
+        return $arguments;
     }
 }

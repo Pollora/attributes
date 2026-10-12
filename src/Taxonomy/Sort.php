@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\Taxonomy;
 
 use Attribute;
-use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
+use Pollora\Attributes\Contracts\ConfiguresArguments;
 
 /**
  * Attribute to set whether terms in this taxonomy should be sorted in the order they are provided.
@@ -13,7 +13,7 @@ use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
  * @Attribute
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class Sort extends TaxonomyAttribute
+class Sort implements ConfiguresArguments
 {
     /**
      * Constructor.
@@ -27,10 +27,13 @@ class Sort extends TaxonomyAttribute
     /**
      * Configure the taxonomy with the sort parameter.
      *
-     * @param  TaxonomyAttributeInterface  $taxonomy  The taxonomy to configure
+     * @param  array<string, mixed>  $arguments  The registration arguments gathered so far
+     * @return array<string, mixed>
      */
-    protected function configure(TaxonomyAttributeInterface $taxonomy): void
+    public function configureArguments(array $arguments): array
     {
-        $taxonomy->setArg('sort', $this->value);
+        $arguments['sort'] = $this->value;
+
+        return $arguments;
     }
 }

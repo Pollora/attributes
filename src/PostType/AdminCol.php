@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\PostType;
 
 use Attribute;
-use Pollora\Attributes\Contracts\HandlesAttributes;
-use Pollora\PostType\Domain\Contracts\PostTypeAttributeInterface;
-use ReflectionClass;
-use ReflectionMethod;
+use Pollora\Attributes\Contracts\ConfiguresArgumentsWithMethod;
 
 /**
  * Attribute to define an admin column for a post type.
@@ -19,7 +16,7 @@ use ReflectionMethod;
  * @Attribute
  */
 #[Attribute(Attribute::TARGET_METHOD)]
-class AdminCol implements HandlesAttributes
+class AdminCol implements ConfiguresArgumentsWithMethod
 {
     /**
      * Constructor.
@@ -57,31 +54,19 @@ class AdminCol implements HandlesAttributes
     ) {}
 
     /**
-     * Handle the attribute processing.
+     * Add this column to the admin_cols argument, rendered by the decorated method.
      *
-     * @param  object  $container  The container instance
-     * @param  object  $instance  The instance being processed
-     * @param  ReflectionMethod|ReflectionClass  $context  The method the attribute is applied to
-     * @param  object  $attribute  The attribute instance
+     * @param  array<string, mixed>  $arguments  The registration arguments gathered so far
+     * @param  callable  $method  The decorated method
+     * @return array<string, mixed>
      */
-    public function handle($container, object $instance, ReflectionMethod|ReflectionClass $context, object $attribute): void
+    public function configureArguments(array $arguments, callable $method): array
     {
-        if (! $instance instanceof PostTypeAttributeInterface) {
-            return;
-        }
-
-        // Initialize admin_cols array if it doesn't exist
-        $adminCols = $instance->getArg('admin_cols', []);
-
         // Build column configuration based on extended-cpts options
         $columnConfig = [
             'title' => $this->title,
+            'function' => $method,
         ];
-
-        // Add custom function callback if this is a method-level attribute
-        if ($context instanceof ReflectionMethod) {
-            $columnConfig['function'] = [new $context->class, $context->getName()];
-        }
 
         // Add optional configuration based on extended-cpts features
         if ($this->titleIcon !== null) {
@@ -133,8 +118,8 @@ class AdminCol implements HandlesAttributes
             $columnConfig['sortable'] = $this->sortable;
         }
 
-        // Add the column to the admin_cols array
-        $adminCols[$this->key] = $columnConfig;
-        $instance->setArg('admin_cols', $adminCols);
+        $arguments['admin_cols'] = [...$arguments['admin_cols'] ?? [], $this->key => $columnConfig];
+
+        return $arguments;
     }
 }

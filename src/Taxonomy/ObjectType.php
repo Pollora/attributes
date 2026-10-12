@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\Taxonomy;
 
 use Attribute;
-use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
+use Pollora\Attributes\Contracts\ConfiguresArguments;
 
 /**
  * Attribute to set the post types this taxonomy is associated with.
@@ -13,7 +13,7 @@ use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
  * @Attribute
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class ObjectType extends TaxonomyAttribute
+class ObjectType implements ConfiguresArguments
 {
     /**
      * Constructor.
@@ -27,10 +27,13 @@ class ObjectType extends TaxonomyAttribute
     /**
      * Configure the taxonomy with the object_type parameter.
      *
-     * @param  TaxonomyAttributeInterface  $taxonomy  The taxonomy to configure
+     * @param  array<string, mixed>  $arguments  The registration arguments gathered so far
+     * @return array<string, mixed>
      */
-    protected function configure(TaxonomyAttributeInterface $taxonomy): void
+    public function configureArguments(array $arguments): array
     {
-        $taxonomy->setArg('object_type', $this->value);
+        $arguments['object_type'] = $this->value;
+
+        return $arguments;
     }
 }

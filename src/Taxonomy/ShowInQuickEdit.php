@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\Taxonomy;
 
 use Attribute;
-use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
+use Pollora\Attributes\Contracts\ConfiguresArguments;
 
 /**
  * Attribute to set whether to show the taxonomy in the quick/bulk edit panel.
@@ -13,7 +13,7 @@ use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
  * @Attribute
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class ShowInQuickEdit extends TaxonomyAttribute
+class ShowInQuickEdit implements ConfiguresArguments
 {
     /**
      * Constructor.
@@ -27,10 +27,13 @@ class ShowInQuickEdit extends TaxonomyAttribute
     /**
      * Configure the taxonomy with the show_in_quick_edit parameter.
      *
-     * @param  TaxonomyAttributeInterface  $taxonomy  The taxonomy to configure
+     * @param  array<string, mixed>  $arguments  The registration arguments gathered so far
+     * @return array<string, mixed>
      */
-    protected function configure(TaxonomyAttributeInterface $taxonomy): void
+    public function configureArguments(array $arguments): array
     {
-        $taxonomy->setArg('show_in_quick_edit', $this->value);
+        $arguments['show_in_quick_edit'] = $this->value;
+
+        return $arguments;
     }
 }

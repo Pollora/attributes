@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\PostType;
 
 use Attribute;
-use Pollora\PostType\Domain\Contracts\PostTypeAttributeInterface;
+use Pollora\Attributes\Contracts\ConfiguresArguments;
 
 /**
  * Attribute to set custom labels for a post type.
@@ -23,7 +23,7 @@ use Pollora\PostType\Domain\Contracts\PostTypeAttributeInterface;
  * For runtime translations, use withArgs() in the class instead.
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class Labels extends PostTypeAttribute
+class Labels implements ConfiguresArguments
 {
     /** @var array<string, string> */
     private readonly array $labels;
@@ -92,9 +92,11 @@ class Labels extends PostTypeAttribute
         ], fn (?string $v): bool => $v !== null);
     }
 
-    protected function configure(PostTypeAttributeInterface $postType): void
+    public function configureArguments(array $arguments): array
     {
-        $existing = $postType->getArg('labels', []);
-        $postType->setArg('labels', array_merge($existing, $this->labels));
+        $existing = ($arguments['labels'] ?? []);
+        $arguments['labels'] = array_merge($existing, $this->labels);
+
+        return $arguments;
     }
 }

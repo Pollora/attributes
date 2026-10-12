@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\PostType;
 
 use Attribute;
-use Pollora\PostType\Domain\Contracts\PostTypeAttributeInterface;
+use Pollora\Attributes\Contracts\ConfiguresArguments;
 
 /**
  * Attribute to set the priority a post type declaration.
@@ -13,7 +13,7 @@ use Pollora\PostType\Domain\Contracts\PostTypeAttributeInterface;
  * @Attribute
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class Priority extends PostTypeAttribute
+class Priority implements ConfiguresArguments
 {
     /**
      * Constructor.
@@ -25,10 +25,13 @@ class Priority extends PostTypeAttribute
     /**
      * Configure the post type priority declaration parameter.
      *
-     * @param  PostTypeAttributeInterface  $postType  The post type to configure
+     * @param  array<string, mixed>  $arguments  The registration arguments gathered so far
+     * @return array<string, mixed>
      */
-    protected function configure(PostTypeAttributeInterface $postType): void
+    public function configureArguments(array $arguments): array
     {
-        $postType->setArg('priority', $this->priority);
+        $arguments['priority'] = $this->priority;
+
+        return $arguments;
     }
 }

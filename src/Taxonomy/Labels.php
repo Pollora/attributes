@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\Taxonomy;
 
 use Attribute;
-use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
+use Pollora\Attributes\Contracts\ConfiguresArguments;
 
 /**
  * Attribute to set custom labels for a taxonomy.
@@ -24,7 +24,7 @@ use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
  * evaluated at runtime (PHP attributes only accept constants).
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class Labels extends TaxonomyAttribute
+class Labels implements ConfiguresArguments
 {
     /** @var array<string, string> */
     private readonly array $labels;
@@ -79,9 +79,11 @@ class Labels extends TaxonomyAttribute
         ], fn (?string $v): bool => $v !== null);
     }
 
-    protected function configure(TaxonomyAttributeInterface $taxonomy): void
+    public function configureArguments(array $arguments): array
     {
-        $existing = $taxonomy->getArg('labels', []);
-        $taxonomy->setArg('labels', array_merge($existing, $this->labels));
+        $existing = ($arguments['labels'] ?? []);
+        $arguments['labels'] = array_merge($existing, $this->labels);
+
+        return $arguments;
     }
 }

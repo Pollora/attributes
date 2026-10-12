@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pollora\Attributes;
 
-use Pollora\Support\Slug;
+use Pollora\Attributes\Support\Naming;
 
 /**
  * Attribute to mark a class as a WordPress CLI command.
@@ -39,6 +39,6 @@ final readonly class WpCli
      */
     public function getCommandName(string $className): string
     {
-        return $this->commandName ?? Slug::fromClassName($className);
+        return $this->commandName ?? Naming::commandFromClassName($className);
     }
 }

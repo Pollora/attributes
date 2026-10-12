@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\Taxonomy;
 
 use Attribute;
-use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
+use Pollora\Attributes\Contracts\ConfiguresArguments;
 
 /**
  * Attribute to set whether to generate a default UI for managing this taxonomy in the admin.
@@ -13,7 +13,7 @@ use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
  * @Attribute
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class ShowUI extends TaxonomyAttribute
+class ShowUI implements ConfiguresArguments
 {
     /**
      * Constructor.
@@ -27,10 +27,13 @@ class ShowUI extends TaxonomyAttribute
     /**
      * Configure the taxonomy with the show_ui parameter.
      *
-     * @param  TaxonomyAttributeInterface  $taxonomy  The taxonomy to configure
+     * @param  array<string, mixed>  $arguments  The registration arguments gathered so far
+     * @return array<string, mixed>
      */
-    protected function configure(TaxonomyAttributeInterface $taxonomy): void
+    public function configureArguments(array $arguments): array
     {
-        $taxonomy->setArg('show_ui', $this->value);
+        $arguments['show_ui'] = $this->value;
+
+        return $arguments;
     }
 }

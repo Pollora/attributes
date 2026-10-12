@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\Taxonomy;
 
 use Attribute;
-use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
+use Pollora\Attributes\Contracts\ConfiguresArguments;
 
 /**
  * Attribute to set whether to show the taxonomy in the tag cloud widget.
@@ -13,7 +13,7 @@ use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
  * @Attribute
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class ShowTagcloud extends TaxonomyAttribute
+class ShowTagcloud implements ConfiguresArguments
 {
     /**
      * Constructor.
@@ -27,10 +27,13 @@ class ShowTagcloud extends TaxonomyAttribute
     /**
      * Configure the taxonomy with the show_tagcloud parameter.
      *
-     * @param  TaxonomyAttributeInterface  $taxonomy  The taxonomy to configure
+     * @param  array<string, mixed>  $arguments  The registration arguments gathered so far
+     * @return array<string, mixed>
      */
-    protected function configure(TaxonomyAttributeInterface $taxonomy): void
+    public function configureArguments(array $arguments): array
     {
-        $taxonomy->setArg('show_tagcloud', $this->value);
+        $arguments['show_tagcloud'] = $this->value;
+
+        return $arguments;
     }
 }

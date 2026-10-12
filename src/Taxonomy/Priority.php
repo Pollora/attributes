@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\Taxonomy;
 
 use Attribute;
-use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
+use Pollora\Attributes\Contracts\ConfiguresArguments;
 
 /**
  * Attribute to set the priority a post type declaration.
@@ -13,7 +13,7 @@ use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
  * @Attribute
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class Priority extends TaxonomyAttribute
+class Priority implements ConfiguresArguments
 {
     /**
      * Constructor.
@@ -25,10 +25,13 @@ class Priority extends TaxonomyAttribute
     /**
      * Configure the post type priority declaration parameter.
      *
-     * @param  TaxonomyAttributeInterface  $taxonomy  The post type to configure
+     * @param  array<string, mixed>  $arguments  The registration arguments gathered so far
+     * @return array<string, mixed>
      */
-    protected function configure(TaxonomyAttributeInterface $taxonomy): void
+    public function configureArguments(array $arguments): array
     {
-        $taxonomy->setArg('priority', $this->priority);
+        $arguments['priority'] = $this->priority;
+
+        return $arguments;
     }
 }

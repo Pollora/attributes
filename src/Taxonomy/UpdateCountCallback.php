@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes\Taxonomy;
 
 use Attribute;
-use Pollora\Attributes\Contracts\HandlesAttributes;
-use Pollora\Taxonomy\Domain\Contracts\TaxonomyAttributeInterface;
-use ReflectionClass;
-use ReflectionMethod;
+use Pollora\Attributes\Contracts\ConfiguresArgumentsWithMethod;
 
 /**
  * Attribute to define a callback function that will be called when the count is updated.
@@ -19,22 +16,19 @@ use ReflectionMethod;
  * @Attribute
  */
 #[Attribute(Attribute::TARGET_METHOD)]
-class UpdateCountCallback implements HandlesAttributes
+class UpdateCountCallback implements ConfiguresArgumentsWithMethod
 {
     /**
-     * Handle the attribute processing.
+     * Set the update_count_callback argument to the decorated method.
      *
-     * @param  object  $instance  The instance being processed
-     * @param  ReflectionMethod|ReflectionClass  $context  The method the attribute is applied to
-     * @param  object  $attribute  The attribute instance
+     * @param  array<string, mixed>  $arguments  The registration arguments gathered so far
+     * @param  callable  $method  The decorated method
+     * @return array<string, mixed>
      */
-    public function handle($container, object $instance, ReflectionMethod|ReflectionClass $context, object $attribute): void
+    public function configureArguments(array $arguments, callable $method): array
     {
-        if (! $instance instanceof TaxonomyAttributeInterface) {
-            return;
-        }
+        $arguments['update_count_callback'] = $method;
 
-        // Set the update_count_callback parameter to the method
-        $instance->setArg('update_count_callback', [new $context->class, $context->getName()]);
+        return $arguments;
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Attributes;
 
 use Attribute;
-use Illuminate\Support\Str;
+use Pollora\Attributes\Support\Naming;
 
 /**
  * Attribute for defining custom taxonomies.
@@ -61,6 +61,6 @@ final readonly class Taxonomy
      */
     public function resolveSlug(string $className): string
     {
-        return $this->slug ?? substr(Str::kebab(class_basename($className)), 0, 20);
+        return $this->slug ?? substr(Naming::kebab(Naming::classBasename($className)), 0, 20);
     }
 }
