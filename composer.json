@@ -1,0 +1,73 @@
+{
+    "name": "pollora/attributes",
+    "description": "PHP attributes to declare WordPress post types, taxonomies, hooks, REST routes, meta, roles, schedules and more. Declarations only: they run without the framework.",
+    "type": "library",
+    "keywords": [
+        "attributes",
+        "php",
+        "pollora",
+        "wordpress",
+        "post-types",
+        "hooks"
+    ],
+    "homepage": "https://pollora.dev/core-concepts/auto-discovery/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Amphibee",
+            "email": "contact@amphibee.fr"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/Pollora/attributes/issues",
+        "source": "https://github.com/Pollora/attributes"
+    },
+    "require": {
+        "php": "^8.3",
+        "ext-mbstring": "*",
+        "pollora/abilities": "^1.0",
+        "pollora/ajax": "^1.1"
+    },
+    "require-dev": {
+        "illuminate/support": "^13.0",
+        "laravel/pint": "^1.22.1",
+        "pestphp/pest": "^3.8.2",
+        "phpstan/phpstan": "^2.1.16",
+        "szepeviktor/phpstan-wordpress": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Pollora\\Attributes\\": "src/",
+            "Pollora\\BlockBinding\\Domain\\Enums\\": "vocabulary/BlockBinding/",
+            "Pollora\\Meta\\Domain\\Enums\\": "vocabulary/Meta/",
+            "Pollora\\Role\\Domain\\Enums\\": "vocabulary/Role/",
+            "Pollora\\Schedule\\": "vocabulary/Schedule/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Pollora\\Attributes\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": [
+            "@test:unit",
+            "@phpstan",
+            "@lint:check"
+        ],
+        "test:unit": "pest",
+        "test:coverage": "pest --coverage",
+        "phpstan": "phpstan analyse",
+        "phpstan:ci": "phpstan analyse --no-progress",
+        "lint": "pint",
+        "lint:check": "pint --test"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

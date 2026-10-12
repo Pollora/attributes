@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Illuminate\Support\Facades\Facade;
 use Pollora\Attributes\Hook;
 
 /**
@@ -48,9 +47,4 @@ it('allows priority to be a large number', function (): void {
     $priority = 9999;
     $hook = new ConcreteHook('test_hook', $priority);
     expect($hook->priority)->toBe($priority);
-});
-
-afterEach(function (): void {
-    Mockery::close();
-    Facade::clearResolvedInstances();
 });

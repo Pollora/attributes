@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use Illuminate\Support\Str;
 use Pollora\Attributes\Support\Naming;
-use Pollora\Support\Slug;
 
 /**
  * Names derived from class, property and method names.
@@ -43,7 +42,5 @@ it('derives command slugs, the Command suffix dropped', function (): void {
     expect(Naming::commandFromClassName('App\\Cli\\UserManagementCommand'))->toBe('user-management')
         ->and(Naming::commandFromClassName('Cache'))->toBe('cache')
         ->and(Naming::slug('deleteById'))->toBe('delete-by-id')
-        ->and(Naming::slug('HTMLParser'))->toBe('htmlparser')
-        ->and(Slug::fromClassName('App\\Cli\\UserManagementCommand'))->toBe('user-management')
-        ->and(Slug::fromMethodName('listItems'))->toBe('list-items');
+        ->and(Naming::slug('HTMLParser'))->toBe('htmlparser');
 });
