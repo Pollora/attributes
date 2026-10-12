@@ -2,8 +2,15 @@
 
 declare(strict_types=1);
 
+use Pollora\Abilities\Domain\Model\Behaviour;
+use Pollora\Ajax\Domain\Model\AjaxAccess;
 use Pollora\Attributes\PostType\PostTypeAttribute;
 use Pollora\Attributes\Taxonomy\TaxonomyAttribute;
+use Pollora\BlockBinding\Domain\Enums\BindingFieldType;
+use Pollora\Meta\Domain\Enums\Control;
+use Pollora\Role\Domain\Enums\Access;
+use Pollora\Schedule\Every;
+use Pollora\Schedule\Interval;
 
 /**
  * Attributes are declarations: a plugin writes them without the framework, an
@@ -18,13 +25,13 @@ arch('attributes depend on nothing but their own vocabulary')
     ->expect('Pollora\Attributes')
     ->toOnlyUse([
         'Pollora\Attributes',
-        \Pollora\Ajax\Domain\Model\AjaxAccess::class,
-        \Pollora\Abilities\Domain\Model\Behaviour::class,
-        \Pollora\BlockBinding\Domain\Enums\BindingFieldType::class,
-        \Pollora\Meta\Domain\Enums\Control::class,
-        \Pollora\Role\Domain\Enums\Access::class,
-        \Pollora\Schedule\Every::class,
-        \Pollora\Schedule\Interval::class,
+        AjaxAccess::class,
+        Behaviour::class,
+        BindingFieldType::class,
+        Control::class,
+        Access::class,
+        Every::class,
+        Interval::class,
     ])
     // Permission::allow() names WordPress's request and error types in its
     // signature only, so the attributes never load them.
