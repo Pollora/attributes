@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-15
+
 ### Added
 
 - `Naming::headline()`, the words of a name with a capital each, as Laravel's `Str::headline()` writes them, for the packages that label a role or a binding source from its class name
