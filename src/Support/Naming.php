@@ -39,6 +39,25 @@ final class Naming
     }
 
     /**
+     * The value as words with a capital each, as Laravel's Str::headline()
+     * writes it: `EventManager`, `event_manager` and `event-manager` give
+     * `Event Manager`.
+     */
+    public static function headline(string $value): string
+    {
+        $words = mb_split('\s+', $value) ?: [$value];
+        $title = static fn (string $word): string => mb_convert_case($word, MB_CASE_TITLE, 'UTF-8');
+
+        $parts = count($words) > 1
+            ? array_map($title, $words)
+            : array_map($title, preg_split('/(?=\p{Lu})/u', implode('_', $words), -1, PREG_SPLIT_NO_EMPTY) ?: []);
+
+        $collapsed = str_replace(['-', '_', ' '], '_', implode('_', $parts));
+
+        return implode(' ', array_filter(explode('_', $collapsed)));
+    }
+
+    /**
      * The class name without its namespace.
      */
     public static function classBasename(string $className): string
