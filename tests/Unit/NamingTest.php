@@ -33,6 +33,10 @@ it('writes kebab case as Str::kebab() does', function (string $name): void {
     expect(Naming::kebab($name))->toBe(Str::kebab($name));
 })->with('names');
 
+it('writes headlines as Str::headline() does', function (string $name): void {
+    expect(Naming::headline($name))->toBe(Str::headline($name));
+})->with('names')->with(['kebab-case' => 'event-manager', 'snake with digits' => 'event_manager_2', 'several words' => 'Event manager role', 'empty' => '']);
+
 it('strips the namespace as class_basename() does', function (): void {
     expect(Naming::classBasename('App\\Cms\\PostTypes\\Book'))->toBe(class_basename('App\\Cms\\PostTypes\\Book'))
         ->and(Naming::classBasename('Book'))->toBe('Book');
