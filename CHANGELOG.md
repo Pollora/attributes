@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- The harness's ARCH-08 rule (attribute classes are final, with `readonly` public properties) is skipped in `tests/Arch.php`, for this repository only: the classes are published and may be extended, so making them `final` and `readonly` is a change of contract, planned for the next major version. Every other architecture rule stays active
+
 ## [0.1.1] - 2026-10-15
 
 ### Added
