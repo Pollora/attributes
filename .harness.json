@@ -4,6 +4,12 @@
     "downstream": [
         "framework"
     ],
+    "allow_rules": [
+        {
+            "rule": "ARCH-08",
+            "reason": "the attribute classes are published; final/readonly waits for the next major version"
+        }
+    ],
     "ratchet": {
         "phpstan_level": 5,
         "phpstan_baseline": 0,
