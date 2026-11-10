@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `resources/i18n.php`, declared under `extra.pollora.i18n` in `composer.json`: the fields of the attributes that hold text shown to a person (`singular`, `plural`, labels, descriptions, column titles, placeholders…), as plain data a translation tool reads with no dependency on this package. A test fails when a text parameter is added to an attribute without being classed as translatable or technical
+
 ### Changed
 
 - The harness's ARCH-08 rule (attribute classes are final, with `readonly` public properties) is exempted through `allow_rules` in `.harness.json`, for this repository only: the classes are published and may be extended, so making them `final` and `readonly` is a change of contract, planned for the next major version. Every other architecture rule stays active
