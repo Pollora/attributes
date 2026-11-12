@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-11-12
+
 ### Added
 
 - `resources/i18n.php`, declared under `extra.pollora.i18n` in `composer.json`: the fields of the attributes that hold text shown to a person (`singular`, `plural`, labels, descriptions, column titles, placeholders…), as plain data a translation tool reads with no dependency on this package. A test fails when a text parameter is added to an attribute without being classed as translatable or technical
