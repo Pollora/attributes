@@ -28,6 +28,7 @@ use Pollora\Attributes\WpCli\IsDeferred;
 use Pollora\Attributes\WpCli\Synopsis;
 use Pollora\Attributes\WpCli\When;
 use Pollora\Attributes\WpRestRoute;
+use Pollora\Attributes\WpRestRoute\Method;
 use Pollora\BlockBinding\Domain\Enums\BindingFieldType;
 use Pollora\Meta\Domain\Enums\Control;
 use Pollora\Role\Domain\Enums\Access;
@@ -304,4 +305,15 @@ it('carries every optional setting of an admin column into its registration argu
         'width' => 120,
         'sortable' => 'meta_value_num',
     ]);
+});
+
+it('keeps capabilities, post types and context as lists whatever the keys given', function (): void {
+    expect((new Grants(...['a' => 'edit_posts', 'b' => 'read']))->capabilities)->toBe(['edit_posts', 'read'])
+        ->and((new Without(...['a' => 'edit_posts', 'b' => 'read']))->capabilities)->toBe(['edit_posts', 'read'])
+        ->and((new BlockBinding('theme/price', postTypes: [5 => 'post', 9 => 'page']))->postTypes)->toBe(['post', 'page']);
+});
+
+it('rejects a non-string HTTP method with the invalid method exception', function (): void {
+    expect(fn () => new Method([123]))
+        ->toThrow(InvalidArgumentException::class, 'Invalid HTTP method "123". Allowed methods are: ');
 });

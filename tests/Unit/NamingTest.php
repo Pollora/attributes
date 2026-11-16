@@ -48,3 +48,35 @@ it('derives command slugs, the Command suffix dropped', function (): void {
         ->and(Naming::slug('deleteById'))->toBe('delete-by-id')
         ->and(Naming::slug('HTMLParser'))->toBe('htmlparser');
 });
+
+it('leaves an already lower case value untouched', function (): void {
+    expect(Naming::snake('already_snake'))->toBe('already_snake')
+        ->and(Naming::kebab('some-kebab'))->toBe('some-kebab');
+});
+
+it('returns an empty string rather than failing on invalid UTF-8', function (): void {
+    expect(Naming::snake("\xffA"))->toBe('')
+        ->and(Naming::kebab("\xffA"))->toBe('');
+});
+
+it('writes headlines from every separator', function (string $value, string $expected): void {
+    expect(Naming::headline($value))->toBe($expected);
+})->with([
+    'hyphens' => ['event-manager', 'Event Manager'],
+    'underscores' => ['event_manager', 'Event Manager'],
+    'spaces' => ['event manager', 'Event Manager'],
+    'two words' => ['event manager', 'Event Manager'],
+    'one word' => ['event', 'Event'],
+    'one capital word' => ['EventManager', 'Event Manager'],
+    'repeated separators' => ['event--manager__role', 'Event Manager Role'],
+    'leading and trailing' => ['_event_manager_', 'Event Manager'],
+    'single separator only' => ['-', ''],
+    'empty' => ['', ''],
+]);
+
+it('trims and collapses hyphens in a slug', function (): void {
+    expect(Naming::slug('-Foo--Bar-'))->toBe('foo-bar')
+        ->and(Naming::slug('fooBar'))->toBe('foo-bar')
+        ->and(Naming::slug('foo9Bar'))->toBe('foo9-bar')
+        ->and(Naming::slug('---'))->toBe('');
+});
