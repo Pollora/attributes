@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-11-17
+
+### Added
+
+- **`#[Ajax]` takes a `nonce` parameter**, to say how an AJAX action is protected against cross-site request forgery: `nonce: true` verifies a nonce named after the action, `nonce: 'notes_form'` verifies the nonce of that name, `nonce: false` turns it off on purpose, and the default `null` has not chosen yet. The attribute only carries the value; the framework's `AjaxDiscovery` passes it on to `pollora/ajax` 1.2, where an action that has not chosen still runs without a check in the 1.x versions and is reported, and the next major version verifies a nonce by default. The parameter is a technical text parameter, never translated, and is added to the API surface.
+
 ## [0.1.2] - 2026-11-12
 
 ### Added
