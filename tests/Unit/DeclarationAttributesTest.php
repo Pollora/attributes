@@ -46,6 +46,9 @@ final class DeclaredAjax
 {
     #[Ajax('save_note')]
     public function save(): void {}
+
+    #[Ajax('save_verified', nonce: 'notes_form')]
+    public function verified(): void {}
 }
 
 it('declares an ability with its name, description, category, label and behaviour', function (): void {
@@ -75,6 +78,36 @@ it('declares an AJAX action on a method, open to logged-in users by default', fu
 
 it('keeps an explicit AJAX access', function (): void {
     expect((new Ajax('ping', AjaxAccess::ALL))->access)->toBe(AjaxAccess::ALL);
+});
+
+it('has not chosen how an AJAX action is protected until its author does', function (): void {
+    $ajax = new Ajax('save_note');
+
+    expect($ajax->nonce)->toBeNull()
+        ->and($ajax->access)->toBe(AjaxAccess::LOGGED);
+});
+
+it('declares the nonce of an AJAX action: verified, verified under another name, or off on purpose', function (bool|string $nonce): void {
+    expect((new Ajax('save_note', nonce: $nonce))->nonce)->toBe($nonce);
+})->with([
+    'verified' => [true],
+    'verified under another name' => ['notes_form'],
+    'off on purpose' => [false],
+]);
+
+it('keeps the nonce and the access together', function (): void {
+    $ajax = new Ajax('track', AjaxAccess::GUEST, false);
+
+    expect($ajax->nonce)->toBeFalse()
+        ->and($ajax->access)->toBe(AjaxAccess::GUEST)
+        ->and($ajax->action)->toBe('track');
+});
+
+it('reads the nonce of an AJAX action declared on a method', function (): void {
+    $ajax = (new ReflectionMethod(DeclaredAjax::class, 'verified'))->getAttributes(Ajax::class)[0]->newInstance();
+
+    expect($ajax->nonce)->toBe('notes_form')
+        ->and($ajax->action)->toBe('save_verified');
 });
 
 it('leaves every Async option unset until the declaration sets it', function (): void {
