@@ -13,6 +13,7 @@
         "attribute:Pollora\\Attributes\\Ajax": "targets method",
         "attribute:Pollora\\Attributes\\Ajax($access)": "Pollora\\Ajax\\Domain\\Model\\AjaxAccess, optional = Pollora\\Ajax\\Domain\\Model\\AjaxAccess",
         "attribute:Pollora\\Attributes\\Ajax($action)": "string, required",
+        "attribute:Pollora\\Attributes\\Ajax($capability)": "?string, optional = NULL",
         "attribute:Pollora\\Attributes\\Ajax($nonce)": "string|bool|null, optional = NULL",
         "attribute:Pollora\\Attributes\\Async": "targets class, method",
         "attribute:Pollora\\Attributes\\Async($asUser)": "?bool, optional = NULL",

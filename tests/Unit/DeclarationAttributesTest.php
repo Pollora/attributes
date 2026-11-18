@@ -49,6 +49,9 @@ final class DeclaredAjax
 
     #[Ajax('save_verified', nonce: 'notes_form')]
     public function verified(): void {}
+
+    #[Ajax('save_guarded', nonce: true, capability: 'edit_posts')]
+    public function guarded(): void {}
 }
 
 it('declares an ability with its name, description, category, label and behaviour', function (): void {
@@ -108,6 +111,31 @@ it('reads the nonce of an AJAX action declared on a method', function (): void {
 
     expect($ajax->nonce)->toBe('notes_form')
         ->and($ajax->action)->toBe('save_verified');
+});
+
+it('requires no capability until its author declares one', function (): void {
+    expect((new Ajax('save_note'))->capability)->toBeNull();
+});
+
+it('declares the capability an AJAX action requires', function (): void {
+    expect((new Ajax('save_note', capability: 'edit_posts'))->capability)->toBe('edit_posts');
+});
+
+it('keeps the capability next to the nonce and the access', function (): void {
+    $ajax = new Ajax('save_note', AjaxAccess::ALL, true, 'manage_options');
+
+    expect($ajax->capability)->toBe('manage_options')
+        ->and($ajax->nonce)->toBeTrue()
+        ->and($ajax->access)->toBe(AjaxAccess::ALL)
+        ->and($ajax->action)->toBe('save_note');
+});
+
+it('reads the capability of an AJAX action declared on a method', function (): void {
+    $ajax = (new ReflectionMethod(DeclaredAjax::class, 'guarded'))->getAttributes(Ajax::class)[0]->newInstance();
+
+    expect($ajax->capability)->toBe('edit_posts')
+        ->and($ajax->nonce)->toBeTrue()
+        ->and($ajax->action)->toBe('save_guarded');
 });
 
 it('leaves every Async option unset until the declaration sets it', function (): void {
