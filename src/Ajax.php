@@ -22,6 +22,11 @@ use Pollora\Ajax\Domain\Model\AjaxAccess;
  * without a check for now and is reported; the next major version of
  * pollora/ajax verifies a nonce by default.
  *
+ * The capability is the WordPress capability a logged-in user must have for the
+ * action to run (a nonce proves where the request comes from, not that the user
+ * may do what it asks). It is checked after the nonce and needs pollora/ajax 1.3.
+ * A capability and guest access are contradictory: guests are refused with a 401.
+ *
  * Usage:
  *
  *     #[Ajax('subscribe')]                              // logged-in only (default), nonce not chosen yet
@@ -29,6 +34,8 @@ use Pollora\Ajax\Domain\Model\AjaxAccess;
  *     #[Ajax('save_note', nonce: 'notes_form')]         // verifies the nonce `notes_form`
  *     #[Ajax('load_more', access: AjaxAccess::ALL)]     // all users
  *     #[Ajax('track_visit', access: AjaxAccess::GUEST, nonce: false)] // guests only, no nonce on purpose
+ *
+ *     #[Ajax('save_note', nonce: true, capability: 'edit_posts')]    // logged-in users who can edit posts
  *
  * @see AjaxAccess
  */
@@ -40,10 +47,12 @@ class Ajax
      * @param  AjaxAccess  $access  The audience targeting for this action. Defaults to logged-in users only.
      * @param  bool|string|null  $nonce  `true` verifies a nonce named after the action, a string verifies the nonce of
      *                                   that name, `false` turns the nonce off on purpose, `null` (the default) has not chosen yet.
+     * @param  string|null  $capability  The capability a logged-in user must have, `null` (the default) requires none.
      */
     public function __construct(
         public readonly string $action,
         public readonly AjaxAccess $access = AjaxAccess::LOGGED,
         public readonly bool|string|null $nonce = null,
+        public readonly ?string $capability = null,
     ) {}
 }
