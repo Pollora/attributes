@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.4] - 2026-11-18
+
 ### Added
 
 - **`#[Ajax]` takes a `capability` parameter**, the WordPress capability a logged-in user must have for the AJAX action to run: `#[Ajax('save_note', nonce: true, capability: 'edit_posts')]`. A nonce proves where a request comes from, not that the user may do what it asks. The attribute only carries the value (`null`, the default, requires none); the framework's `AjaxDiscovery` passes it on to `pollora/ajax` 1.3, which checks it after the nonce and answers a user without the capability with a 403. A capability on an action open to guests is contradictory: guests are refused with a 401. The parameter is a technical text parameter, never translated, and is added to the API surface.
