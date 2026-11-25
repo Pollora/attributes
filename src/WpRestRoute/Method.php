@@ -25,17 +25,19 @@ class Method
         public string|Permission|null $permissionCallback = null
     ) {
         $this->methods = is_array($methods) ? $methods : [$methods];
-        $this->validateMethods();
+        $this->validateMethods($this->methods);
     }
 
     /**
      * Validates the provided HTTP methods.
      *
+     * @param  array<mixed>  $methods
+     *
      * @throws InvalidArgumentException If an invalid HTTP method is found.
      */
-    private function validateMethods(): void
+    private function validateMethods(array $methods): void
     {
-        foreach ($this->methods as $method) {
+        foreach ($methods as $method) {
             if (! in_array(strtoupper((string) $method), self::ALLOWED_METHODS, true)) {
                 throw new InvalidArgumentException(
                     sprintf(
@@ -55,6 +57,6 @@ class Method
      */
     public function getMethods(): array
     {
-        return $this->methods;
+        return is_array($this->methods) ? $this->methods : [$this->methods];
     }
 }
