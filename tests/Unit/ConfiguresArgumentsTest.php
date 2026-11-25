@@ -87,6 +87,14 @@ it('adds an admin column rendered by the decorated method, next to the existing 
     ]);
 });
 
+it('starts from no admin columns when the arguments hold something else under that key', function (): void {
+    $callback = decoratedMethod();
+
+    $arguments = (new AdminCol('isbn', 'ISBN'))->configureArguments(['admin_cols' => 'not a list'], $callback);
+
+    expect(array_keys($arguments['admin_cols']))->toBe(['isbn']);
+});
+
 it('accepts the HTTP verbs of a REST route, in any case', function (): void {
     expect((new Method('get'))->getMethods())->toBe(['get'])
         ->and((new Method(['POST', 'DELETE']))->getMethods())->toBe(['POST', 'DELETE']);

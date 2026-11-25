@@ -90,3 +90,7 @@ it('overrides generated labels and keeps the others', function (string $class): 
 
     expect($arguments)->toBe(['labels' => ['all_items' => 'Mine', 'name' => 'Books'], 'public' => true]);
 })->with([PostTypeLabels::class, TaxonomyLabels::class]);
+
+it('starts from no labels when the arguments hold something else under that key', function (string $class): void {
+    expect((new $class(name: 'Books'))->configureArguments(['labels' => 'not a list'])['labels'])->toBe(['name' => 'Books']);
+})->with([PostTypeLabels::class, TaxonomyLabels::class]);

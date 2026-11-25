@@ -118,7 +118,8 @@ class AdminCol implements ConfiguresArgumentsWithMethod
             $columnConfig['sortable'] = $this->sortable;
         }
 
-        $arguments['admin_cols'] = [...$arguments['admin_cols'] ?? [], $this->key => $columnConfig];
+        $existing = $arguments['admin_cols'] ?? [];
+        $arguments['admin_cols'] = [...(is_array($existing) ? $existing : []), $this->key => $columnConfig];
 
         return $arguments;
     }

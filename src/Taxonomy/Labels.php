@@ -81,8 +81,8 @@ class Labels implements ConfiguresArguments
 
     public function configureArguments(array $arguments): array
     {
-        $existing = ($arguments['labels'] ?? []);
-        $arguments['labels'] = array_merge($existing, $this->labels);
+        $existing = $arguments['labels'] ?? [];
+        $arguments['labels'] = array_merge(is_array($existing) ? $existing : [], $this->labels);
 
         return $arguments;
     }
