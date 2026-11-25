@@ -21,7 +21,7 @@ class SiteSortables implements ConfiguresArguments
     /**
      * Constructor.
      *
-     * @param  array  $value  An array of site sortables
+     * @param  array<mixed>  $value  An array of site sortables
      */
     public function __construct(
         public readonly array $value

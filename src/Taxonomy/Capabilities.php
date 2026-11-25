@@ -27,7 +27,7 @@ class Capabilities implements ConfiguresArguments
     /**
      * Constructor.
      *
-     * @param  array  $value  The capabilities array for the taxonomy
+     * @param  array<mixed>  $value  The capabilities array for the taxonomy
      */
     public function __construct(
         public readonly array $value

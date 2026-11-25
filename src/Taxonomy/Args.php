@@ -18,7 +18,7 @@ class Args implements ConfiguresArguments
     /**
      * Constructor.
      *
-     * @param  array  $value  Arguments to use inside wp_get_object_terms()
+     * @param  array<mixed>  $value  Arguments to use inside wp_get_object_terms()
      */
     public function __construct(
         public readonly array $value

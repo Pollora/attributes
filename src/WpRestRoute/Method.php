@@ -15,7 +15,7 @@ class Method
     /**
      * Constructor for the Method attribute.
      *
-     * @param  array|string  $methods  The HTTP methods allowed for this route.
+     * @param  array<mixed>|string  $methods  The HTTP methods allowed for this route.
      * @param  class-string<Permission>|Permission|null  $permissionCallback  The permission for this method, replacing the route's: a Permission class, or an instance such as `new Can('edit_posts')`.
      *
      * @throws InvalidArgumentException If an invalid HTTP method is provided.
@@ -51,7 +51,7 @@ class Method
     /**
      * Retrieves the list of HTTP methods.
      *
-     * @return array The list of allowed HTTP methods.
+     * @return array<mixed> The list of allowed HTTP methods.
      */
     public function getMethods(): array
     {

@@ -10,5 +10,9 @@ use ReflectionMethod;
 
 interface HandlesAttributes
 {
+    /**
+     * @param  mixed  $container  The container the handler resolves what it needs from
+     * @param  ReflectionClass<object>|ReflectionMethod  $context
+     */
     public function handle($container, Attributable $instance, ReflectionClass|ReflectionMethod $context, object $attribute): void;
 }

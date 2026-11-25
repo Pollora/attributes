@@ -21,7 +21,7 @@ class AdminFilters implements ConfiguresArguments
     /**
      * Constructor.
      *
-     * @param  array  $value  An array of admin filters
+     * @param  array<mixed>  $value  An array of admin filters
      */
     public function __construct(
         public readonly array $value

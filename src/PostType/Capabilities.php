@@ -21,7 +21,7 @@ class Capabilities implements ConfiguresArguments
     /**
      * Constructor.
      *
-     * @param  array  $value  The capabilities array for the post type
+     * @param  array<mixed>  $value  The capabilities array for the post type
      */
     public function __construct(
         public readonly array $value
