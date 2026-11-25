@@ -17,6 +17,8 @@ final readonly class AfterInvoke
 {
     /**
      * Create a new After Invoke attribute.
+     *
+     * @param  string|array<mixed>  $callback  The callback to run
      */
     public function __construct(
         public string|array $callback

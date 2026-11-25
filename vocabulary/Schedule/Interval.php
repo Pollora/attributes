@@ -15,6 +15,9 @@ final readonly class Interval
         public string $display = 'Custom schedule'
     ) {}
 
+    /**
+     * @return array{interval: int, display: string}
+     */
     public function toScheduleArray(): array
     {
         return [

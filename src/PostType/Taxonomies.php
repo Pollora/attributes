@@ -21,7 +21,7 @@ class Taxonomies implements ConfiguresArguments
     /**
      * Constructor.
      *
-     * @param  array  $value  An array of taxonomy names
+     * @param  array<mixed>  $value  An array of taxonomy names
      */
     public function __construct(
         public readonly array $value

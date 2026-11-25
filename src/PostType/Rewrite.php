@@ -23,7 +23,7 @@ class Rewrite implements ConfiguresArguments
     /**
      * Constructor.
      *
-     * @param  bool|array  $value  The rewrite configuration for the post type
+     * @param  bool|array<mixed>  $value  The rewrite configuration for the post type
      */
     public function __construct(
         public readonly bool|array $value = true

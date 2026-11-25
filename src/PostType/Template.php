@@ -21,7 +21,7 @@ class Template implements ConfiguresArguments
     /**
      * Constructor.
      *
-     * @param  array  $value  An array of blocks to use as the default template
+     * @param  array<mixed>  $value  An array of blocks to use as the default template
      */
     public function __construct(
         public readonly array $value

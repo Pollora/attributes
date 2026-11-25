@@ -21,7 +21,7 @@ class SiteFilters implements ConfiguresArguments
     /**
      * Constructor.
      *
-     * @param  array  $value  An array of site filters
+     * @param  array<mixed>  $value  An array of site filters
      */
     public function __construct(
         public readonly array $value

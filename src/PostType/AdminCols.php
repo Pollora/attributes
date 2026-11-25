@@ -21,7 +21,7 @@ class AdminCols implements ConfiguresArguments
     /**
      * Constructor.
      *
-     * @param  array  $value  An array of admin columns configuration
+     * @param  array<mixed>  $value  An array of admin columns configuration
      */
     public function __construct(
         public readonly array $value

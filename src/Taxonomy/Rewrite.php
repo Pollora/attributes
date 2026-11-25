@@ -18,7 +18,7 @@ class Rewrite implements ConfiguresArguments
     /**
      * Constructor.
      *
-     * @param  bool|array  $value  The rewrite rules for the taxonomy
+     * @param  bool|array<mixed>  $value  The rewrite rules for the taxonomy
      */
     public function __construct(
         public readonly bool|array $value = true

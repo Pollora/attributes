@@ -21,7 +21,7 @@ class Archive implements ConfiguresArguments
     /**
      * Constructor.
      *
-     * @param  array  $value  An array of archive display options
+     * @param  array<mixed>  $value  An array of archive display options
      */
     public function __construct(
         public readonly array $value
