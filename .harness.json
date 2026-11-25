@@ -11,11 +11,11 @@
         }
     ],
     "ratchet": {
-        "type_coverage": 99.7,
-        "phpstan_level": 5,
+        "phpstan_level": 6,
         "phpstan_baseline": 0,
-        "coverage": 99.0,
-        "exempted_rules": 1,
-        "msi": 93
+        "coverage": 99,
+        "type_coverage": 99.77,
+        "msi": 93,
+        "exempted_rules": 1
     }
 }
