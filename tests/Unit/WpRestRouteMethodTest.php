@@ -14,6 +14,13 @@ it('wraps a single verb in a list and keeps a list as it is', function (): void 
         ->and((new Method(['GET', 'POST']))->getMethods())->toBe(['GET', 'POST']);
 });
 
+it('lists a verb that was assigned to the public property as a single string', function (): void {
+    $method = new Method('GET');
+    $method->methods = 'POST';
+
+    expect($method->getMethods())->toBe(['POST']);
+});
+
 it('refuses a verb a REST route cannot use', function (array|string $methods): void {
     new Method($methods);
 })->with([
