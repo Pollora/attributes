@@ -38,11 +38,11 @@ class Method
     private function validateMethods(array $methods): void
     {
         foreach ($methods as $method) {
-            if (! in_array(strtoupper((string) $method), self::ALLOWED_METHODS, true)) {
+            if (! is_string($method) || ! in_array(strtoupper($method), self::ALLOWED_METHODS, true)) {
                 throw new InvalidArgumentException(
                     sprintf(
                         'Invalid HTTP method "%s". Allowed methods are: %s',
-                        $method,
+                        is_scalar($method) ? (string) $method : get_debug_type($method),
                         implode(', ', self::ALLOWED_METHODS)
                     )
                 );

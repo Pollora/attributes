@@ -46,3 +46,15 @@ it('keeps the permission that replaces the route\'s', function (): void {
         ->and((new Method('GET', $permission::class))->permissionCallback)->toBe($permission::class)
         ->and((new Method('GET'))->permissionCallback)->toBeNull();
 });
+
+it('refuses a verb that is not a string, even one that prints as a valid verb', function (): void {
+    $verb = new class implements Stringable
+    {
+        public function __toString(): string
+        {
+            return 'GET';
+        }
+    };
+
+    expect(fn () => new Method([$verb]))->toThrow(InvalidArgumentException::class, 'Invalid HTTP method');
+});
