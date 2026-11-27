@@ -18,9 +18,9 @@ use Pollora\Ajax\Domain\Model\AjaxAccess;
  *
  * The nonce says how the action is protected against cross-site request forgery:
  * `true` verifies a nonce named after the action, a string verifies a nonce of
- * that name, `false` turns it off on purpose. An action that does not say runs
- * without a check for now and is reported; the next major version of
- * pollora/ajax verifies a nonce by default.
+ * that name, `false` turns it off on purpose. What happens to an action that does
+ * not say depends on the installed pollora/ajax: 1.x runs it without a check
+ * (and reports it from 1.2), 2.0 verifies a nonce named after the action.
  *
  * The capability is the WordPress capability a logged-in user must have for the
  * action to run (a nonce proves where the request comes from, not that the user
@@ -29,7 +29,7 @@ use Pollora\Ajax\Domain\Model\AjaxAccess;
  *
  * Usage:
  *
- *     #[Ajax('subscribe')]                              // logged-in only (default), nonce not chosen yet
+ *     #[Ajax('subscribe')]                              // logged-in only (default), nonce not chosen (see above)
  *     #[Ajax('save_note', nonce: true)]                 // logged-in only, verifies the nonce `save_note`
  *     #[Ajax('save_note', nonce: 'notes_form')]         // verifies the nonce `notes_form`
  *     #[Ajax('load_more', access: AjaxAccess::ALL)]     // all users

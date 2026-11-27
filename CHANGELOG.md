@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- `pollora/ajax` 2.0 is accepted (`^1.1 || ^2.0`). That major version verifies a nonce on an AJAX action that does not choose (`nonce: null`, the default of `#[Ajax]`): a request without one gets a 403. Declare `nonce: false` where no nonce makes sense, or send the nonce, before upgrading `pollora/ajax`. The attributes themselves are unchanged.
+
 ## [0.1.4] - 2026-11-18
 
 ### Added
